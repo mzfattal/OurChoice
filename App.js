@@ -1,3 +1,4 @@
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -17,6 +18,8 @@ import { PlacesScreen } from "./src/features/places/screens/places.screen";
 import { ProfileScreen } from "./src/features/profile/screens/profile.screen";
 import { secColor } from "./constants";
 
+import { FriendsContextProvider } from "./src/services/friends/friends.context";
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -33,31 +36,33 @@ export default function App() {
 
   return (
     <>
-      <NavigationContainer>
-        <Tab.Navigator
-          initialRouteName="Friends"
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Restaurants") {
-                iconName = focused ? "restaurant" : "restaurant-outline";
-              } else if (route.name === "Friends") {
-                iconName = focused ? "people" : "people-outline";
-              } else if (route.name === "Profile") {
-                iconName = focused ? "person" : "person-outline";
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: secColor,
-            tabBarInactiveTintColor: "gray",
-            headerShown: false,
-          })}
-        >
-          <Tab.Screen name="Restaurants" component={PlacesScreen} />
-          <Tab.Screen name="Friends" component={FriendScreen} />
-          <Tab.Screen name="Profile" component={ProfileScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
+      <FriendsContextProvider>
+        <NavigationContainer>
+          <Tab.Navigator
+            initialRouteName="Friends"
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+                if (route.name === "Restaurants") {
+                  iconName = focused ? "restaurant" : "restaurant-outline";
+                } else if (route.name === "Friends") {
+                  iconName = focused ? "people" : "people-outline";
+                } else if (route.name === "Profile") {
+                  iconName = focused ? "person" : "person-outline";
+                }
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+              tabBarActiveTintColor: secColor,
+              tabBarInactiveTintColor: "gray",
+              headerShown: false,
+            })}
+          >
+            <Tab.Screen name="Restaurants" component={PlacesScreen} />
+            <Tab.Screen name="Friends" component={FriendScreen} />
+            <Tab.Screen name="Profile" component={ProfileScreen} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </FriendsContextProvider>
       <StatusBar style="auto" />
     </>
   );
