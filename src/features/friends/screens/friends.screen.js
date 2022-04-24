@@ -28,7 +28,7 @@ export const FriendScreen = () => {
 
   const onChangeSearch = (query) => setSearchQuery(query);
 
-  if (!error) return <ErrorScreen />;
+  if (error) return <ErrorScreen />;
 
   return (
     <>
