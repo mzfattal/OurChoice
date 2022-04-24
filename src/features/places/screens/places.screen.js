@@ -8,9 +8,7 @@ export const PlacesScreen = () => {
     <>
       <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
         <View style={styles.container}>
-          <View style={{}}>
-            <Searchbar />
-          </View>
+          <View style={{}}></View>
           <PlaceInfo />
         </View>
       </SafeAreaView>

@@ -14,6 +14,7 @@ import {
 } from "@expo-google-fonts/source-sans-pro";
 
 import { FriendScreen } from "./src/features/friends/screens/friends.screen";
+import { PlacesScreen } from "./src/features/places/screens/places.screen";
 import { secColor } from "./constants";
 
 const Tab = createBottomTabNavigator();
@@ -38,7 +39,7 @@ export default function App() {
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
-              if (route.name === "Home") {
+              if (route.name === "Restaurants") {
                 iconName = focused ? "restaurant" : "restaurant-outline";
               } else if (route.name === "Friends") {
                 iconName = focused ? "people" : "people-outline";
@@ -48,10 +49,10 @@ export default function App() {
               return <Ionicons name={iconName} size={size} color={color} />;
             },
             tabBarActiveTintColor: secColor,
-            tabBarInactiveTintColor: "black",
+            tabBarInactiveTintColor: "gray",
           })}
         >
-          <Tab.Screen name="Home" component={FriendScreen} />
+          <Tab.Screen name="Restaurants" component={PlacesScreen} />
           <Tab.Screen name="Friends" component={FriendScreen} />
           <Tab.Screen name="Profile" component={FriendScreen} />
         </Tab.Navigator>
@@ -64,7 +65,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
   },

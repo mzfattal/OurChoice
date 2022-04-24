@@ -41,7 +41,7 @@ export const FriendScreen = () => {
               columnWrapperStyle={styles.listColumnStyle}
               data={["", "", "", "", "", "", ""]}
               numColumns={2}
-              renderItem={() => <FriendCard />}
+              renderItem={(i) => <FriendCard key={i} />}
               be
             />
           </View>
