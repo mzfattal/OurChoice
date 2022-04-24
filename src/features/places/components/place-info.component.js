@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { Searchbar } from "react-native-paper";
 
 export const PlaceInfo = () => {
-  return <Text>Open up App.js to start working on your app!</Text>;
+  return <Text>Open up App.js to start working on your app</Text>;
 };
 
 const styles = StyleSheet.create({

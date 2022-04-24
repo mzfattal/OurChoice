@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import {
   borderRadius,
   lightTextColor,
@@ -12,14 +12,17 @@ export const FriendCard = () => {
   return (
     <View style={styles.container}>
       <View style={styles.upperContainer}>
-        <View style={styles.image}></View>
+        <Image
+          source={{ uri: "https://picsum.photos/200" }}
+          style={styles.image}
+        />
         <TouchableOpacity style={styles.addButton}>
           <Text style={styles.addButtonText}>Invite</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.lowerContainer}>
         <Text style={styles.username}>Name Surname</Text>
-        <Text style={styles.userData}>Data</Text>
+        <Text style={styles.userData}>Some Data</Text>
       </View>
     </View>
   );
@@ -30,8 +33,7 @@ const styles = StyleSheet.create({
     width: "48%",
     borderRadius: borderRadius,
     paddingHorizontal: 16,
-    borderWidth: 2,
-    borderColor: mainColor,
+    backgroundColor: mainColor,
   },
   image: {
     width: 50,
@@ -47,7 +49,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   addButton: {
-    borderWidth: 1,
+    backgroundColor: secColor,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 30 / 2,
@@ -55,8 +57,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   addButtonText: {
+    color: "#FFFFFF",
     fontFamily: fonts[700],
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "500",
   },
   lowerContainer: {

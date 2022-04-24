@@ -7,15 +7,9 @@ import {
   marginTop,
   secTextColor,
 } from "../../../../constants";
-import { GroupHeader } from "../components/groupHeader.component";
-import { FriendCard } from "../components/friendCard.component";
 import { TabHeader } from "../../../components/tabHeader";
 
-export const FriendScreen = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const onChangeSearch = (query) => setSearchQuery(query);
-
+export const ProfileScreen = () => {
   return (
     <>
       <SafeAreaView
@@ -27,33 +21,9 @@ export const FriendScreen = () => {
       >
         <View style={styles.container}>
           <TabHeader
-            text={"Friends".toUpperCase()}
-            subtext={"Create your Circle".toUpperCase()}
-            showLogo
+            text={"Profile".toUpperCase()}
+            subtext={"Connect with friends".toUpperCase()}
           />
-          <GroupHeader />
-          <View style={styles.searchBarContainer}>
-            <Text style={styles.friendHeaderText}>
-              {"Friends".toUpperCase()}
-            </Text>
-            <Searchbar
-              style={styles.searchBar}
-              placeholder="Search..."
-              onChangeText={onChangeSearch}
-              value={searchQuery}
-            />
-          </View>
-          <View style={styles.friendsContainer}>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              columnWrapperStyle={styles.listColumnStyle}
-              data={["", "", "", "", "", "", ""]}
-              numColumns={2}
-              renderItem={(item, i) => <FriendCard key={i} />}
-              be
-            />
-          </View>
         </View>
       </SafeAreaView>
     </>

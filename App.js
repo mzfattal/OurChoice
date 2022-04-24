@@ -1,5 +1,4 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -15,6 +14,7 @@ import {
 
 import { FriendScreen } from "./src/features/friends/screens/friends.screen";
 import { PlacesScreen } from "./src/features/places/screens/places.screen";
+import { ProfileScreen } from "./src/features/profile/screens/profile.screen";
 import { secColor } from "./constants";
 
 const Tab = createBottomTabNavigator();
@@ -50,22 +50,15 @@ export default function App() {
             },
             tabBarActiveTintColor: secColor,
             tabBarInactiveTintColor: "gray",
+            headerShown: false,
           })}
         >
           <Tab.Screen name="Restaurants" component={PlacesScreen} />
           <Tab.Screen name="Friends" component={FriendScreen} />
-          <Tab.Screen name="Profile" component={FriendScreen} />
+          <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

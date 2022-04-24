@@ -1,12 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
-import { Searchbar } from "react-native-paper";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   borderRadius,
   horizontalMargin,
@@ -27,16 +20,20 @@ export const GroupHeader = () => {
 
         <View style={styles.groupContainer}>
           <View style={styles.imageContainer}>
-            <TouchableOpacity style={styles.emptyButton}>
-              <Text>X</Text>
+            <TouchableOpacity
+              style={styles.emptyButton}
+              onPress={() => console.warn("remove users in group")}
+            >
+              <Ionicons name={"close"} size={20} color={"#FFF"} />
             </TouchableOpacity>
             {["green", "red", "yellow", "blue"].map((item, i) => (
-              <View
+              <Image
+                source={{ uri: "https://picsum.photos/200" }}
                 style={[
                   styles.image,
                   { backgroundColor: item, marginLeft: i === 0 ? 0 : -5 },
                 ]}
-              ></View>
+              />
             ))}
           </View>
 
@@ -95,7 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 30 / 2,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: secColor,
   },
   image: {
     height: 30,
@@ -104,15 +101,15 @@ const styles = StyleSheet.create({
   },
   startSessionButton: {
     height: 30,
-    paddingHorizontal: 10,
-    borderRadius: 30 / 4,
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
+    paddingHorizontal: 16,
+    borderRadius: 30 / 2,
+    backgroundColor: secColor,
     justifyContent: "center",
     alignItems: "center",
   },
   startSessionButtonText: {
     fontFamily: fonts[700],
     fontSize: 15,
+    color: "white",
   },
 });
