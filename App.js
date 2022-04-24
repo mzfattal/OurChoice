@@ -1,9 +1,28 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import { PlacesScreen } from "./src/features/places/screens/places.screen";
+import {
+  useFonts,
+  SourceSansPro_200ExtraLight,
+  SourceSansPro_300Light,
+  SourceSansPro_400Regular,
+  SourceSansPro_600SemiBold,
+  SourceSansPro_700Bold,
+  SourceSansPro_900Black,
+} from "@expo-google-fonts/source-sans-pro";
 import { FriendScreen } from "./src/features/friends/screens/friends.screen";
 
 export default function App() {
+  const [fontLoader] = useFonts({
+    SourceSansPro_200ExtraLight,
+    SourceSansPro_300Light,
+    SourceSansPro_400Regular,
+    SourceSansPro_600SemiBold,
+    SourceSansPro_700Bold,
+    SourceSansPro_900Black,
+  });
+
+  if (!fontLoader) return null;
+
   return (
     <>
       <FriendScreen />

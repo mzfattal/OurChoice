@@ -36,10 +36,9 @@ export const FriendScreen = () => {
           </View>
           <View style={styles.friendsContainer}>
             <FlatList
-              columnWrapperStyle={{
-                justifyContent: "space-between",
-                marginTop: 10,
-              }}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              columnWrapperStyle={styles.listColumnStyle}
               data={["", "", "", "", "", "", ""]}
               numColumns={2}
               renderItem={() => <FriendCard />}
@@ -79,5 +78,9 @@ const styles = StyleSheet.create({
   friendsContainer: {
     marginTop: marginTop,
     flex: 1,
+  },
+  listColumnStyle: {
+    justifyContent: "space-between",
+    marginTop: 10,
   },
 });

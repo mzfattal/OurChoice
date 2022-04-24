@@ -13,6 +13,7 @@ import {
   mainColor,
   secColor,
   secTextColor,
+  fonts,
 } from "../../../../constants";
 
 export const GroupHeader = () => {
@@ -43,7 +44,7 @@ export const GroupHeader = () => {
             onPress={() => console.warn("start session")}
             style={styles.startSessionButton}
           >
-            <Text style={{ fontWeight: "bold" }}>Start Session</Text>
+            <Text style={styles.startSessionButtonText}>Start Session</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -106,8 +107,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 30 / 4,
     backgroundColor: "#FFFFFF",
-    borderWidth: 2,
+    borderWidth: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  startSessionButtonText: {
+    fontFamily: fonts[700],
+    fontSize: 15,
   },
 });
