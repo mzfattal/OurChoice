@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,7 +11,17 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import Logo from "../assets/logo/Logo";
+import Logo from "../../../components/Logo";
+import {
+  fonts,
+  horizontalMargin,
+  secColor,
+  secTextColor,
+} from "../../../../constants";
+import {
+  ProfileContext,
+  ProfileContextProvider,
+} from "../../../services/profile/profile.context";
 
 // import { fetchUser } from "../redux/actions/userAction";
 // import { useSelector, useDispatch } from "react-redux";
@@ -21,49 +31,54 @@ import Logo from "../assets/logo/Logo";
 // import { auth } from "../firebase";
 // import { useNavigation } from "@react-navigation/core";
 
-const Login = ({ navigation }) => {
-  const dispatch = useDispatch();
+export const LoginScreen = ({ navigation }) => {
+  const { handleLogin, profile, isLoading, error } = useContext(ProfileContext);
+
+  useEffect(() => {
+    handleLogin("email", "333");
+  }, []);
+
+  console.warn(profile);
 
   const [username, onChangeUsername] = useState("");
   const [password, onChangePassword] = useState("");
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        navigation.navigate("Friends");
-      }
-    });
+  //   useEffect(() => {
+  //     const unsubscribe = auth.onAuthStateChanged((user) => {
+  //       if (user) {
+  //         navigation.navigate("Friends");
+  //       }
+  //     });
+  //     return unsubscribe;
+  //   }, []);
 
-    return unsubscribe;
-  }, []);
+  //   const loading = useSelector((state) => state.loading.loading);
+  //   const user = useSelector((state) => state.user);
 
-  const loading = useSelector((state) => state.loading.loading);
-  const user = useSelector((state) => state.user);
+  //   const Login = async () => {
+  //     dispatch(setLoading(true));
 
-  const Login = async () => {
-    dispatch(setLoading(true));
+  //     // let data = {
+  //     //   username,
+  //     //   password,
+  //     // };
+  //     // await axios("https://mutazbackend.herokuapp.com/login", data)
+  //     //   .then(await dispatch(fetchUser(username)))
+  //     //   .then(await dispatch(getFriendRequest(username)))
+  //     //   .then(await dispatch(setLoggedIn(true)))
+  //     //   .catch((err) => console.log(err));
 
-    // let data = {
-    //   username,
-    //   password,
-    // };
-    // await axios("https://mutazbackend.herokuapp.com/login", data)
-    //   .then(await dispatch(fetchUser(username)))
-    //   .then(await dispatch(getFriendRequest(username)))
-    //   .then(await dispatch(setLoggedIn(true)))
-    //   .catch((err) => console.log(err));
+  //     auth
+  //       .signInWithEmailAndPassword(username, password)
+  //       .then((userCreds) => {
+  //         const user = userCreds.user;
+  //       })
+  //       .then(await dispatch(fetchUser(auth?.currentUser?.email)))
+  //       .then(await dispatch(getFriendRequest(auth?.currentUser?.email)))
+  //       .catch((err) => alert(err.message));
 
-    auth
-      .signInWithEmailAndPassword(username, password)
-      .then((userCreds) => {
-        const user = userCreds.user;
-      })
-      .then(await dispatch(fetchUser(auth?.currentUser?.email)))
-      .then(await dispatch(getFriendRequest(auth?.currentUser?.email)))
-      .catch((err) => alert(err.message));
-
-    dispatch(setLoading(false));
-  };
+  //     dispatch(setLoading(false));
+  //   };
 
   return (
     <KeyboardAvoidingView
@@ -76,7 +91,7 @@ const Login = ({ navigation }) => {
             Button
             Linear
             Gradient
-            colors={["#3d72b4", "#ccc"]}
+            colors={[secColor, "#ccc"]}
             style={styles.background}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
@@ -91,7 +106,7 @@ const Login = ({ navigation }) => {
                 <TextInput
                   style={styles.input}
                   onChangeText={onChangeUsername}
-                  placeholder="Username"
+                  placeholder="Email"
                   value={username}
                 />
               </View>
@@ -104,8 +119,8 @@ const Login = ({ navigation }) => {
                   placeholder="Password"
                 />
               </View>
-              {loading === false ? (
-                <TouchableOpacity style={styles.loginButton} onPress={Login}>
+              {true ? (
+                <TouchableOpacity style={styles.loginButton} onPress={() => {}}>
                   <Text style={styles.lButtonText}>Login</Text>
                 </TouchableOpacity>
               ) : (
@@ -143,7 +158,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   inputContainer: {
-    marginHorizontal: "5%",
+    marginHorizontal: horizontalMargin,
     marginVertical: "2%",
     borderRadius: 50,
     paddingLeft: 20,
@@ -156,15 +171,18 @@ const styles = StyleSheet.create({
   },
   createAccountContainer: {
     flexDirection: "row",
-    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
   },
   createOne: {
     marginLeft: 5,
-    fontWeight: "bold",
-    color: "#333",
+    fontSize: 16,
+    fontFamily: fonts[700],
+    color: secColor,
   },
   dontHaveAAccount: {
-    color: "#555",
+    color: secTextColor,
   },
   logoText: {
     marginTop: 10,
@@ -207,15 +225,14 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   loginButton: {
-    // marginHorizontal: "5%",
+    marginHorizontal: horizontalMargin,
     marginVertical: "2%",
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    // flexDirection: "row",
-    width: "90%",
+    alignSelf: "stretch",
     padding: 10,
-    backgroundColor: "#4e83c5",
+    backgroundColor: secColor,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -238,14 +255,11 @@ const styles = StyleSheet.create({
   },
   lButtonText: {
     color: "#ccc",
-    // fontWeight: "bold",
     fontSize: 20,
+    fontFamily: fonts[700],
   },
   sButtonText: {
     color: "#fff",
-    // fontWeight: "bold",
     fontSize: 20,
   },
 });
-
-export default Login;
