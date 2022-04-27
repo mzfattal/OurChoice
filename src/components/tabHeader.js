@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { fonts, marginTop, secColor, secTextColor } from "../../constants";
 import Logo from "./Logo";

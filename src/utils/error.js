@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, View, Text, SafeAreaView } from "react-native";
 import { fonts, marginTop, secColor, secTextColor } from "../../constants";
 import { StatusBar } from "expo-status-bar";

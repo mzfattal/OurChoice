@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -10,10 +10,9 @@ import {
   SourceSansPro_700Bold,
   SourceSansPro_900Black,
 } from "@expo-google-fonts/source-sans-pro";
-
-import { FriendsContextProvider } from "./src/services/friends/friends.context";
 import { Navigation } from "./src/navigation";
-import { ProfileContextProvider } from "./src/services/profile/profile.context";
+import { FriendsContextProvider } from "./src/services/friends/friends.context";
+import { AuthenticationContextProvider } from "./src/services/profile/authentication.context";
 
 export default function App() {
   const [fontLoader] = useFonts({
@@ -29,13 +28,13 @@ export default function App() {
 
   return (
     <>
-      <ProfileContextProvider>
+      <AuthenticationContextProvider>
         <FriendsContextProvider>
           <NavigationContainer>
             <Navigation />
           </NavigationContainer>
         </FriendsContextProvider>
-      </ProfileContextProvider>
+      </AuthenticationContextProvider>
       <StatusBar style="auto" />
     </>
   );

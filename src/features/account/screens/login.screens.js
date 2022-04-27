@@ -18,67 +18,13 @@ import {
   secColor,
   secTextColor,
 } from "../../../../constants";
-import {
-  ProfileContext,
-  ProfileContextProvider,
-} from "../../../services/profile/profile.context";
-
-// import { fetchUser } from "../redux/actions/userAction";
-// import { useSelector, useDispatch } from "react-redux";
-// import { setLoading } from "../redux/actions/loadingAction";
-// import { setLoggedIn } from "../redux/actions/loginAction";
-// import { getFriendRequest } from "../redux/actions/getFriendRequestAction";
-// import { auth } from "../firebase";
-// import { useNavigation } from "@react-navigation/core";
+import { AuthenticationContext } from "../../../services/profile/authentication.context";
 
 export const LoginScreen = ({ navigation }) => {
-  const { handleLogin, profile, isLoading, error } = useContext(ProfileContext);
-
-  useEffect(() => {
-    handleLogin("email", "333");
-  }, []);
-
-  console.warn(profile);
+  const { user, isLoading, error, onLogin } = useContext(AuthenticationContext);
 
   const [username, onChangeUsername] = useState("");
   const [password, onChangePassword] = useState("");
-
-  //   useEffect(() => {
-  //     const unsubscribe = auth.onAuthStateChanged((user) => {
-  //       if (user) {
-  //         navigation.navigate("Friends");
-  //       }
-  //     });
-  //     return unsubscribe;
-  //   }, []);
-
-  //   const loading = useSelector((state) => state.loading.loading);
-  //   const user = useSelector((state) => state.user);
-
-  //   const Login = async () => {
-  //     dispatch(setLoading(true));
-
-  //     // let data = {
-  //     //   username,
-  //     //   password,
-  //     // };
-  //     // await axios("https://mutazbackend.herokuapp.com/login", data)
-  //     //   .then(await dispatch(fetchUser(username)))
-  //     //   .then(await dispatch(getFriendRequest(username)))
-  //     //   .then(await dispatch(setLoggedIn(true)))
-  //     //   .catch((err) => console.log(err));
-
-  //     auth
-  //       .signInWithEmailAndPassword(username, password)
-  //       .then((userCreds) => {
-  //         const user = userCreds.user;
-  //       })
-  //       .then(await dispatch(fetchUser(auth?.currentUser?.email)))
-  //       .then(await dispatch(getFriendRequest(auth?.currentUser?.email)))
-  //       .catch((err) => alert(err.message));
-
-  //     dispatch(setLoading(false));
-  //   };
 
   return (
     <KeyboardAvoidingView
@@ -120,7 +66,10 @@ export const LoginScreen = ({ navigation }) => {
                 />
               </View>
               {true ? (
-                <TouchableOpacity style={styles.loginButton} onPress={() => {}}>
+                <TouchableOpacity
+                  style={styles.loginButton}
+                  onPress={() => onLogin(username, password)}
+                >
                   <Text style={styles.lButtonText}>Login</Text>
                 </TouchableOpacity>
               ) : (

@@ -21,6 +21,8 @@ import { TabHeader } from "../../../components/tabHeader";
 import { FriendsContext } from "../../../services/friends/friends.context";
 import { ErrorScreen } from "../../../utils/error";
 
+import { auth } from "../../../../firebase";
+
 export const FriendScreen = () => {
   const { friends, isLoading, error } = useContext(FriendsContext);
 
