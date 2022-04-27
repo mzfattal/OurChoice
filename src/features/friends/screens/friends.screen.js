@@ -10,7 +10,9 @@ import {
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
+  fonts,
   horizontalMargin,
+  mainColor,
   marginTop,
   secColor,
   secTextColor,
@@ -20,8 +22,9 @@ import { FriendCard } from "../components/friendCard.component";
 import { TabHeader } from "../../../components/tabHeader";
 import { FriendsContext } from "../../../services/friends/friends.context";
 import { ErrorScreen } from "../../../utils/error";
-
+import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../../../firebase";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const FriendScreen = () => {
   const { friends, isLoading, error } = useContext(FriendsContext);
@@ -49,14 +52,23 @@ export const FriendScreen = () => {
           />
           <GroupHeader />
           <View style={styles.searchBarContainer}>
-            <Text style={styles.friendHeaderText}>
-              {"Friends".toUpperCase()}
-            </Text>
+            <View style={styles.friendsHeader}>
+              <Text style={styles.friendHeaderText}>
+                {"Friends".toUpperCase()}
+              </Text>
+            </View>
             <Searchbar
               style={styles.searchBar}
               placeholder="Search..."
               onChangeText={onChangeSearch}
               value={searchQuery}
+              icon={() => (
+                <Ionicons name={"person-add"} size={18} color={"#000"} />
+              )}
+              onIconPress={() => console.warn("add")}
+              inputStyle={{ fontFamily: fonts[700] }}
+              theme={{ colors: { text: "black" } }}
+              selectionColor={secColor}
             />
           </View>
           <View style={styles.friendsContainer}>
@@ -118,5 +130,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignContent: "center",
+  },
+  friendsHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });

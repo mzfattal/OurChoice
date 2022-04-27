@@ -1,4 +1,5 @@
 import React, { useEffect, createContext, useState } from "react";
+import { auth } from "../../../firebase";
 
 export const FriendsContext = createContext();
 
