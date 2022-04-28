@@ -87,20 +87,19 @@ export const CreateAccountScreen = ({ navigation }) => {
                 />
               </View>
 
-              {true ? (
-                <TouchableOpacity
-                  style={styles.loginButton}
-                  onPress={() =>
-                    onCreate(email, password, username, confirmPassword)
-                  }
-                >
-                  <Text style={styles.lButtonText}>Sing Up</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity style={styles.loginButton}>
+              <TouchableOpacity
+                disabled={isLoading}
+                style={styles.loginButton}
+                onPress={() =>
+                  onCreate(email, password, username, confirmPassword)
+                }
+              >
+                {isLoading ? (
                   <ActivityIndicator size="small" color="#fff" />
-                </TouchableOpacity>
-              )}
+                ) : (
+                  <Text style={styles.lButtonText}>Sing Up</Text>
+                )}
+              </TouchableOpacity>
 
               <View style={styles.createAccountContainer}>
                 <Text style={styles.dontHaveAAccount}>Have a account?</Text>
@@ -194,9 +193,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   loginButton: {
+    height: 50,
     marginHorizontal: horizontalMargin,
     marginVertical: "2%",
-    borderRadius: 50,
+    borderRadius: 50 / 2,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "stretch",
@@ -208,7 +208,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
   },
   signupButton: {

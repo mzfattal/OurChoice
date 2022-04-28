@@ -65,18 +65,19 @@ export const LoginScreen = ({ navigation }) => {
                   placeholder="Password"
                 />
               </View>
-              {true ? (
-                <TouchableOpacity
-                  style={styles.loginButton}
-                  onPress={() => onLogin(username, password)}
-                >
-                  <Text style={styles.lButtonText}>Login</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity style={styles.loginButton}>
+
+              <TouchableOpacity
+                disabled={isLoading}
+                style={styles.loginButton}
+                onPress={() => onLogin(username, password)}
+              >
+                {isLoading ? (
                   <ActivityIndicator size="small" color="#fff" />
-                </TouchableOpacity>
-              )}
+                ) : (
+                  <Text style={styles.lButtonText}>Login</Text>
+                )}
+              </TouchableOpacity>
+
               <View style={styles.createAccountContainer}>
                 <Text style={styles.dontHaveAAccount}>
                   Dont have a account?
@@ -172,9 +173,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   loginButton: {
+    height: 50,
     marginHorizontal: horizontalMargin,
     marginVertical: "2%",
-    borderRadius: 50,
+    borderRadius: 50 / 2,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "stretch",
