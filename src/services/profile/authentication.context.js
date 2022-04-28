@@ -11,9 +11,9 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [error, setError] = useState(null);
 
-  firebase.auth().onAuthStateChanged((userRes) => {
-    if (userRes) {
-      setUser(userRes);
+  firebase.auth().onAuthStateChanged((resUser) => {
+    if (resUser) {
+      setUser(resUser);
     } else {
       setUser(null);
     }
@@ -22,14 +22,14 @@ export const AuthenticationContextProvider = ({ children }) => {
   const onLogin = (email, password) => {
     setIsLoading(true);
     loginRequest(email, password)
-      .then((u) => {
-        setUser(u);
+      .then((resUser) => {
+        setUser(resUser);
         setIsLoading(false);
       })
-      .catch((e) => {
+      .catch((resError) => {
         setIsLoading(false);
         Alert.alert("Oops!", "Login failed");
-        setError(e);
+        setError(resError);
       });
   };
 

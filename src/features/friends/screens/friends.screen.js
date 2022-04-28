@@ -43,7 +43,7 @@ export const FriendScreen = () => {
   const onChangeSearch = (query) => setSearchQuery(query);
 
   useEffect(() => {
-    if (!friendRequests.length) tabIndex(0);
+    if (!friendRequests?.length) setTabIndex(0);
   }, [friendRequests]);
 
   if (error) return <ErrorScreen />;

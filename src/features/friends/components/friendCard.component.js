@@ -106,8 +106,8 @@ export const FriendCard = ({ data }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.lowerContainer}>
-        <Text style={styles.username}>Name Surname</Text>
-        <Text style={styles.userData}>Some Data</Text>
+        <Text style={styles.username}>{data?.name}</Text>
+        <Text style={styles.userData}>{data?.email}</Text>
       </View>
     </View>
   );
