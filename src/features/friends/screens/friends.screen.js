@@ -27,7 +27,7 @@ import { auth } from "../../../../firebase";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const FriendScreen = () => {
-  const { friends, isLoading, error } = useContext(FriendsContext);
+  const { friends, isLoading, error, addFriend } = useContext(FriendsContext);
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -65,7 +65,7 @@ export const FriendScreen = () => {
               icon={() => (
                 <Ionicons name={"person-add"} size={18} color={"#000"} />
               )}
-              onIconPress={() => console.warn("add")}
+              onIconPress={() => addFriend(searchQuery)}
               inputStyle={{ fontFamily: fonts[700] }}
               theme={{ colors: { text: "black" } }}
               selectionColor={secColor}
@@ -80,7 +80,6 @@ export const FriendScreen = () => {
                 data={friends}
                 numColumns={2}
                 renderItem={(item, i) => <FriendCard key={i} />}
-                be
               />
             ) : (
               <View style={styles.loadingContainer}>

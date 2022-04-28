@@ -29,6 +29,7 @@ export const GroupHeader = () => {
             </TouchableOpacity>
             {["green", "red", "yellow", "blue"].map((item, i) => (
               <Image
+                key={i}
                 source={{ uri: "https://picsum.photos/200" }}
                 style={[
                   styles.image,
