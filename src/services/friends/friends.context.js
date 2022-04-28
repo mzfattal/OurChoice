@@ -38,7 +38,11 @@ export const FriendsContextProvider = ({ children }) => {
         recipient: auth?.currentUser?.email,
         requester: email,
       })
-      .then(() => alert("accepted"))
+      .then(() => {
+        fetchFriends();
+        fetchFriendRequests();
+        alert("accepted");
+      })
       .catch(() => Alert.alert("Oops!", "Error accepting request"));
     // setIsLoading(false);
   };
@@ -51,7 +55,11 @@ export const FriendsContextProvider = ({ children }) => {
         requester: email,
       })
 
-      .then(() => alert("denied"))
+      .then(() => {
+        fetchFriends();
+        fetchFriendRequests();
+        alert("denied");
+      })
       .catch(() => Alert.alert("Oops!", "Error Denying request"));
     // setIsLoading(false);
   };
