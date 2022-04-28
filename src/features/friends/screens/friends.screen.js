@@ -25,6 +25,7 @@ import { ErrorScreen } from "../../../utils/error";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../../../firebase";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
+import { EmptyFriends } from "../components/emptyFriends.component";
 
 export const FriendScreen = () => {
   const {
@@ -86,7 +87,7 @@ export const FriendScreen = () => {
               selectionColor={secColor}
             />
           </View>
-          {friendRequests?.length && (
+          {friendRequests?.length ? (
             <View style={styles.tabsContainer}>
               <SegmentedControl
                 values={["Friends", "Friend Requests"]}
@@ -96,7 +97,7 @@ export const FriendScreen = () => {
                 }}
               />
             </View>
-          )}
+          ) : null}
           {tabIndex === 0 && (
             <View
               style={[
@@ -109,12 +110,14 @@ export const FriendScreen = () => {
                 showsVerticalScrollIndicator={false}
                 columnWrapperStyle={styles.listColumnStyle}
                 data={friends}
+                ListEmptyComponent={EmptyFriends}
                 onRefresh={() => fetchFriends()}
                 refreshing={isLoading}
                 numColumns={2}
                 renderItem={(item, i) => (
                   <FriendCard key={i} data={item?.item} />
                 )}
+                contentContainerStyle={{ flexGrow: 1 }}
               />
             </View>
           )}
