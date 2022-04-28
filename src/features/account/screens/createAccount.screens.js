@@ -20,11 +20,55 @@ import {
 } from "../../../../constants";
 import { AuthenticationContext } from "../../../services/profile/authentication.context";
 
-export const LoginScreen = ({ navigation }) => {
-  const { user, isLoading, error, onLogin } = useContext(AuthenticationContext);
+export const CreateAccountScreen = ({ navigation }) => {
+  const { user, isLoading, error, onCreate } = useContext(
+    AuthenticationContext
+  );
 
   const [username, onChangeUsername] = useState("");
+  const [email, onChangeEmail] = useState("");
   const [password, onChangePassword] = useState("");
+  const [confirmPassword, onChangeConfirmPassword] = useState("");
+
+  //   const SingUp = async () => {
+  //     dispatch(setLoading(true));
+
+  //     if (password === confirmPassword) {
+  //       let data = {
+  //         name: username,
+  //         email,
+  //       };
+
+  //       auth
+  //         .createUserWithEmailAndPassword(email, password)
+  //         .then(async (userCreds) => {
+  //           const user = userCreds.user;
+  //           await axios
+  //             //"https://mutazbackend.herokuapp.com/register"
+  //             .post("http://192.168.1.121:3000/register", {
+  //               uid: user.uid,
+  //               name: username,
+  //               email: email,
+  //             })
+  //             .then(await dispatch(fetchUser(email)))
+  //             .then(await dispatch(getFriendRequest(email)))
+  //             .catch((err) => alert(err.messsage));
+  //         })
+  //         .catch((err) => alert(err.message));
+
+  //       // await axios
+  //       //   .post("https://mutazbackend.herokuapp.com/register", data)
+  //       //   .then(await dispatch(fetchUser(username)))
+  //       //   .then(await dispatch(getFriendRequest(username)))
+  //       //   .catch((err) => console.log(err));
+  //     } else {
+  //       alert("passwords do not match");
+  //     }
+
+  //     dispatch(setLoading(false));
+
+  //     // navigation.navigate("Intro");
+  //   };
 
   return (
     <KeyboardAvoidingView
@@ -44,7 +88,7 @@ export const LoginScreen = ({ navigation }) => {
           >
             <View style={styles.topHolder}>
               <Logo size={100} color={"#fff"} />
-              <Text style={styles.logoText}>Our Choice</Text>
+              <Text style={styles.logoText}> Our Choice</Text>
             </View>
 
             <View style={styles.middleHolder}>
@@ -52,8 +96,16 @@ export const LoginScreen = ({ navigation }) => {
                 <TextInput
                   style={styles.input}
                   onChangeText={onChangeUsername}
-                  placeholder="Email"
+                  placeholder="Username"
                   value={username}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={onChangeEmail}
+                  value={email}
+                  placeholder="Email"
                 />
               </View>
               <View style={styles.inputContainer}>
@@ -65,24 +117,33 @@ export const LoginScreen = ({ navigation }) => {
                   placeholder="Password"
                 />
               </View>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  secureTextEntry
+                  style={styles.input}
+                  onChangeText={onChangeConfirmPassword}
+                  value={confirmPassword}
+                  placeholder="Confirm Password"
+                />
+              </View>
+
               {true ? (
                 <TouchableOpacity
                   style={styles.loginButton}
-                  onPress={() => onLogin(username, password)}
+                  onPress={() => onCreate(email, password)}
                 >
-                  <Text style={styles.lButtonText}>Login</Text>
+                  <Text style={styles.lButtonText}>Sing Up</Text>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity style={styles.loginButton}>
                   <ActivityIndicator size="small" color="#fff" />
                 </TouchableOpacity>
               )}
+
               <View style={styles.createAccountContainer}>
-                <Text style={styles.dontHaveAAccount}>
-                  Dont have a account?
-                </Text>
-                <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-                  <Text style={styles.createOne}>Create One</Text>
+                <Text style={styles.dontHaveAAccount}>Have a account?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                  <Text style={styles.createOne}>Login</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -111,11 +172,10 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     justifyContent: "center",
     backgroundColor: "#fff",
+    height: 50,
     alignSelf: "stretch",
   },
-  input: {
-    height: 50,
-  },
+  input: {},
   createAccountContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -207,6 +267,7 @@ const styles = StyleSheet.create({
   },
   sButtonText: {
     color: "#fff",
+    // fontWeight: "bold",
     fontSize: 20,
   },
 });

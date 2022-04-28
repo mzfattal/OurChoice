@@ -1,5 +1,5 @@
 import React, { useEffect, createContext, useState } from "react";
-import { loginRequest } from "./authentication.service";
+import { createAccountRequest, loginRequest } from "./authentication.service";
 import * as firebase from "firebase";
 
 export const AuthenticationContext = createContext();
@@ -13,8 +13,7 @@ export const AuthenticationContextProvider = ({ children }) => {
     if (userRes) {
       setUser(userRes);
     } else {
-      console.warn("no one logged in");
-      // No user is signed in.
+      setUser(null);
     }
   });
 
@@ -24,18 +23,36 @@ export const AuthenticationContextProvider = ({ children }) => {
       .then((u) => {
         setUser(u);
         setIsLoading(false);
-        console.warn("here");
       })
       .catch((e) => {
         setIsLoading(false);
         setError(e);
-        console.warn(e.message);
+      });
+  };
+
+  const onCreate = (email, password, username) => {
+    setIsLoading(true);
+    createAccountRequest(email, password)
+      .then((userCredential) => {
+        setUser(userCredential.user);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        setError(e);
       });
   };
 
   return (
     <AuthenticationContext.Provider
-      value={{ isAuthenticated: !!user, user, isLoading, error, onLogin }}
+      value={{
+        isAuthenticated: !!user,
+        user,
+        isLoading,
+        error,
+        onLogin,
+        onCreate,
+      }}
     >
       {children}
     </AuthenticationContext.Provider>

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  FlatList,
+  Button,
+} from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
   horizontalMargin,
@@ -8,6 +15,7 @@ import {
   secTextColor,
 } from "../../../../constants";
 import { TabHeader } from "../../../components/tabHeader";
+import { auth } from "../../../../firebase";
 
 export const ProfileScreen = () => {
   return (
@@ -24,6 +32,7 @@ export const ProfileScreen = () => {
             text={"Profile".toUpperCase()}
             subtext={"Connect with friends".toUpperCase()}
           />
+          <Button title="Sign Out" onPress={() => auth.signOut()} />
         </View>
       </SafeAreaView>
     </>
