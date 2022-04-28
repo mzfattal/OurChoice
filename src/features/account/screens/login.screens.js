@@ -53,6 +53,7 @@ export const LoginScreen = ({ navigation }) => {
                   style={styles.input}
                   onChangeText={onChangeUsername}
                   placeholder="Email"
+                  autoCapitalize="none"
                   value={username}
                 />
               </View>
@@ -69,7 +70,7 @@ export const LoginScreen = ({ navigation }) => {
               <TouchableOpacity
                 disabled={isLoading}
                 style={styles.loginButton}
-                onPress={() => onLogin(username, password)}
+                onPress={() => onLogin(username.toLowerCase(), password)}
               >
                 {isLoading ? (
                   <ActivityIndicator size="small" color="#fff" />

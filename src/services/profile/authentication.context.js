@@ -28,6 +28,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       })
       .catch((e) => {
         setIsLoading(false);
+        Alert.alert("Oops!", "Login failed");
         setError(e);
       });
   };

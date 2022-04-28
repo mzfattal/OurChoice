@@ -91,13 +91,18 @@ export const CreateAccountScreen = ({ navigation }) => {
                 disabled={isLoading}
                 style={styles.loginButton}
                 onPress={() =>
-                  onCreate(email, password, username, confirmPassword)
+                  onCreate(
+                    email.toLowerCase(),
+                    password,
+                    username,
+                    confirmPassword
+                  )
                 }
               >
                 {isLoading ? (
                   <ActivityIndicator size="small" color="#fff" />
                 ) : (
-                  <Text style={styles.lButtonText}>Sing Up</Text>
+                  <Text style={styles.lButtonText}>Sign Up</Text>
                 )}
               </TouchableOpacity>
 

@@ -7,10 +7,51 @@ import {
   secColor,
   secTextColor,
   fonts,
+  marginTop,
 } from "../../../../constants";
 
-export const FriendCard = () => {
+export const FriendCard = ({ data }) => {
   const [selected, setSelected] = useState(false);
+
+  if (!data) return null;
+
+  if (!!data?.requester)
+    return (
+      <View style={styles.requestContainer}>
+        <View style={styles.requestUpperContainer}>
+          <Text style={styles.userData}>Friend Request from</Text>
+          <Text style={styles.username}>{data?.requester}</Text>
+        </View>
+        <View style={styles.requestLowerContainer}>
+          <TouchableOpacity
+            onPress={() => setSelected((prev) => !prev)}
+            style={[
+              styles.addButtonRequest,
+              selected && { backgroundColor: "#FFFFFF" },
+            ]}
+          >
+            <Text
+              style={[styles.addButtonText, selected && { color: secColor }]}
+            >
+              Add
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setSelected((prev) => !prev)}
+            style={[
+              styles.addButtonRequest,
+              selected && { backgroundColor: "#FFFFFF" },
+            ]}
+          >
+            <Text
+              style={[styles.addButtonText, selected && { color: secColor }]}
+            >
+              Deny
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
 
   return (
     <View style={styles.container}>
@@ -42,6 +83,12 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius,
     paddingHorizontal: 16,
     backgroundColor: mainColor,
+  },
+  requestContainer: {
+    borderRadius: borderRadius,
+    paddingHorizontal: 16,
+    backgroundColor: mainColor,
+    marginTop: marginTop,
   },
   image: {
     width: 50,
@@ -84,5 +131,25 @@ const styles = StyleSheet.create({
     color: lightTextColor,
     fontFamily: fonts[700],
     fontSize: 13,
+  },
+  requestUpperContainer: {
+    marginTop: 16,
+  },
+  requestLowerContainer: {
+    alignItems: "center",
+    height: 40,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  addButtonRequest: {
+    backgroundColor: secColor,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30 / 2,
+    height: 30,
+    borderWidth: 2,
+    borderColor: secColor,
+    width: "48%",
   },
 });

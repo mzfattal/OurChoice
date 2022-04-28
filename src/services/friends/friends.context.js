@@ -7,21 +7,36 @@ export const FriendsContext = createContext();
 
 export const FriendsContextProvider = ({ children }) => {
   const [friends, setFriends] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const retrieveFriends = () => {
+  const fetchFriendRequests = async () => {
     setIsLoading(true);
-    setFriends([1, 2, 3]);
+    await axios
+      .get(
+        `http://192.168.1.121:3000/friendRequest/${auth?.currentUser?.email}`
+      )
+      .then((res) => setFriendRequests(res?.data))
+      .catch(() => Alert.alert("Oops!", "Error getting friends."));
     setIsLoading(false);
   };
 
-  const addFriend = (email) => {
+  const fetchFriends = async () => {
+    setIsLoading(true);
+    await axios
+      .get(`http://192.168.1.121:3000/user/email/${auth?.currentUser?.email}`)
+      .then((res) => setFriends(res?.data?.[0]?.friends))
+      .catch(() => Alert.alert("Oops!", "Error getting friends."));
+    setIsLoading(false);
+  };
+
+  const addFriend = async (email) => {
     let validEmail =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (validEmail.test(email)) {
-      axios
+      await axios
         .post(`http://192.168.1.121:3000/friendRequest`, {
           requester: auth?.currentUser?.email,
           recipient: email,
@@ -45,11 +60,22 @@ export const FriendsContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    retrieveFriends();
+    fetchFriends();
+    fetchFriendRequests();
   }, []);
 
   return (
-    <FriendsContext.Provider value={{ friends, isLoading, error, addFriend }}>
+    <FriendsContext.Provider
+      value={{
+        friends,
+        friendRequests,
+        isLoading,
+        error,
+        addFriend,
+        fetchFriendRequests,
+        fetchFriends,
+      }}
+    >
       {children}
     </FriendsContext.Provider>
   );

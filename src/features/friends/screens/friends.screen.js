@@ -25,11 +25,21 @@ import { ErrorScreen } from "../../../utils/error";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../../../firebase";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import SegmentedControl from "@react-native-segmented-control/segmented-control";
 
 export const FriendScreen = () => {
-  const { friends, isLoading, error, addFriend } = useContext(FriendsContext);
+  const {
+    friends,
+    friendRequests,
+    isLoading,
+    error,
+    addFriend,
+    fetchFriends,
+    fetchFriendRequests,
+  } = useContext(FriendsContext);
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [tabIndex, setTabIndex] = useState(0);
 
   const onChangeSearch = (query) => setSearchQuery(query);
 
@@ -71,22 +81,57 @@ export const FriendScreen = () => {
               selectionColor={secColor}
             />
           </View>
-          <View style={styles.friendsContainer}>
-            {!isLoading ? (
+          <View style={styles.tabsContainer}>
+            <SegmentedControl
+              values={["Friends", "Friend Requests"]}
+              selectedIndex={tabIndex}
+              onChange={(event) => {
+                setTabIndex(event.nativeEvent.selectedSegmentIndex);
+              }}
+            />
+          </View>
+          {tabIndex === 0 && (
+            <View
+              style={[
+                styles.friendsContainer,
+                false && { marginTop: marginTop },
+              ]}
+            >
               <FlatList
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 columnWrapperStyle={styles.listColumnStyle}
                 data={friends}
+                onRefresh={() => fetchFriends()}
+                refreshing={isLoading}
                 numColumns={2}
-                renderItem={(item, i) => <FriendCard key={i} />}
+                renderItem={(item, i) => (
+                  <FriendCard key={i} data={item?.item} />
+                )}
               />
-            ) : (
-              <View style={styles.loadingContainer}>
-                <ActivityIndicator size={"large"} color={secColor} />
-              </View>
-            )}
-          </View>
+            </View>
+          )}
+          {tabIndex === 1 && (
+            <View
+              style={[
+                styles.friendsContainer,
+                false && { marginTop: marginTop },
+              ]}
+            >
+              <FlatList
+                keyExtractor={(item) => item?.item?.data?.requester}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                data={friendRequests}
+                onRefresh={() => fetchFriendRequests()}
+                refreshing={isLoading}
+                numColumns={1}
+                renderItem={(item, i) => (
+                  <FriendCard key={i} data={item?.item} />
+                )}
+              />
+            </View>
+          )}
         </View>
       </SafeAreaView>
     </>
@@ -118,8 +163,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   friendsContainer: {
-    marginTop: marginTop,
     flex: 1,
+  },
+  tabsContainer: {
+    marginTop: marginTop,
   },
   listColumnStyle: {
     justifyContent: "space-between",
