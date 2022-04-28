@@ -31,6 +31,31 @@ export const FriendsContextProvider = ({ children }) => {
     setIsLoading(false);
   };
 
+  const addUser = async (email) => {
+    // setIsLoading(true);
+    await axios
+      .post(`http://192.168.1.121:3000/friendRequest/yes`, {
+        recipient: auth?.currentUser?.email,
+        requester: email,
+      })
+      .then(() => alert("accepted"))
+      .catch(() => Alert.alert("Oops!", "Error accepting request"));
+    // setIsLoading(false);
+  };
+
+  const denyUser = async (email) => {
+    // setIsLoading(true);
+    await axios
+      .post(`http://192.168.1.121:3000/friendRequest/no`, {
+        recipient: auth?.currentUser?.email,
+        requester: email,
+      })
+
+      .then(() => alert("denied"))
+      .catch(() => Alert.alert("Oops!", "Error Denying request"));
+    // setIsLoading(false);
+  };
+
   const addFriend = async (email) => {
     let validEmail =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -74,6 +99,8 @@ export const FriendsContextProvider = ({ children }) => {
         addFriend,
         fetchFriendRequests,
         fetchFriends,
+        addUser,
+        denyUser,
       }}
     >
       {children}

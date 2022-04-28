@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -24,7 +24,6 @@ import { FriendsContext } from "../../../services/friends/friends.context";
 import { ErrorScreen } from "../../../utils/error";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../../../firebase";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
 
 export const FriendScreen = () => {
@@ -42,6 +41,10 @@ export const FriendScreen = () => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const onChangeSearch = (query) => setSearchQuery(query);
+
+  useEffect(() => {
+    if (!friendRequests.length) tabIndex(0);
+  }, [friendRequests]);
 
   if (error) return <ErrorScreen />;
 
@@ -68,6 +71,8 @@ export const FriendScreen = () => {
               </Text>
             </View>
             <Searchbar
+              // onFocus={() => console.warn("opacity 1")}
+              // onEndEditing={() => console.warn("opacity 0.5")}
               style={styles.searchBar}
               placeholder="Search..."
               onChangeText={onChangeSearch}
@@ -81,20 +86,22 @@ export const FriendScreen = () => {
               selectionColor={secColor}
             />
           </View>
-          <View style={styles.tabsContainer}>
-            <SegmentedControl
-              values={["Friends", "Friend Requests"]}
-              selectedIndex={tabIndex}
-              onChange={(event) => {
-                setTabIndex(event.nativeEvent.selectedSegmentIndex);
-              }}
-            />
-          </View>
+          {friendRequests?.length && (
+            <View style={styles.tabsContainer}>
+              <SegmentedControl
+                values={["Friends", "Friend Requests"]}
+                selectedIndex={tabIndex}
+                onChange={(event) => {
+                  setTabIndex(event.nativeEvent.selectedSegmentIndex);
+                }}
+              />
+            </View>
+          )}
           {tabIndex === 0 && (
             <View
               style={[
                 styles.friendsContainer,
-                false && { marginTop: marginTop },
+                !friendRequests?.length && { marginTop: marginTop },
               ]}
             >
               <FlatList

@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import React, { useState, useContext } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 import {
   borderRadius,
   lightTextColor,
@@ -9,8 +16,11 @@ import {
   fonts,
   marginTop,
 } from "../../../../constants";
+import { FriendsContext } from "../../../services/friends/friends.context";
 
 export const FriendCard = ({ data }) => {
+  const { addUser, denyUser } = useContext(FriendsContext);
+
   const [selected, setSelected] = useState(false);
 
   if (!data) return null;
@@ -24,20 +34,20 @@ export const FriendCard = ({ data }) => {
         </View>
         <View style={styles.requestLowerContainer}>
           <TouchableOpacity
-            onPress={() => setSelected((prev) => !prev)}
-            style={[
-              styles.addButtonRequest,
-              selected && { backgroundColor: "#FFFFFF" },
-            ]}
-          >
-            <Text
-              style={[styles.addButtonText, selected && { color: secColor }]}
-            >
-              Add
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setSelected((prev) => !prev)}
+            onPress={() =>
+              Alert.alert(
+                "Deny Request?",
+                "Would you like to deny the request",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => {},
+                    style: "cancel",
+                  },
+                  { text: "Deny", onPress: () => denyUser(data?.requester) },
+                ]
+              )
+            }
             style={[
               styles.addButtonRequest,
               selected && { backgroundColor: "#FFFFFF" },
@@ -47,6 +57,32 @@ export const FriendCard = ({ data }) => {
               style={[styles.addButtonText, selected && { color: secColor }]}
             >
               Deny
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              Alert.alert(
+                "Accept Request?",
+                "Would you like to accept the request",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => {},
+                    style: "cancel",
+                  },
+                  { text: "Accept", onPress: () => addUser(data?.requester) },
+                ]
+              )
+            }
+            style={[
+              styles.addButtonRequest,
+              selected && { backgroundColor: "#FFFFFF" },
+            ]}
+          >
+            <Text
+              style={[styles.addButtonText, selected && { color: secColor }]}
+            >
+              Add
             </Text>
           </TouchableOpacity>
         </View>
