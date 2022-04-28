@@ -30,46 +30,6 @@ export const CreateAccountScreen = ({ navigation }) => {
   const [password, onChangePassword] = useState("");
   const [confirmPassword, onChangeConfirmPassword] = useState("");
 
-  //   const SingUp = async () => {
-  //     dispatch(setLoading(true));
-
-  //     if (password === confirmPassword) {
-  //       let data = {
-  //         name: username,
-  //         email,
-  //       };
-
-  //       auth
-  //         .createUserWithEmailAndPassword(email, password)
-  //         .then(async (userCreds) => {
-  //           const user = userCreds.user;
-  //           await axios
-  //             //"https://mutazbackend.herokuapp.com/register"
-  //             .post("http://192.168.1.121:3000/register", {
-  //               uid: user.uid,
-  //               name: username,
-  //               email: email,
-  //             })
-  //             .then(await dispatch(fetchUser(email)))
-  //             .then(await dispatch(getFriendRequest(email)))
-  //             .catch((err) => alert(err.messsage));
-  //         })
-  //         .catch((err) => alert(err.message));
-
-  //       // await axios
-  //       //   .post("https://mutazbackend.herokuapp.com/register", data)
-  //       //   .then(await dispatch(fetchUser(username)))
-  //       //   .then(await dispatch(getFriendRequest(username)))
-  //       //   .catch((err) => console.log(err));
-  //     } else {
-  //       alert("passwords do not match");
-  //     }
-
-  //     dispatch(setLoading(false));
-
-  //     // navigation.navigate("Intro");
-  //   };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : null}
@@ -130,7 +90,9 @@ export const CreateAccountScreen = ({ navigation }) => {
               {true ? (
                 <TouchableOpacity
                   style={styles.loginButton}
-                  onPress={() => onCreate(email, password)}
+                  onPress={() =>
+                    onCreate(email, password, username, confirmPassword)
+                  }
                 >
                   <Text style={styles.lButtonText}>Sing Up</Text>
                 </TouchableOpacity>
