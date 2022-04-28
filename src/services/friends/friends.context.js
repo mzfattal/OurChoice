@@ -1,4 +1,6 @@
 import React, { useEffect, createContext, useState } from "react";
+import { Alert } from "react-native";
+import axios from "axios";
 import { auth } from "../../../firebase";
 
 export const FriendsContext = createContext();
@@ -19,10 +21,26 @@ export const FriendsContextProvider = ({ children }) => {
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (validEmail.test(email)) {
-      alert("added");
-      // make request
+      axios
+        .post(`http://192.168.1.121:3000/friendRequest`, {
+          requester: auth?.currentUser?.email,
+          recipient: email,
+        })
+        .then(() => {
+          Alert.alert("Added", "Friend request sent!");
+        })
+        .catch((err) => {
+          Alert.alert(
+            "Oops!",
+            err.response.status === 404
+              ? `${err.response.data}: ${email}`
+              : err.response.data
+          );
+        });
+    } else if (email === "") {
+      Alert.alert("Oops!", `Add a user by their Email`);
     } else {
-      alert("not valid email");
+      Alert.alert("Oops!", `trying to add ${email}? Try using their Email`);
     }
   };
 
