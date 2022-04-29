@@ -13,6 +13,7 @@ import {
 import { Navigation } from "./src/navigation";
 import { FriendsContextProvider } from "./src/services/friends/friends.context";
 import { AuthenticationContextProvider } from "./src/services/profile/authentication.context";
+import { GroupContextProvider } from "./src/services/group/group.context";
 
 export default function App() {
   const [fontLoader] = useFonts({
@@ -28,13 +29,15 @@ export default function App() {
 
   return (
     <>
-      <AuthenticationContextProvider>
+      <GroupContextProvider>
         <FriendsContextProvider>
-          <NavigationContainer>
-            <Navigation />
-          </NavigationContainer>
+          <AuthenticationContextProvider>
+            <NavigationContainer>
+              <Navigation />
+            </NavigationContainer>
+          </AuthenticationContextProvider>
         </FriendsContextProvider>
-      </AuthenticationContextProvider>
+      </GroupContextProvider>
       <StatusBar style="auto" />
     </>
   );

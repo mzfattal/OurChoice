@@ -17,11 +17,13 @@ import {
   marginTop,
 } from "../../../../constants";
 import { FriendsContext } from "../../../services/friends/friends.context";
+import { GroupContext } from "../../../services/group/group.context";
 
 export const FriendCard = ({ data }) => {
   const { addUser, denyUser } = useContext(FriendsContext);
+  const { group, addToGroup } = useContext(GroupContext);
 
-  const [selected, setSelected] = useState(false);
+  const selected = group.filter((filteredUser) => filteredUser?.email).length;
 
   if (!data) return null;
 
@@ -48,16 +50,9 @@ export const FriendCard = ({ data }) => {
                 ]
               )
             }
-            style={[
-              styles.addButtonRequest,
-              selected && { backgroundColor: "#FFFFFF" },
-            ]}
+            style={styles.addButtonRequest}
           >
-            <Text
-              style={[styles.addButtonText, selected && { color: secColor }]}
-            >
-              Deny
-            </Text>
+            <Text style={styles.addButtonText}>Deny</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>
@@ -74,16 +69,9 @@ export const FriendCard = ({ data }) => {
                 ]
               )
             }
-            style={[
-              styles.addButtonRequest,
-              selected && { backgroundColor: "#FFFFFF" },
-            ]}
+            style={styles.addButtonRequest}
           >
-            <Text
-              style={[styles.addButtonText, selected && { color: secColor }]}
-            >
-              Add
-            </Text>
+            <Text style={styles.addButtonText}>Add</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -97,7 +85,7 @@ export const FriendCard = ({ data }) => {
           style={styles.image}
         />
         <TouchableOpacity
-          onPress={() => setSelected((prev) => !prev)}
+          onPress={() => addToGroup("")}
           style={[styles.addButton, selected && { backgroundColor: "#FFFFFF" }]}
         >
           <Text style={[styles.addButtonText, selected && { color: secColor }]}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
@@ -9,8 +9,11 @@ import {
   secTextColor,
   fonts,
 } from "../../../../constants";
+import { GroupContext } from "../../../services/group/group.context";
 
 export const GroupHeader = () => {
+  const { group, clearGroup } = useContext(GroupContext);
+
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -23,11 +26,11 @@ export const GroupHeader = () => {
           <View style={styles.imageContainer}>
             <TouchableOpacity
               style={styles.emptyButton}
-              onPress={() => console.warn("remove users in group")}
+              onPress={() => clearGroup()}
             >
               <Ionicons name={"close"} size={20} color={"#FFF"} />
             </TouchableOpacity>
-            {["green", "red", "yellow", "blue"].map((item, i) => (
+            {group.map((item, i) => (
               <Image
                 key={i}
                 source={{ uri: "https://picsum.photos/200" }}

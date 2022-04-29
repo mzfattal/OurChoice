@@ -1,12 +1,15 @@
-import React, { useEffect, createContext, useState } from "react";
+import React, { useEffect, createContext, useState, useContext } from "react";
 import { createAccountRequest, loginRequest } from "./authentication.service";
 import * as firebase from "firebase";
 import { Alert } from "react-native";
 import axios from "axios";
+// import { FriendsContext } from "../friends/friends.context";
 
 export const AuthenticationContext = createContext();
 
 export const AuthenticationContextProvider = ({ children }) => {
+  // const { fetchFriendRequests, fetchFriends } = useContext(FriendsContext);
+
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({});
   const [error, setError] = useState(null);
@@ -14,6 +17,8 @@ export const AuthenticationContextProvider = ({ children }) => {
   firebase.auth().onAuthStateChanged((resUser) => {
     if (resUser) {
       setUser(resUser);
+      // fetchFriends();
+      // fetchFriendRequests();
     } else {
       setUser(null);
     }
