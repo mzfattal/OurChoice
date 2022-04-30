@@ -30,13 +30,21 @@ export const GroupHeader = () => {
             >
               <Ionicons name={"close"} size={20} color={"#FFF"} />
             </TouchableOpacity>
-            {group.map((item, i) => (
-              <Image
-                key={i}
-                source={{ uri: "https://picsum.photos/200" }}
-                style={[styles.image, { marginLeft: i === 0 ? 0 : -5 }]}
-              />
-            ))}
+            {group.length ? (
+              group.map((item, i) => {
+                return (
+                  <Image
+                    key={`${i}`}
+                    source={{ uri: "https://picsum.photos/200" }}
+                    style={[styles.image, { marginLeft: i === 0 ? 0 : -5 }]}
+                  />
+                );
+              })
+            ) : (
+              <View style={[styles.image, styles.emptyGroupPlaceHolder]}>
+                <Ionicons name={"person"} size={15} color={"#BBBBBB"} />
+              </View>
+            )}
           </View>
 
           <TouchableOpacity
@@ -113,5 +121,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts[700],
     fontSize: 15,
     color: "white",
+  },
+  emptyGroupPlaceHolder: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#BBBBBB",
+    borderStyle: "dashed",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
