@@ -1,11 +1,14 @@
-import React, { useEffect, createContext, useState } from "react";
+import React, { useEffect, createContext, useState, useContext } from "react";
 import { Alert } from "react-native";
 import axios from "axios";
 import { auth } from "../../../firebase";
+import { AuthenticationContext } from "../profile/authentication.context";
 
 export const FriendsContext = createContext();
 
 export const FriendsContextProvider = ({ children }) => {
+  const { user } = useContext(AuthenticationContext);
+
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +35,13 @@ export const FriendsContextProvider = ({ children }) => {
   };
 
   const addUser = async (email) => {
-    // setIsLoading(true);
+    const tempUser = friendRequests.filter((curUser) => {
+      return curUser?.requester === email;
+    });
+    setFriendRequests((prev) =>
+      prev.filter((curUser) => curUser?.requester !== email)
+    );
+
     await axios
       .post(`http://192.168.1.121:3000/friendRequest/yes`, {
         recipient: auth?.currentUser?.email,
@@ -40,15 +49,21 @@ export const FriendsContextProvider = ({ children }) => {
       })
       .then(() => {
         fetchFriends();
-        fetchFriendRequests();
-        alert("accepted");
       })
-      .catch(() => Alert.alert("Oops!", "Error accepting request"));
-    // setIsLoading(false);
+      .catch(() => {
+        setFriendRequests((prev) => [tempUser[0], ...prev]);
+        Alert.alert("Oops!", "Error accepting request");
+      });
   };
 
   const denyUser = async (email) => {
-    // setIsLoading(true);
+    const tempUser = friendRequests.filter((curUser) => {
+      return curUser?.requester === email;
+    });
+    setFriendRequests((prev) =>
+      prev.filter((curUser) => curUser?.requester !== email)
+    );
+
     await axios
       .post(`http://192.168.1.121:3000/friendRequest/no`, {
         recipient: auth?.currentUser?.email,
@@ -57,11 +72,11 @@ export const FriendsContextProvider = ({ children }) => {
 
       .then(() => {
         fetchFriends();
-        fetchFriendRequests();
-        alert("denied");
       })
-      .catch(() => Alert.alert("Oops!", "Error Denying request"));
-    // setIsLoading(false);
+      .catch(() => {
+        setFriendRequests((prev) => [tempUser[0], ...prev]);
+        Alert.alert("Oops!", "Error Denying request");
+      });
   };
 
   const addFriend = async (email) => {
@@ -95,7 +110,7 @@ export const FriendsContextProvider = ({ children }) => {
   useEffect(() => {
     fetchFriends();
     fetchFriendRequests();
-  }, []);
+  }, [user]);
 
   return (
     <FriendsContext.Provider

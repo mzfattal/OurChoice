@@ -29,15 +29,15 @@ export default function App() {
 
   return (
     <>
-      <GroupContextProvider>
-        <FriendsContextProvider>
-          <AuthenticationContextProvider>
+      <AuthenticationContextProvider>
+        <GroupContextProvider>
+          <FriendsContextProvider>
             <NavigationContainer>
               <Navigation />
             </NavigationContainer>
-          </AuthenticationContextProvider>
-        </FriendsContextProvider>
-      </GroupContextProvider>
+          </FriendsContextProvider>
+        </GroupContextProvider>
+      </AuthenticationContextProvider>
       <StatusBar style="auto" />
     </>
   );

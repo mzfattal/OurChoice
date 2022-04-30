@@ -106,6 +106,7 @@ export const FriendScreen = () => {
               ]}
             >
               <FlatList
+                keyExtractor={(item) => item?.item?.data}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 columnWrapperStyle={styles.listColumnStyle}
@@ -129,7 +130,7 @@ export const FriendScreen = () => {
               ]}
             >
               <FlatList
-                keyExtractor={(item) => item?.item?.data?.requester}
+                keyExtractor={(item) => item?.item?.data}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 data={friendRequests}
