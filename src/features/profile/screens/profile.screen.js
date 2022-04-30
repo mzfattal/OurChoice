@@ -7,15 +7,19 @@ import {
   SafeAreaView,
   FlatList,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
+  fonts,
   horizontalMargin,
   marginTop,
+  secColor,
   secTextColor,
 } from "../../../../constants";
 import { TabHeader } from "../../../components/tabHeader";
 import { auth } from "../../../../firebase";
+import { ProfileHeader } from "../components/profileHeader.component";
 
 export const ProfileScreen = () => {
   return (
@@ -32,7 +36,13 @@ export const ProfileScreen = () => {
             text={"Profile".toUpperCase()}
             subtext={"Connect with friends".toUpperCase()}
           />
-          <Button title="Sign Out" onPress={() => auth.signOut()} />
+          <ProfileHeader />
+          <TouchableOpacity
+            style={styles.signOutButtonContainer}
+            onPress={() => auth.signOut()}
+          >
+            <Text style={styles.signOutButtonText}>Sign Out</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     </>
@@ -70,5 +80,19 @@ const styles = StyleSheet.create({
   listColumnStyle: {
     justifyContent: "space-between",
     marginTop: 10,
+  },
+  signOutButtonContainer: {
+    marginTop: marginTop,
+    backgroundColor: secColor,
+    height: 45,
+    marginHorizontal: "25%",
+    borderRadius: 45 / 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  signOutButtonText: {
+    fontSize: 20,
+    fontFamily: fonts[700],
+    color: "#FFFFFF",
   },
 });

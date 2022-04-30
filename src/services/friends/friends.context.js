@@ -13,6 +13,7 @@ export const FriendsContextProvider = ({ children }) => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [currentProfile, setCurrentProfile] = useState({});
 
   const fetchFriendRequests = async () => {
     setIsLoading(true);
@@ -29,6 +30,10 @@ export const FriendsContextProvider = ({ children }) => {
     setIsLoading(true);
     await axios
       .get(`http://192.168.1.121:3000/user/email/${auth?.currentUser?.email}`)
+      .then((res) => {
+        setCurrentProfile(res?.data?.[0]);
+        return res;
+      })
       .then((res) => setFriends(res?.data?.[0]?.friends))
       .catch(() => Alert.alert("Oops!", "Error getting friends."));
     setIsLoading(false);
@@ -124,6 +129,7 @@ export const FriendsContextProvider = ({ children }) => {
         fetchFriends,
         addUser,
         denyUser,
+        currentProfile,
       }}
     >
       {children}
