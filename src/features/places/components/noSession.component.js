@@ -1,16 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View, Image } from "react-native";
+import { Searchbar } from "react-native-paper";
 import {
-  borderRadius,
-  horizontalMargin,
+  fonts,
   mainColor,
+  marginTop,
   secColor,
   secTextColor,
-  fonts,
 } from "../../../../constants";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export const EmptyFriends = () => {
+export const NoSession = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -20,10 +21,16 @@ export const EmptyFriends = () => {
           style={{ height: 200, width: 200 }}
         />
       </View>
-      <Text style={styles.header}>No Friends</Text>
+      <Text style={styles.header}>Create Your Circle</Text>
       <Text style={styles.subHeader}>
-        Invite your friends and create your circle
+        Invite your friends and choose restaurant near you
       </Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("Friends")}
+      >
+        <Text style={styles.buttonText}>Invite Your Friends</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -50,5 +57,19 @@ const styles = StyleSheet.create({
     fontFamily: fonts[600],
     color: secTextColor,
     fontSize: 17,
+  },
+  button: {
+    marginTop: marginTop,
+    height: 50,
+    backgroundColor: secColor,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50 / 2,
+    paddingHorizontal: 50,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontFamily: fonts[900],
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -21,9 +21,23 @@ import { GroupContext } from "../../../services/group/group.context";
 
 export const FriendCard = ({ data }) => {
   const { addUser, denyUser } = useContext(FriendsContext);
-  const { group, addToGroup } = useContext(GroupContext);
+  const { group, addToGroup, removeFromGroup } = useContext(GroupContext);
 
-  const selected = group.filter((filteredUser) => filteredUser?.email).length;
+  const [selected, setSelected] = useState(false);
+
+  const handleInvite = () => {
+    if (selected) {
+      removeFromGroup(data);
+      setSelected(false);
+    } else {
+      addToGroup(data);
+      setSelected(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!group.length) setSelected(false);
+  }, [group]);
 
   if (!data) return null;
 
@@ -85,7 +99,7 @@ export const FriendCard = ({ data }) => {
           style={styles.image}
         />
         <TouchableOpacity
-          onPress={() => addToGroup("")}
+          onPress={() => handleInvite()}
           style={[styles.addButton, selected && { backgroundColor: "#FFFFFF" }]}
         >
           <Text style={[styles.addButtonText, selected && { color: secColor }]}>

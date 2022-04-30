@@ -8,8 +8,9 @@ import {
   secTextColor,
 } from "../../../../constants";
 import { TabHeader } from "../../../components/tabHeader";
+import { NoSession } from "../components/noSession.component";
 
-export const PlacesScreen = () => {
+export const PlacesScreen = ({ navigation }) => {
   return (
     <>
       <SafeAreaView
@@ -24,6 +25,7 @@ export const PlacesScreen = () => {
             text={"Restaurants".toUpperCase()}
             subtext={"Choose Your Craving".toUpperCase()}
           />
+          <NoSession navigation={navigation} />
         </View>
       </SafeAreaView>
     </>

@@ -34,10 +34,7 @@ export const GroupHeader = () => {
               <Image
                 key={i}
                 source={{ uri: "https://picsum.photos/200" }}
-                style={[
-                  styles.image,
-                  { backgroundColor: item, marginLeft: i === 0 ? 0 : -5 },
-                ]}
+                style={[styles.image, { marginLeft: i === 0 ? 0 : -5 }]}
               />
             ))}
           </View>
