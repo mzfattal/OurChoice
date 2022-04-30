@@ -23,7 +23,7 @@ export const NoSession = ({ navigation }) => {
       </View>
       <Text style={styles.header}>Create Your Circle</Text>
       <Text style={styles.subHeader}>
-        Invite your friends and choose restaurant near you
+        Invite your friends and choose a restaurant you're all craving
       </Text>
       <TouchableOpacity
         style={styles.button}
