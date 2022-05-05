@@ -13,6 +13,7 @@ import { Searchbar } from "react-native-paper";
 import {
   fonts,
   horizontalMargin,
+  mainColor,
   marginTop,
   secColor,
   secTextColor,
@@ -20,8 +21,27 @@ import {
 import { TabHeader } from "../../../components/tabHeader";
 import { auth } from "../../../../firebase";
 import { ProfileHeader } from "../components/profileHeader.component";
+import { Ionicons } from "@expo/vector-icons";
 
 export const ProfileScreen = () => {
+  const settingsList = [
+    {
+      text: "Profile",
+      icon: "person-outline",
+      onPress: () => console.warn("profile"),
+    },
+    {
+      text: "Settings",
+      icon: "settings-outline",
+      onPress: () => console.warn("settings"),
+    },
+    {
+      text: "Q&A",
+      icon: "book-outline",
+      onPress: () => console.warn("qa"),
+    },
+  ];
+
   return (
     <>
       <SafeAreaView
@@ -37,12 +57,35 @@ export const ProfileScreen = () => {
             subtext={"Connect with friends".toUpperCase()}
           />
           <ProfileHeader />
-          <TouchableOpacity
-            style={styles.signOutButtonContainer}
-            onPress={() => auth.signOut()}
-          >
-            <Text style={styles.signOutButtonText}>Sign Out</Text>
-          </TouchableOpacity>
+          {settingsList.map((item) => (
+            <TouchableOpacity
+              onPress={() => item.onPress()}
+              style={{
+                height: 65,
+                alignItems: "center",
+                flexDirection: "row",
+                marginHorizontal: marginTop,
+                justifyContent: "space-between",
+                borderBottomColor: mainColor,
+                borderBottomWidth: 1,
+                borderRadius: 10,
+              }}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons name={item.icon} size={25} color={"#000"} />
+                <Text
+                  style={{ marginLeft: marginTop, fontFamily: fonts[1700] }}
+                >
+                  {item.text}
+                </Text>
+              </View>
+              <Ionicons
+                name={"chevron-forward-outline"}
+                size={28}
+                color={"#000"}
+              />
+            </TouchableOpacity>
+          ))}
         </View>
       </SafeAreaView>
     </>

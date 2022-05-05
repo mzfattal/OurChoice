@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   lButtonText: {
-    color: "#ccc",
+    color: "#fff",
     fontSize: 20,
     fontFamily: fonts[1700],
   },
