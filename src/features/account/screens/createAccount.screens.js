@@ -4,12 +4,12 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TextInput,
   Keyboard,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   ActivityIndicator,
 } from "react-native";
+import { TextInput } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Logo from "../../../components/Logo";
 import {
@@ -54,36 +54,43 @@ export const CreateAccountScreen = ({ navigation }) => {
             <View style={styles.middleHolder}>
               <View style={styles.inputContainer}>
                 <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeUsername}
-                  placeholder="Username"
-                  value={username}
-                />
-              </View>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeEmail}
+                  label="Email"
+                  mode="flat"
                   value={email}
-                  placeholder="Email"
+                  onChangeText={(text) => onChangeEmail(text)}
+                  theme={{ colors: { text: "black" } }}
+                  style={{ backgroundColor: "white" }}
+                  selectionColor={secColor}
+                  activeOutlineColor={secColor}
+                  activeUnderlineColor={secColor}
                 />
               </View>
               <View style={styles.inputContainer}>
                 <TextInput
                   secureTextEntry
-                  style={styles.input}
-                  onChangeText={onChangePassword}
+                  label="Password"
+                  mode="flat"
                   value={password}
-                  placeholder="Password"
+                  onChangeText={(text) => onChangePassword(text)}
+                  theme={{ colors: { text: "black" } }}
+                  style={{ backgroundColor: "white" }}
+                  selectionColor={secColor}
+                  activeOutlineColor={secColor}
+                  activeUnderlineColor={secColor}
                 />
               </View>
               <View style={styles.inputContainer}>
                 <TextInput
                   secureTextEntry
-                  style={styles.input}
-                  onChangeText={onChangeConfirmPassword}
+                  label="Confirm Password"
+                  mode="flat"
                   value={confirmPassword}
-                  placeholder="Confirm Password"
+                  onChangeText={(text) => onChangeConfirmPassword(text)}
+                  theme={{ colors: { text: "black" } }}
+                  style={{ backgroundColor: "white" }}
+                  selectionColor={secColor}
+                  activeOutlineColor={secColor}
+                  activeUnderlineColor={secColor}
                 />
               </View>
 
@@ -133,13 +140,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   inputContainer: {
-    marginHorizontal: horizontalMargin,
     marginVertical: "2%",
-    borderRadius: 50,
-    paddingLeft: 20,
     justifyContent: "center",
-    backgroundColor: "#fff",
-    height: 50,
     alignSelf: "stretch",
   },
   input: {},
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
   createOne: {
     marginLeft: 5,
     fontSize: 16,
-    fontFamily: fonts[700],
+    fontFamily: fonts[1700],
     color: secColor,
   },
   dontHaveAAccount: {
@@ -191,7 +193,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   middleHolder: {
-    width: "100%",
+    marginHorizontal: horizontalMargin * 2,
+    alignSelf: "stretch",
     alignItems: "center",
   },
   buttonHolder: {
@@ -200,7 +203,6 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     height: 50,
-    marginHorizontal: horizontalMargin,
     marginVertical: "2%",
     borderRadius: 50 / 2,
     alignItems: "center",
@@ -230,11 +232,10 @@ const styles = StyleSheet.create({
   lButtonText: {
     color: "#ccc",
     fontSize: 20,
-    fontFamily: fonts[700],
+    fontFamily: fonts[1700],
   },
   sButtonText: {
     color: "#fff",
-    // fontWeight: "bold",
     fontSize: 20,
   },
 });
