@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: "#FFFFFF",
-    fontFamily: fonts[700],
+    fontFamily: fonts[1600],
     fontSize: 14,
     fontWeight: "500",
   },

@@ -11,6 +11,7 @@ import { secColor } from "../../constants";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import { OnboardingScreen } from "../features/account/screens/onboarding.screen";
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ export const AccountNavigator = () => {
       <Stack.Screen name="Intro" component={IntroScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SignUp" component={CreateAccountScreen} />
+      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
     </Stack.Navigator>
   );
 };

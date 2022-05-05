@@ -82,7 +82,7 @@ export const FriendScreen = () => {
                 <Ionicons name={"person-add"} size={18} color={"#000"} />
               )}
               onIconPress={() => addFriend(searchQuery)}
-              inputStyle={{ fontFamily: fonts[700] }}
+              inputStyle={{ fontFamily: fonts[1600] }}
               theme={{ colors: { text: "black" } }}
               selectionColor={secColor}
             />

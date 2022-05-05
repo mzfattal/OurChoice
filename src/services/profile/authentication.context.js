@@ -10,6 +10,7 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({});
   const [error, setError] = useState(null);
+  const [onboardingDone, setOnboardingDone] = useState(false);
 
   firebase.auth().onAuthStateChanged((resUser) => {
     if (resUser) {
@@ -18,6 +19,10 @@ export const AuthenticationContextProvider = ({ children }) => {
       setUser(null);
     }
   });
+
+  const finishOnboarding = (profileData) => {
+    setOnboardingDone(true);
+  };
 
   const onLogin = (email, password) => {
     setIsLoading(true);
@@ -76,6 +81,8 @@ export const AuthenticationContextProvider = ({ children }) => {
         error,
         onLogin,
         onCreate,
+        onboardingDone,
+        finishOnboarding,
       }}
     >
       {children}

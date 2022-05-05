@@ -90,13 +90,14 @@ export const CreateAccountScreen = ({ navigation }) => {
               <TouchableOpacity
                 disabled={isLoading}
                 style={styles.loginButton}
-                onPress={() =>
-                  onCreate(
-                    email.toLowerCase(),
-                    password,
-                    username,
-                    confirmPassword
-                  )
+                onPress={
+                  () => navigation.navigate("Onboarding")
+                  // onCreate(
+                  //   email.toLowerCase(),
+                  //   password,
+                  //   username,
+                  //   confirmPassword
+                  // )
                 }
               >
                 {isLoading ? (

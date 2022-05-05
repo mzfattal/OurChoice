@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   startSessionButtonText: {
-    fontFamily: fonts[700],
+    fontFamily: fonts[1600],
     fontSize: 15,
     color: "white",
   },
