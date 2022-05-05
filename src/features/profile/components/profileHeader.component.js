@@ -13,9 +13,19 @@ import {
 
 import { auth } from "../../../../firebase";
 import { FriendsContext } from "../../../services/friends/friends.context";
+import { GroupContext } from "../../../services/group/group.context";
+import { AuthenticationContext } from "../../../services/profile/authentication.context";
 
 export const ProfileHeader = () => {
-  const { currentProfile } = useContext(FriendsContext);
+  const { currentProfile, clearFriends } = useContext(FriendsContext);
+  const { clearGroup } = useContext(GroupContext);
+
+  const handleLougout = () => {
+    clearFriends();
+    clearGroup();
+    auth.signOut();
+  };
+
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
@@ -37,7 +47,7 @@ export const ProfileHeader = () => {
       </View>
       <TouchableOpacity
         style={styles.editProfileButton}
-        onPress={() => auth.signOut()}
+        onPress={() => handleLougout()}
       >
         <Ionicons name={"log-out-outline"} size={28} color={"#000"} />
       </TouchableOpacity>

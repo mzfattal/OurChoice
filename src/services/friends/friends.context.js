@@ -15,6 +15,12 @@ export const FriendsContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [currentProfile, setCurrentProfile] = useState({});
 
+  const clearFriends = () => {
+    setFriends([]);
+    setFriendRequests([]);
+    setCurrentProfile({});
+  };
+
   const fetchFriendRequests = async () => {
     setIsLoading(true);
     await axios
@@ -130,6 +136,7 @@ export const FriendsContextProvider = ({ children }) => {
         addUser,
         denyUser,
         currentProfile,
+        clearFriends,
       }}
     >
       {children}

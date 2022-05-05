@@ -10,6 +10,10 @@ export const GroupContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const clearGroup = () => {
+    setGroup([]);
+  };
+
   const addToGroup = (addedUser) => {
     if (group.length === 4) {
       Alert.alert("Group Limit", "A group can consist of 4 users maximum");
@@ -22,10 +26,6 @@ export const GroupContextProvider = ({ children }) => {
     setGroup((prev) =>
       prev.filter((curUser) => curUser?.email !== removedUser?.email)
     );
-  };
-
-  const clearGroup = () => {
-    setGroup([]);
   };
 
   return (
