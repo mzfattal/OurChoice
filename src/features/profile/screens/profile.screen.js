@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
+  borderRadius,
   fonts,
   horizontalMargin,
   mainColor,
@@ -60,16 +61,7 @@ export const ProfileScreen = () => {
           {settingsList.map((item) => (
             <TouchableOpacity
               onPress={() => item.onPress()}
-              style={{
-                height: 65,
-                alignItems: "center",
-                flexDirection: "row",
-                marginHorizontal: marginTop,
-                justifyContent: "space-between",
-                borderBottomColor: mainColor,
-                borderBottomWidth: 1,
-                borderRadius: 10,
-              }}
+              style={styles.settingsListItemContainer}
             >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Ionicons name={item.icon} size={25} color={"#000"} />
@@ -87,6 +79,23 @@ export const ProfileScreen = () => {
             </TouchableOpacity>
           ))}
         </View>
+        <TouchableOpacity
+          style={styles.giveFeedbackContainer}
+          onPress={() => console.warn("feedback")}
+        >
+          <View style={{ flex: 0.8 }}>
+            <Text
+              style={{ fontFamily: fonts[1700], color: secColor, fontSize: 15 }}
+            >
+              Give Feedback
+            </Text>
+            <Text style={{ fontFamily: fonts[1500], fontSize: 12 }}>
+              Our Choice is a new and improving app. Any feedback would be
+              greatly appreciated!
+            </Text>
+          </View>
+          <Ionicons name={"chatbox-outline"} size={50} color={secColor} />
+        </TouchableOpacity>
       </SafeAreaView>
     </>
   );
@@ -137,5 +146,26 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: fonts[700],
     color: "#FFFFFF",
+  },
+  settingsListItemContainer: {
+    height: 65,
+    alignItems: "center",
+    flexDirection: "row",
+    marginHorizontal: marginTop,
+    justifyContent: "space-between",
+    borderBottomColor: mainColor,
+    borderBottomWidth: 1,
+    borderRadius: 10,
+  },
+  giveFeedbackContainer: {
+    backgroundColor: mainColor,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: horizontalMargin,
+    marginHorizontal: horizontalMargin,
+    marginBottom: horizontalMargin,
+    borderRadius: borderRadius,
+    height: 100,
   },
 });
