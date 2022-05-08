@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
@@ -97,14 +98,10 @@ export const CreateAccountScreen = ({ navigation }) => {
               <TouchableOpacity
                 disabled={isLoading}
                 style={styles.loginButton}
-                onPress={
-                  () => navigation.navigate("Onboarding")
-                  // onCreate(
-                  //   email.toLowerCase(),
-                  //   password,
-                  //   username,
-                  //   confirmPassword
-                  // )
+                onPress={() =>
+                  password === confirmPassword
+                    ? navigation.navigate("Onboarding", { email, password })
+                    : Alert.alert("Oops!", "Passwords don't match")
                 }
               >
                 {isLoading ? (

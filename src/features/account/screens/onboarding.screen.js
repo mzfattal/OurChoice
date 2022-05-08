@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -24,8 +24,13 @@ import Logo from "../../../components/Logo";
 import { Video } from "expo-av";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { AuthenticationContext } from "../../../services/profile/authentication.context";
 
-export const OnboardingScreen = ({ navigation }) => {
+export const OnboardingScreen = ({ navigation, route }) => {
+  const { user, isLoading, error, onCreate } = useContext(
+    AuthenticationContext
+  );
+
   const [slideIndex, setSlideIndex] = useState(0);
   const [usernameText, setUsernameText] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -46,70 +51,46 @@ export const OnboardingScreen = ({ navigation }) => {
     }
   };
 
-  const introStep = () => (
+  const introView = () => (
+    <View style={{ flex: 1, marginHorizontal: horizontalMargin }}>
+      <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+        <Ionicons name={"chevron-back-outline"} size={30} />
+      </TouchableOpacity>
+      <Text style={{ fontFamily: fonts[900], fontSize: 25 }}>
+        Welcome To Ourchoice
+      </Text>
+      <Text style={{ fontFamily: fonts[900], fontSize: 25 }}>
+        Setup Your Profile
+      </Text>
+      {photoAndNameRowComponent()}
+    </View>
+  );
+
+  const photoAndNameRowComponent = () => (
     <View
       style={{
-        flex: 1,
-        marginHorizontal: horizontalMargin,
         alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
       }}
     >
-      <View
-        style={{
-          flexDirection: "row",
-          alignSelf: "stretch",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Text style={styles.headerText}>Welcome to Our Choice</Text>
-        {/* <Logo size={50} color={secColor} /> */}
-      </View>
-      <Image
-        source={require("../../../../assets/illustrations/no-friends.png")}
-        resizeMode="contain"
-        style={{ height: 200, width: 200 }}
-      />
-      <Text style={{}}>Welcome to Our Choice</Text>
-    </View>
-  );
-
-  const usernameStep = () => (
-    <View style={{ flex: 1, marginHorizontal: horizontalMargin * 2 }}>
-      <Text style={styles.headerText}>Choose a Name</Text>
-      <TextInput
-        style={{ marginTop: marginTop }}
-        label="Username"
-        mode="outlined"
-        value={usernameText}
-        onChangeText={(text) => setUsernameText(text)}
-        theme={{ colors: { text: "black" } }}
-        selectionColor={secColor}
-        activeOutlineColor={secColor}
-      />
-    </View>
-  );
-
-  const photoStep = () => (
-    <View style={{ flex: 1, marginHorizontal: horizontalMargin * 2 }}>
-      <Text style={styles.headerText}>Profile Photo</Text>
       <TouchableOpacity onPress={pickImage}>
         <View
           style={{
-            marginTop: marginTop,
+            marginTop: 5,
             borderRadius: borderRadius,
-            width: 300,
-            height: 300,
+            width: 62,
+            height: 62,
             alignSelf: "center",
             overflow: "hidden",
-            borderColor: !profilePhoto ? secColor : "gray",
-            borderWidth: 2,
+            borderColor: profilePhoto ? secColor : "gray",
+            borderWidth: 1,
           }}
         >
           {profilePhoto ? (
             <Image
               source={{ uri: profilePhoto }}
-              style={{ width: 300, height: 300 }}
+              style={{ width: 62, height: 62 }}
             />
           ) : (
             <View
@@ -121,115 +102,51 @@ export const OnboardingScreen = ({ navigation }) => {
             >
               <Ionicons
                 name={"person"}
-                size={100}
+                size={30}
                 // resizeMode="conatin"
                 color={"gray"}
               />
             </View>
           )}
         </View>
-        {!profilePhoto && (
-          <Ionicons
-            name={"add-circle"}
-            size={45}
-            color={secColor}
-            style={{
-              position: "absolute",
-              right: 10,
-              bottom: -2,
-              backgroundColor: "white",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          />
-        )}
       </TouchableOpacity>
-    </View>
-  );
-
-  const locationStep = () => (
-    <View style={{ flex: 1, marginHorizontal: horizontalMargin * 2 }}>
-      <Text style={styles.headerText}>Enable Location</Text>
-      <Image
-        source={require("../../../../assets/illustrations/location.png")}
-        resizeMode="contain"
+      <View
         style={{
-          height: 300,
-          width: 300,
-          alignSelf: "center",
-          marginTop: "25%",
-        }}
-      />
-      <Text
-        style={{
-          textAlign: "center",
-          fontFamily: fonts[1400],
-          width: "70%",
-          alignSelf: "center",
+          marginLeft: 16,
+          flex: 1,
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        Users must enable their location so Our Choice can find resturants near
-        them!
-      </Text>
-    </View>
-  );
-
-  const slideMap = {
-    0: introStep(),
-    1: usernameStep(),
-    2: photoStep(),
-    3: locationStep(),
-  };
-
-  const progressBar = () => (
-    <View style={styles.progressBarContainer}>
-      {Object.keys(slideMap).map((item) =>
-        item == slideIndex ? (
-          <View
-            style={{
-              height: 10,
-              width: 20,
-              borderRadius: 10 / 2,
-              backgroundColor: secColor,
-              marginHorizontal: 4,
-            }}
-          />
-        ) : (
-          <View
-            style={{
-              height: 10,
-              width: 10,
-              borderRadius: 10 / 2,
-              backgroundColor: "gray",
-              marginHorizontal: 4,
-            }}
-          />
-        )
-      )}
-      <TouchableOpacity
-        onPress={() => setSlideIndex((prev) => (prev > 0 ? prev - 1 : 0))}
-        style={{ position: "absolute", left: 10 }}
-      >
-        <Ionicons name={"chevron-back"} size={28} color={"#000"} />
-      </TouchableOpacity>
+        <TextInput
+          style={{ alignSelf: "stretch" }}
+          label="Username"
+          mode="outlined"
+          value={usernameText}
+          onChangeText={(text) => setUsernameText(text)}
+          theme={{ colors: { text: "black" } }}
+          selectionColor={secColor}
+          activeOutlineColor={secColor}
+        />
+      </View>
     </View>
   );
 
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
-      {progressBar()}
-      {slideMap[slideIndex]}
+      {introView()}
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
-          setSlideIndex((prev) =>
-            prev < Object.keys(slideMap).length - 1
-              ? prev + 1
-              : Object.keys(slideMap).length - 1
+          onCreate(
+            route?.params?.email.toLowerCase(),
+            route?.params?.password,
+            usernameText,
+            profilePhoto
           )
         }
       >
-        <Text style={styles.buttonText}>Continue</Text>
+        <Text style={styles.buttonText}>Create Account</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

@@ -38,12 +38,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       });
   };
 
-  const onCreate = async (email, password, username, confirmPassword) => {
-    if (password !== confirmPassword) {
-      Alert.alert("Oops!", "Passwords don't match");
-      return;
-    }
-
+  const onCreate = async (email, password, username, picture) => {
     setIsLoading(true);
     createAccountRequest(email, password)
       .then(async (userCredential) => {
