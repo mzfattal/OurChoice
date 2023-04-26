@@ -20,9 +20,10 @@ import { NoSession } from "../components/noSession.component";
 import { Ionicons } from "@expo/vector-icons";
 import Card from "../components/Card";
 
+const Dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
 export const PlacesScreen = ({ navigation }) => {
   const sessionStarted = true;
-  // console.warn(dummyData.id)
 
   if (sessionStarted)
     return (
@@ -30,11 +31,16 @@ export const PlacesScreen = ({ navigation }) => {
         <SafeAreaView
           style={{
             flex: 1,
-            marginTop: StatusBar.currentHeight,
+            paddingTop: StatusBar.currentHeight,
             backgroundColor: "#FFFFFF",
           }}
         >
-          <Card />
+          <FlatList
+            data={Dummy}
+            renderItem={({ item }) => <Card />}
+            keyExtractor={(item) => item}
+            ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+          />
         </SafeAreaView>
       </>
     );
