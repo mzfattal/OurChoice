@@ -1,16 +1,44 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  FlatList,
+  Image,
+} from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
+  fonts,
   horizontalMargin,
   marginTop,
   secTextColor,
 } from "../../../../constants";
 import { TabHeader } from "../../../components/tabHeader";
 import { NoSession } from "../components/noSession.component";
+import { Ionicons } from "@expo/vector-icons";
+import Card from "../components/Card";
 
 export const PlacesScreen = ({ navigation }) => {
+  const sessionStarted = true;
+  // console.warn(dummyData.id)
+
+  if (sessionStarted)
+    return (
+      <>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            marginTop: StatusBar.currentHeight,
+            backgroundColor: "#FFFFFF",
+          }}
+        >
+          <Card />
+        </SafeAreaView>
+      </>
+    );
+
   return (
     <>
       <SafeAreaView

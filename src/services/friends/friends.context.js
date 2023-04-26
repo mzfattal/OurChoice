@@ -25,7 +25,7 @@ export const FriendsContextProvider = ({ children }) => {
     setIsLoading(true);
     await axios
       .get(
-        `http://192.168.1.121:3000/friendRequest/${auth?.currentUser?.email}`
+        `http://192.168.2.14:3000/friendRequest/${auth?.currentUser?.email}`
       )
       .then((res) => setFriendRequests(res?.data))
       .catch(() => Alert.alert("Oops!", "Error getting friends."));
@@ -35,7 +35,7 @@ export const FriendsContextProvider = ({ children }) => {
   const fetchFriends = async () => {
     setIsLoading(true);
     await axios
-      .get(`http://192.168.1.121:3000/user/email/${auth?.currentUser?.email}`)
+      .get(`http://192.168.2.14:3000/user/email/${auth?.currentUser?.email}`)
       .then((res) => {
         setCurrentProfile(res?.data?.[0]);
         return res;
@@ -54,7 +54,7 @@ export const FriendsContextProvider = ({ children }) => {
     );
 
     await axios
-      .post(`http://192.168.1.121:3000/friendRequest/yes`, {
+      .post(`http://192.168.2.14:3000/friendRequest/yes`, {
         recipient: auth?.currentUser?.email,
         requester: email,
       })
@@ -76,7 +76,7 @@ export const FriendsContextProvider = ({ children }) => {
     );
 
     await axios
-      .post(`http://192.168.1.121:3000/friendRequest/no`, {
+      .post(`http://192.168.2.14:3000/friendRequest/no`, {
         recipient: auth?.currentUser?.email,
         requester: email,
       })
@@ -96,7 +96,7 @@ export const FriendsContextProvider = ({ children }) => {
 
     if (validEmail.test(email)) {
       await axios
-        .post(`http://192.168.1.121:3000/friendRequest`, {
+        .post(`http://192.168.2.14:3000/friendRequest`, {
           requester: auth?.currentUser?.email,
           recipient: email,
         })
