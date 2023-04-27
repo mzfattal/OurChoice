@@ -1,12 +1,28 @@
 import React, { useState, useRef, useEffect } from "react";
-import { StyleSheet, Text, View, Animated, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Animated,
+  Pressable,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import {
   fonts,
   horizontalMargin,
   marginTop,
   secTextColor,
 } from "../../../../constants";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  AntDesign,
+  FontAwesome,
+  Feather,
+  Entypo,
+} from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 const dummyData = {
   id: "Eu-M3y8a5bIxIRXlCj9yHA",
@@ -42,7 +58,8 @@ const dummyData = {
   distance: 1193.440021503136,
 };
 
-const smallCardHeight = 100;
+const deviceWidth = Dimensions.get("window").width;
+const smallCardHeight = 84;
 const bigCardHeight = 500;
 
 const Card = ({}) => {
@@ -94,6 +111,200 @@ const Card = ({}) => {
     }
   }, [expand]);
 
+  const renderOpenStatus = (isOpen) => {
+    if (isOpen)
+      return (
+        <View
+          style={[
+            {
+              backgroundColor: "#03C04A",
+              height: 20,
+              borderRadius: 10,
+              paddingHorizontal: 8,
+              marginLeft: 8,
+            },
+          ]}
+        >
+          <Text style={{ fontFamily: fonts[1700], color: "#FFFFFF" }}>
+            {"open"}
+          </Text>
+        </View>
+      );
+
+    return (
+      <View
+        style={[
+          {
+            backgroundColor: "#FF5C5C",
+            height: 20,
+            borderRadius: 10,
+            paddingHorizontal: 8,
+            marginLeft: 8,
+          },
+        ]}
+      >
+        <Text style={{ fontFamily: fonts[1700], color: "#FFFFFF" }}>
+          {"closed"}
+        </Text>
+      </View>
+    );
+  };
+
+  const renderPrice = (price) => {
+    return (
+      <View
+        style={{
+          backgroundColor: "#CCCCCC",
+          height: 18,
+          borderRadius: 10,
+          paddingHorizontal: 8,
+        }}
+      >
+        <Text style={{ fontFamily: fonts[1700], color: "#000000" }}>
+          {price}
+        </Text>
+      </View>
+    );
+  };
+
+  const renderDistance = (distance) => {
+    const filteredDistance = distance * 0.001;
+    return (
+      <Text style={{ fontFamily: fonts[1700], color: "#000000" }}>
+        {filteredDistance.toFixed(2)} {"km"}
+      </Text>
+    );
+  };
+
+  const renderRating = (rating) => {
+    return (
+      <View style={{ flexDirection: "row", marginTop: 6 }}>
+        {Array(Math.floor(rating))
+          .fill()
+          .map(() => (
+            <AntDesign name="star" size={14} color={"#FFD924"} />
+          ))}
+        {Array(Math.floor(5 - rating))
+          .fill()
+          .map(() => (
+            <AntDesign name="star" size={14} color={"#9E9E9E"} />
+          ))}
+        <Text
+          style={{
+            fontFamily: expand ? fonts[1700] : fonts[1300],
+            fontSize: expand ? 14 : 12,
+            color: expand ? "#FFFFFF" : secTextColor,
+            marginLeft: 4,
+          }}
+        >
+          {`(${dummyData.review_count})`}
+        </Text>
+      </View>
+    );
+  };
+
+  const renderBigCardImageWithOverlay = () => {
+    return (
+      <View>
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.8)"]}
+          style={{
+            width: deviceWidth - 16 * 2,
+            height: 160,
+            position: "absolute",
+            zIndex: 5,
+            bottom: 0,
+          }}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+        />
+        <View
+          style={{
+            position: "absolute",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 10,
+            marginHorizontal: 16,
+            marginBottom: 10,
+          }}
+        >
+          <View>
+            <Text
+              style={{
+                fontFamily: fonts[1900],
+                color: "#FFFFFF",
+                fontSize: 24,
+              }}
+            >
+              {dummyData.name}
+            </Text>
+            {renderRating(dummyData.rating)}
+          </View>
+          {renderOpenStatus(!dummyData.is_closed)}
+        </View>
+        <Image
+          source={{ uri: dummyData.image_url }}
+          resizeMode="cover"
+          style={{
+            width: deviceWidth - 16 * 2,
+            height: 250,
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+          }}
+        />
+      </View>
+    );
+  };
+
+  const renderBigCardAction = () => {
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: 150,
+            marginTop: 36,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              height: 60,
+              width: 60,
+              backgroundColor: "#FF5C5C",
+              borderRadius: 30,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FontAwesome name="close" size={26} color="#FFFFFF" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              height: 60,
+              width: 60,
+              backgroundColor: "#98FF98",
+              borderRadius: 30,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FontAwesome name="check" size={26} color="#FFFFFF" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
   const smallCardView = () => (
     <Animated.View
       style={{
@@ -107,77 +318,7 @@ const Card = ({}) => {
       }}
     >
       <View style={{ marginLeft: 8 }}>
-        <Text style={{ fontFamily: fonts[1700] }}>{dummyData.name}</Text>
-        <Text
-          style={{
-            fontFamily: fonts[1300],
-            color: secTextColor,
-            fontSize: 12,
-            marginTop: 6,
-          }}
-        >
-          {dummyData.location.display_address[0]}
-        </Text>
-        <View style={{ flexDirection: "row", marginTop: 6 }}>
-          {Array(Math.floor(dummyData.rating))
-            .fill()
-            .map(() => (
-              <Ionicons name={"star"} size={14} color={"#FFD924"} />
-            ))}
-          {Array(Math.floor(5 - dummyData.rating))
-            .fill()
-            .map(() => (
-              <Ionicons name={"star"} size={14} color={"#9E9E9E"} />
-            ))}
-        </View>
-      </View>
-      <View
-        style={{
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontFamily: fonts[1300] }}>
-          {"open: "}
-          <View
-            style={[
-              {
-                height: 8,
-                width: 8,
-                borderRadius: 8 / 2,
-                backgroundColor: "#D0312D",
-              },
-              !dummyData.is_closed && { backgroundColor: "#028A0F" },
-            ]}
-          />
-        </Text>
-        <Text
-          style={{
-            fontFamily: fonts[1700],
-            color: secTextColor,
-            fontSize: 12,
-          }}
-        >
-          {dummyData.price}
-        </Text>
-      </View>
-    </Animated.View>
-  );
-
-  const bigCardView = () => (
-    <Animated.View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        position: "absolute",
-        top: 10,
-        left: 10,
-        right: 10,
-        opacity: bigCardOpacity,
-      }}
-    >
-      <View style={{ marginLeft: 8 }}>
-        <Text style={{ fontFamily: fonts[1700], fontSize: 25 }}>
+        <Text style={{ fontFamily: fonts[1900], fontSize: 18 }}>
           {dummyData.name}
         </Text>
         <Text
@@ -185,53 +326,138 @@ const Card = ({}) => {
             fontFamily: fonts[1300],
             color: secTextColor,
             fontSize: 12,
-            marginTop: 6,
+            marginTop: 4,
           }}
         >
           {dummyData.location.display_address[0]}
         </Text>
-        <View style={{ flexDirection: "row", marginTop: 6 }}>
-          {Array(Math.floor(dummyData.rating))
-            .fill()
-            .map(() => (
-              <Ionicons name={"star"} size={14} color={"#FFD924"} />
-            ))}
-          {Array(Math.floor(5 - dummyData.rating))
-            .fill()
-            .map(() => (
-              <Ionicons name={"star"} size={14} color={"#9E9E9E"} />
-            ))}
-        </View>
+        {renderRating(dummyData.rating)}
       </View>
-      <View
-        style={{
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontFamily: fonts[1300] }}>
-          {"open: "}
-          <View
-            style={[
-              {
-                height: 8,
-                width: 8,
-                borderRadius: 8 / 2,
-                backgroundColor: "#D0312D",
-              },
-              !dummyData.is_closed && { backgroundColor: "#028A0F" },
-            ]}
-          />
-        </Text>
-        <Text
+      <View style={{ justifyContent: "space-between", alignItems: "flex-end" }}>
+        <View
           style={{
-            fontFamily: fonts[1700],
-            color: secTextColor,
-            fontSize: 12,
+            flexDirection: "row",
           }}
         >
-          {dummyData.price}
-        </Text>
+          {renderPrice(dummyData.price)}
+          {renderOpenStatus(!dummyData.is_closed)}
+        </View>
+        {renderDistance(dummyData.distance)}
+      </View>
+    </Animated.View>
+  );
+
+  const bigCardView = () => (
+    <Animated.View
+      style={{
+        opacity: bigCardOpacity,
+      }}
+    >
+      {renderBigCardImageWithOverlay()}
+      <View style={{ marginTop: 8, marginHorizontal: 16 }}>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 0.9 }}>
+            <Text
+              style={{
+                fontFamily: fonts[1300],
+                color: secTextColor,
+                fontSize: 12,
+                marginTop: 6,
+              }}
+            >
+              {"Address:"}
+            </Text>
+            <Text
+              style={{
+                fontFamily: fonts[1700],
+                fontSize: 14,
+                marginTop: 2,
+              }}
+            >
+              {dummyData.location.display_address.join(", ")}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={{
+              flex: 0.1,
+              justifyContent: "center",
+              alignItems: "flex-end",
+            }}
+          >
+            <Ionicons name="navigate-circle" size={32} color="#2C6ACC" />
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity style={{ flex: 0.5 }}>
+            <Text
+              style={{
+                fontFamily: fonts[1300],
+                color: secTextColor,
+                fontSize: 12,
+                marginTop: 6,
+              }}
+            >
+              {"Phone Number:"}
+            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <FontAwesome name="phone-square" size={20} color="#03C04A" />
+              <Text
+                style={{
+                  fontFamily: fonts[1700],
+                  fontSize: 14,
+                  marginLeft: 4,
+                  marginTop: 2,
+                }}
+              >
+                {dummyData.display_phone}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <View style={{ flex: 0.2, alignItems: "flex-end" }}>
+            <Text
+              style={{
+                fontFamily: fonts[1300],
+                color: secTextColor,
+                fontSize: 12,
+                marginTop: 6,
+              }}
+            >
+              {"Price:"}
+            </Text>
+            <Text
+              style={{
+                fontFamily: fonts[1700],
+                fontSize: 14,
+                marginTop: 2,
+              }}
+            >
+              {renderPrice(dummyData.price)}
+            </Text>
+          </View>
+          <View style={{ flex: 0.3, alignItems: "flex-end" }}>
+            <Text
+              style={{
+                fontFamily: fonts[1300],
+                color: secTextColor,
+                fontSize: 12,
+                marginTop: 6,
+              }}
+            >
+              {"Distance:"}
+            </Text>
+            <Text
+              style={{
+                fontFamily: fonts[1700],
+                fontSize: 14,
+                marginTop: 2,
+              }}
+            >
+              {renderDistance(dummyData.distance)}
+            </Text>
+          </View>
+        </View>
+
+        {renderBigCardAction()}
       </View>
     </Animated.View>
   );
@@ -252,15 +478,6 @@ const Card = ({}) => {
           height: cardHeight,
         }}
       >
-        {/* <Image
-        source={{ uri: dummyData.image_url }}
-        style={{
-          height: 60,
-          width: 60,
-          backgroundColor: "red",
-          borderRadius: 8,
-        }}
-      /> */}
         {smallCardView()}
         {bigCardView()}
       </Animated.View>
