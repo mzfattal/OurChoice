@@ -23,6 +23,7 @@ import { Navigation } from "./src/navigation";
 import { FriendsContextProvider } from "./src/services/friends/friends.context";
 import { AuthenticationContextProvider } from "./src/services/profile/authentication.context";
 import { GroupContextProvider } from "./src/services/group/group.context";
+import { PlacesContextProvider } from "./src/services/places/places.service";
 
 export default function App() {
   const [fontLoaderSSP] = useSSP({
@@ -50,9 +51,11 @@ export default function App() {
       <AuthenticationContextProvider>
         <GroupContextProvider>
           <FriendsContextProvider>
-            <NavigationContainer>
-              <Navigation />
-            </NavigationContainer>
+            <PlacesContextProvider>
+              <NavigationContainer>
+                <Navigation />
+              </NavigationContainer>
+            </PlacesContextProvider>
           </FriendsContextProvider>
         </GroupContextProvider>
       </AuthenticationContextProvider>

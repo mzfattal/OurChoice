@@ -24,49 +24,16 @@ import {
 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
-const dummyData = {
-  id: "Eu-M3y8a5bIxIRXlCj9yHA",
-  alias: "watan-kabob-mississauga",
-  name: "Watan Kabob",
-  image_url:
-    "https://s3-media3.fl.yelpcdn.com/bphoto/2zSSlLBTbvBRF2FTt9gkpw/o.jpg",
-  is_closed: false,
-  url: "https://www.yelp.com/biz/watan-kabob-mississauga?adjust_creative=RJs2badp5_j-yUvsJHbFZg&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=RJs2badp5_j-yUvsJHbFZg",
-  review_count: 218,
-  categories: [{ alias: "afghani", title: "Afghan" }],
-  rating: 4.0,
-  coordinates: { latitude: 43.6199294, longitude: -79.6692718 },
-  transactions: [],
-  price: "$$",
-  location: {
-    address1: "55 Matheson Boulevard E",
-    address2: "Unit 2",
-    address3: "",
-    city: "Mississauga",
-    zip_code: "L4Z 1X8",
-    country: "CA",
-    state: "ON",
-    display_address: [
-      "55 Matheson Boulevard E",
-      "Unit 2",
-      "Mississauga, ON L4Z 1X8",
-      "Canada",
-    ],
-  },
-  phone: "+19057122221",
-  display_phone: "+1 905-712-2221",
-  distance: 1193.440021503136,
-};
-
 const deviceWidth = Dimensions.get("window").width;
 const smallCardHeight = 84;
 const bigCardHeight = 500;
 
-const Card = ({}) => {
+const Card = ({ place }) => {
+  const _place = place.item;
+
   const cardHeight = useRef(new Animated.Value(smallCardHeight)).current;
   const smallCardOpacity = useRef(new Animated.Value(1)).current;
   const bigCardOpacity = useRef(new Animated.Value(0)).current;
-
   const [expand, setExpand] = useState(false);
 
   useEffect(() => {
@@ -151,6 +118,7 @@ const Card = ({}) => {
   };
 
   const renderPrice = (price) => {
+    if (!price) return <View />;
     return (
       <View
         style={{
@@ -184,7 +152,7 @@ const Card = ({}) => {
           .map(() => (
             <AntDesign name="star" size={14} color={"#FFD924"} />
           ))}
-        {Array(Math.floor(5 - rating))
+        {Array(Math.ceil(5 - rating))
           .fill()
           .map(() => (
             <AntDesign name="star" size={14} color={"#9E9E9E"} />
@@ -197,7 +165,7 @@ const Card = ({}) => {
             marginLeft: 4,
           }}
         >
-          {`(${dummyData.review_count})`}
+          {`(${_place.review_count})`}
         </Text>
       </View>
     );
@@ -240,14 +208,14 @@ const Card = ({}) => {
                 fontSize: 24,
               }}
             >
-              {dummyData.name}
+              {_place.name}
             </Text>
-            {renderRating(dummyData.rating)}
+            {renderRating(_place.rating)}
           </View>
-          {renderOpenStatus(!dummyData.is_closed)}
+          {renderOpenStatus(!_place.is_closed)}
         </View>
         <Image
-          source={{ uri: dummyData.image_url }}
+          source={{ uri: _place.image_url }}
           resizeMode="cover"
           style={{
             width: deviceWidth - 16 * 2,
@@ -319,7 +287,9 @@ const Card = ({}) => {
     >
       <View style={{ marginLeft: 8 }}>
         <Text style={{ fontFamily: fonts[1900], fontSize: 18 }}>
-          {dummyData.name}
+          {_place.name.length < 20
+            ? _place.name
+            : _place.name.substring(0, 20) + "..."}
         </Text>
         <Text
           style={{
@@ -329,9 +299,9 @@ const Card = ({}) => {
             marginTop: 4,
           }}
         >
-          {dummyData.location.display_address[0]}
+          {_place.location.display_address[0]}
         </Text>
-        {renderRating(dummyData.rating)}
+        {renderRating(_place.rating)}
       </View>
       <View style={{ justifyContent: "space-between", alignItems: "flex-end" }}>
         <View
@@ -339,10 +309,10 @@ const Card = ({}) => {
             flexDirection: "row",
           }}
         >
-          {renderPrice(dummyData.price)}
-          {renderOpenStatus(!dummyData.is_closed)}
+          {renderPrice(_place.price)}
+          {renderOpenStatus(!_place.is_closed)}
         </View>
-        {renderDistance(dummyData.distance)}
+        {renderDistance(_place.distance)}
       </View>
     </Animated.View>
   );
@@ -374,7 +344,7 @@ const Card = ({}) => {
                 marginTop: 2,
               }}
             >
-              {dummyData.location.display_address.join(", ")}
+              {_place.location.display_address.join(", ")}
             </Text>
           </View>
           <TouchableOpacity
@@ -409,7 +379,7 @@ const Card = ({}) => {
                   marginTop: 2,
                 }}
               >
-                {dummyData.display_phone}
+                {_place.display_phone}
               </Text>
             </View>
           </TouchableOpacity>
@@ -431,7 +401,7 @@ const Card = ({}) => {
                 marginTop: 2,
               }}
             >
-              {renderPrice(dummyData.price)}
+              {renderPrice(_place.price)}
             </Text>
           </View>
           <View style={{ flex: 0.3, alignItems: "flex-end" }}>
@@ -452,7 +422,7 @@ const Card = ({}) => {
                 marginTop: 2,
               }}
             >
-              {renderDistance(dummyData.distance)}
+              {renderDistance(_place.distance)}
             </Text>
           </View>
         </View>

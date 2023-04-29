@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -20,10 +20,21 @@ import { NoSession } from "../components/noSession.component";
 import { Ionicons } from "@expo/vector-icons";
 import Card from "../components/Card";
 
+import { PlacesContext } from "../../../services/places/places.service";
+
 const Dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 export const PlacesScreen = ({ navigation }) => {
+  const { places, loading, fetchPlaces } = useContext(PlacesContext);
+
+  // useEffect(() => {
+  //   fetchPlaces();
+  // }, []);
   const sessionStarted = true;
+
+  if (loading) return <View />;
+
+  // console.warn("ssssss", places.length);
 
   if (sessionStarted)
     return (
@@ -36,9 +47,12 @@ export const PlacesScreen = ({ navigation }) => {
           }}
         >
           <FlatList
-            data={Dummy}
-            renderItem={({ item }) => <Card />}
-            keyExtractor={(item) => item}
+            data={places}
+            renderItem={(place) => {
+              console.warn("here", place);
+              return <Card place={place} />;
+            }}
+            keyExtractor={(item) => item.id}
             ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
           />
         </SafeAreaView>

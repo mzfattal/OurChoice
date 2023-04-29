@@ -1,0 +1,44 @@
+import React, { useEffect, createContext, useState, useContext } from "react";
+import { Alert } from "react-native";
+import axios from "axios";
+import { auth } from "../../../firebase";
+
+export const PlacesContext = createContext();
+
+export const PlacesContextProvider = ({ children }) => {
+  const [places, setPlaces] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const clearPlaces = () => {
+    setPlaces([]);
+  };
+
+  const fetchPlaces = async () => {
+    setIsLoading(true);
+    await axios
+      .get(`http://192.168.2.14:3000/businessSearch`)
+      .then((res) => setPlaces(res?.data?.businesses))
+      .catch(() => Alert.alert("Oops!", "Error getting places."));
+    setIsLoading(false);
+  };
+
+  //   useEffect(() => {
+  //     fetchFriends();
+  //     fetchFriendRequests();
+  //   }, [user]);
+
+  return (
+    <PlacesContext.Provider
+      value={{
+        isLoading,
+        error,
+        fetchPlaces,
+        places,
+        clearPlaces,
+      }}
+    >
+      {children}
+    </PlacesContext.Provider>
+  );
+};
