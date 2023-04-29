@@ -4,13 +4,33 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { FriendScreen } from "../features/friends/screens/friends.screen";
 import { PlacesScreen } from "../features/places/screens/places.screen";
 import { ProfileScreen } from "../features/profile/screens/profile.screen";
+import { ProfileEditScreen } from "../features/profile/screens/editProfile.screen";
 import { secColor } from "../../constants";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const Tab = createBottomTabNavigator();
+const ProfileStack = createStackNavigator();
 
 export const AppNavigator = () => {
+  const ProfileStackScreen = () => {
+    return (
+      <ProfileStack.Navigator>
+        <ProfileStack.Screen
+          name="Profile"
+          options={{ headerShown: false }}
+          component={ProfileScreen}
+        />
+        <ProfileStack.Screen
+          options={{ title: "Edit Profile" }}
+          name="EditProfile"
+          component={ProfileEditScreen}
+        />
+      </ProfileStack.Navigator>
+    );
+  };
+
   return (
     <Tab.Navigator
       initialRouteName="Friends"

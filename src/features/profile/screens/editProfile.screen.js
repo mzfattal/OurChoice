@@ -19,17 +19,14 @@ import {
   secColor,
   secTextColor,
 } from "../../../../constants";
-import { TabHeader } from "../../../components/tabHeader";
-import { auth } from "../../../../firebase";
-import { ProfileHeader } from "../components/profileHeader.component";
-import { Ionicons } from "@expo/vector-icons";
+import { TextInput } from "react-native-paper";
 
-export const ProfileScreen = ({ navigation }) => {
+export const ProfileEditScreen = ({ navigation }) => {
   const settingsList = [
     {
       text: "Profile",
       icon: "person-outline",
-      onPress: () => navigation.navigate("EditProfile"),
+      onPress: () => console.warn("profile"),
     },
     {
       text: "Settings",
@@ -53,49 +50,13 @@ export const ProfileScreen = ({ navigation }) => {
         }}
       >
         <View style={styles.container}>
-          <TabHeader
-            text={"Profile".toUpperCase()}
-            subtext={"Connect with friends".toUpperCase()}
+          <TextInput
+            mode="outlined"
+            label="Email"
+            value={"text"}
+            onChangeText={(text) => setText(text)}
           />
-          <ProfileHeader />
-          {settingsList.map((item) => (
-            <TouchableOpacity
-              onPress={() => item.onPress()}
-              style={styles.settingsListItemContainer}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Ionicons name={item.icon} size={25} color={"#000"} />
-                <Text
-                  style={{ marginLeft: marginTop, fontFamily: fonts[1700] }}
-                >
-                  {item.text}
-                </Text>
-              </View>
-              <Ionicons
-                name={"chevron-forward-outline"}
-                size={28}
-                color={"#000"}
-              />
-            </TouchableOpacity>
-          ))}
         </View>
-        <TouchableOpacity
-          style={styles.giveFeedbackContainer}
-          onPress={() => console.warn("feedback")}
-        >
-          <View style={{ flex: 0.8 }}>
-            <Text
-              style={{ fontFamily: fonts[1700], color: secColor, fontSize: 15 }}
-            >
-              Give Feedback
-            </Text>
-            <Text style={{ fontFamily: fonts[1500], fontSize: 12 }}>
-              Our Choice is a new and improving app. Any feedback would be
-              greatly appreciated!
-            </Text>
-          </View>
-          <Ionicons name={"chatbox-outline"} size={50} color={secColor} />
-        </TouchableOpacity>
       </SafeAreaView>
     </>
   );
