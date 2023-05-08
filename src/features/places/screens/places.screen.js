@@ -21,16 +21,18 @@ import { Ionicons } from "@expo/vector-icons";
 import Card from "../components/Card";
 
 import { PlacesContext } from "../../../services/places/places.service";
+import { AuthenticationContext } from "../../../services/profile/authentication.context";
 
 const Dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 export const PlacesScreen = ({ navigation }) => {
   const { places, loading, fetchPlaces } = useContext(PlacesContext);
+  const { requestLocation, location } = useContext(AuthenticationContext);
 
   // useEffect(() => {
   //   fetchPlaces();
   // }, []);
-  const sessionStarted = true;
+  const sessionStarted = false;
 
   if (loading) return <View />;
 

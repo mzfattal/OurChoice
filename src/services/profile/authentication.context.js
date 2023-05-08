@@ -4,6 +4,8 @@ import * as firebase from "firebase";
 import { Alert } from "react-native";
 import axios from "axios";
 
+import * as Location from "expo-location";
+
 export const AuthenticationContext = createContext();
 
 export const AuthenticationContextProvider = ({ children }) => {
@@ -11,6 +13,7 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [error, setError] = useState(null);
   const [onboardingDone, setOnboardingDone] = useState(false);
+  const [location, setLocation] = useState({});
 
   firebase.auth().onAuthStateChanged((resUser) => {
     if (resUser) {
@@ -19,6 +22,20 @@ export const AuthenticationContextProvider = ({ children }) => {
       setUser(null);
     }
   });
+
+  const requestLocation = async () => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission to access location was denied");
+        return;
+      }
+      let loc = await Location.getCurrentPositionAsync({});
+      setLocation(loc?.coords);
+    } catch (e) {
+      console.warn("Error getting location");
+    }
+  };
 
   const finishOnboarding = (profileData) => {
     setOnboardingDone(true);
@@ -78,6 +95,8 @@ export const AuthenticationContextProvider = ({ children }) => {
         onCreate,
         onboardingDone,
         finishOnboarding,
+        requestLocation,
+        location,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Searchbar } from "react-native-paper";
@@ -10,8 +10,11 @@ import {
   secTextColor,
 } from "../../../../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { AuthenticationContext } from "../../../services/profile/authentication.context";
 
 export const NoSession = ({ navigation }) => {
+  const { requestLocation, location } = useContext(AuthenticationContext);
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -30,6 +33,12 @@ export const NoSession = ({ navigation }) => {
         onPress={() => navigation.navigate("Friends")}
       >
         <Text style={styles.buttonText}>Invite Your Friends</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.secButton}
+        onPress={() => requestLocation()}
+      >
+        <Text style={styles.secButtonText}>Start Alone</Text>
       </TouchableOpacity>
     </View>
   );
@@ -67,8 +76,23 @@ const styles = StyleSheet.create({
     borderRadius: 50 / 2,
     paddingHorizontal: 50,
   },
+  secButton: {
+    marginTop: marginTop,
+    height: 50,
+    borderColor: secColor,
+    borderWidth: 2,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50 / 2,
+    paddingHorizontal: 50,
+  },
   buttonText: {
     color: "#FFFFFF",
+    fontSize: 15,
+    fontFamily: fonts[1600],
+  },
+  secButtonText: {
+    color: secColor,
     fontSize: 15,
     fontFamily: fonts[1600],
   },
