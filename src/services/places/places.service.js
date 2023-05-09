@@ -15,6 +15,7 @@ export const PlacesContextProvider = ({ children }) => {
   };
 
   const fetchPlaces = async () => {
+    if (places.length > 0) return;
     setIsLoading(true);
     await axios
       .get(`http://192.168.2.14:3000/businessSearch`)

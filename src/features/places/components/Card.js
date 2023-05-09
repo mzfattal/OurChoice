@@ -23,6 +23,7 @@ import {
   Entypo,
 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 
 const deviceWidth = Dimensions.get("window").width;
 const smallCardHeight = 84;
@@ -432,25 +433,31 @@ const Card = ({ place }) => {
     </Animated.View>
   );
 
+  const renderLeftActions = () => (
+    <View style={{ width: 50, height: 50, backgroundColor: "green" }} />
+  );
+
   return (
     <Pressable
       onPress={() => setExpand((prev) => !prev)}
       style={styles.container}
     >
-      <Animated.View
-        style={{
-          backgroundColor: "#FFF",
-          shadowColor: "#171717",
-          shadowOffset: { width: 0, height: 0 },
-          shadowOpacity: 0.2,
-          shadowRadius: 12,
-          borderRadius: 12,
-          height: cardHeight,
-        }}
-      >
-        {smallCardView()}
-        {bigCardView()}
-      </Animated.View>
+      <Swipeable renderLeftActions={renderLeftActions}>
+        <Animated.View
+          style={{
+            backgroundColor: "#FFF",
+            shadowColor: "#171717",
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.2,
+            shadowRadius: 12,
+            borderRadius: 12,
+            height: cardHeight,
+          }}
+        >
+          {smallCardView()}
+          {bigCardView()}
+        </Animated.View>
+      </Swipeable>
     </Pressable>
   );
 };
