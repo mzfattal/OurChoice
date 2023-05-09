@@ -12,6 +12,7 @@ import {
   ScrollView,
   Dimensions,
   Animated,
+  Alert,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import {
@@ -31,11 +32,10 @@ import * as ImagePicker from "expo-image-picker";
 import { AuthenticationContext } from "../../../services/profile/authentication.context";
 
 export const OnboardingScreen = ({ navigation, route }) => {
-  const onboardingLength = 5;
+  const onboardingLength = 4;
   const { width, height } = Dimensions.get("window");
-  const { user, isLoading, error, onCreate } = useContext(
-    AuthenticationContext
-  );
+  const { user, isLoading, error, onCreate, requestLocation, location } =
+    useContext(AuthenticationContext);
 
   const scrollRef = useRef();
   const [usernameText, setUsernameText] = useState("");
@@ -67,93 +67,13 @@ export const OnboardingScreen = ({ navigation, route }) => {
     }
   };
 
-  const introView = () => (
-    <View style={{ flex: 1, marginHorizontal: horizontalMargin }}>
-      <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-        <Ionicons name={"chevron-back-outline"} size={30} />
-      </TouchableOpacity>
-      <Text style={{ fontFamily: fonts[1900], fontSize: 25 }}>
-        Welcome To Ourchoice
-      </Text>
-      <Text style={{ fontFamily: fonts[1900], fontSize: 25 }}>
-        Setup Your Profile
-      </Text>
-      {photoAndNameRowComponent()}
-    </View>
-  );
-
-  const photoAndNameRowComponent = () => (
-    <View
-      style={{
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "row",
-      }}
-    >
-      <TouchableOpacity onPress={pickImage}>
-        <View
-          style={{
-            marginTop: 5,
-            borderRadius: borderRadius,
-            width: 62,
-            height: 62,
-            alignSelf: "center",
-            overflow: "hidden",
-            borderColor: profilePhoto ? secColor : "gray",
-            borderWidth: 1,
-          }}
-        >
-          {profilePhoto ? (
-            <Image
-              source={{ uri: profilePhoto }}
-              style={{ width: 62, height: 62 }}
-            />
-          ) : (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Ionicons
-                name={"person"}
-                size={30}
-                // resizeMode="conatin"
-                color={"gray"}
-              />
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
-      <View
-        style={{
-          marginLeft: 16,
-          flex: 1,
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <TextInput
-          style={{ alignSelf: "stretch" }}
-          label="Username"
-          mode="outlined"
-          value={usernameText}
-          onChangeText={(text) => setUsernameText(text)}
-          theme={{ colors: { text: "black" } }}
-          selectionColor={secColor}
-          activeOutlineColor={secColor}
-        />
-      </View>
-    </View>
-  );
-
   const renderTopBar = () => (
     <View
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        marginHorizontal: horizontalMargin,
       }}
     >
       <TouchableOpacity
@@ -347,26 +267,32 @@ export const OnboardingScreen = ({ navigation, route }) => {
     <View
       style={{
         flex: 1,
-        marginTop: "30%",
         alignItems: "center",
+        marginTop: "30%",
+        justifyContent: "space-between",
       }}
     >
-      <Text style={{ fontFamily: fonts[1900], fontSize: 25 }}>
-        Enable Location
-      </Text>
-      <Text
-        style={{
-          fontFamily: fonts[1300],
-          fontSize: 18,
-          marginTop: 12,
-          color: secTextColor,
-        }}
-      >
-        Let us help you find a food nearby
-      </Text>
       <View
         style={{
-          marginTop: "30%",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontFamily: fonts[1900], fontSize: 25 }}>
+          Enable Location
+        </Text>
+        <Text
+          style={{
+            fontFamily: fonts[1300],
+            fontSize: 18,
+            marginTop: 12,
+            color: secTextColor,
+          }}
+        >
+          Let us help you find your craving
+        </Text>
+      </View>
+      <View
+        style={{
           width: 200,
           height: 200,
           justifyContent: "center",
@@ -395,10 +321,24 @@ export const OnboardingScreen = ({ navigation, route }) => {
           style={{ position: "absolute" }}
           name={"location-sharp"}
           size={40}
-          // resizeMode="conatin"
           color={"#FFF"}
         />
       </View>
+      <TouchableOpacity
+        disabled={Object.keys(location).length > 0}
+        style={[
+          styles.button,
+          { alignSelf: "stretch" },
+          Object.keys(location).length > 0 && { backgroundColor: secTextColor },
+        ]}
+        onPress={() => requestLocation()}
+      >
+        <Text style={styles.buttonText}>
+          {Object.keys(location).length > 0
+            ? "Permission Allowed"
+            : "Allow Location Permission"}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -407,6 +347,7 @@ export const OnboardingScreen = ({ navigation, route }) => {
       {renderTopBar()}
       <ScrollView
         ref={scrollRef}
+        scrollEnabled={false}
         style={{ flex: 1 }}
         horizontal={true}
         scrollEventThrottle={16}
@@ -416,16 +357,27 @@ export const OnboardingScreen = ({ navigation, route }) => {
           setSliderPage(event);
         }}
       >
-        <View style={{ width, height }}>{renderWelcomeComponent()}</View>
-        <View style={{ width, height }}>{renderUsernameComponent()}</View>
-        <View style={{ width, height }}>{renderProfilePictureComponent()}</View>
-        <View style={{ width, height }}>{renderLocationComponent()}</View>
-        <View style={{ width, height }}>
-          <Text>Screen 5</Text>
-        </View>
+        <View style={{ width }}>{renderWelcomeComponent()}</View>
+        <View style={{ width }}>{renderUsernameComponent()}</View>
+        <View style={{ width }}>{renderProfilePictureComponent()}</View>
+        <View style={{ width }}>{renderLocationComponent()}</View>
       </ScrollView>
       <TouchableOpacity
-        style={styles.button}
+        style={[
+          styles.button,
+          ((sliderIndex === onboardingLength - 1 &&
+            !Object.keys(location).length > 0) ||
+            (sliderIndex === 1 && usernameText.length < 4) ||
+            (sliderIndex === 2 && !profilePhoto)) && {
+            backgroundColor: "grey",
+          },
+        ]}
+        disabled={
+          (sliderIndex === onboardingLength - 1 &&
+            !Object.keys(location).length > 0) ||
+          (sliderIndex === 1 && usernameText.length < 4) ||
+          (sliderIndex === 2 && !profilePhoto)
+        }
         onPress={() =>
           sliderIndex == onboardingLength - 1
             ? onCreate(

@@ -82,7 +82,7 @@ export const CreateAccountScreen = ({ navigation }) => {
               </View>
               <View style={styles.inputContainer}>
                 <TextInput
-                  disabled={password === ""}
+                  disabled={password.length < 6}
                   secureTextEntry
                   label="Confirm Password"
                   mode="flat"
