@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,7 @@ import {
 import {
   fonts,
   horizontalMargin,
+  mainColor,
   marginTop,
   secTextColor,
 } from "../../../../constants";
@@ -24,17 +25,24 @@ import {
 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import { PlacesContext } from "../../../services/places/places.service";
 
 const deviceWidth = Dimensions.get("window").width;
-const smallCardHeight = 84;
-const bigCardHeight = 500;
+const smallCardHeight = 86;
+const bigCardHeight = 370;
 
 const Card = ({ place }) => {
   const _place = place.item;
 
+  const { addConfirmedPlace, addDeniedPlace } = useContext(PlacesContext);
+
   const cardHeight = useRef(new Animated.Value(smallCardHeight)).current;
   const smallCardOpacity = useRef(new Animated.Value(1)).current;
   const bigCardOpacity = useRef(new Animated.Value(0)).current;
+  const containerOpacity = useRef(new Animated.Value(1)).current;
+  const negativeMarginHeight = useRef(new Animated.Value(12)).current;
+  const swipeIconOpacity = useRef(new Animated.Value(1)).current;
+
   const [expand, setExpand] = useState(false);
 
   useEffect(() => {
@@ -78,6 +86,33 @@ const Card = ({ place }) => {
       ]).start();
     }
   }, [expand]);
+
+  const handleCardSwipe = (direction) => {
+    Animated.parallel([
+      Animated.timing(cardHeight, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false,
+      }),
+      Animated.timing(containerOpacity, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: false,
+      }),
+      Animated.timing(negativeMarginHeight, {
+        toValue: -4,
+        duration: 400,
+        useNativeDriver: false,
+      }),
+      Animated.timing(swipeIconOpacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start(() =>
+      direction === "left" ? addConfirmedPlace(_place) : addDeniedPlace(_place)
+    );
+  };
 
   const renderOpenStatus = (isOpen) => {
     if (isOpen)
@@ -174,7 +209,8 @@ const Card = ({ place }) => {
 
   const renderBigCardImageWithOverlay = () => {
     return (
-      <View>
+      // - margin to adjust for border
+      <View style={{ marginLeft: -2, marginTop: -2 }}>
         <LinearGradient
           colors={["transparent", "rgba(0,0,0,0.8)"]}
           style={{
@@ -213,13 +249,15 @@ const Card = ({ place }) => {
             </Text>
             {renderRating(_place.rating)}
           </View>
-          {renderOpenStatus(!_place.is_closed)}
+          <View style={{ position: "absolute", right: 0, bottom: 0 }}>
+            {renderOpenStatus(!_place.is_closed)}
+          </View>
         </View>
         <Image
           source={{ uri: _place.image_url }}
           resizeMode="cover"
           style={{
-            width: deviceWidth - 16 * 2,
+            width: deviceWidth - horizontalMargin * 2,
             height: 250,
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
@@ -427,38 +465,94 @@ const Card = ({ place }) => {
             </Text>
           </View>
         </View>
-
-        {renderBigCardAction()}
+        {/* {renderBigCardAction()} */}
       </View>
     </Animated.View>
   );
 
   const renderLeftActions = () => (
-    <View style={{ width: 50, height: 50, backgroundColor: "green" }} />
+    <Animated.View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "flex-start",
+        marginHorizontal: horizontalMargin,
+        opacity: swipeIconOpacity,
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          height: 60,
+          width: 60,
+          backgroundColor: "#98FF98",
+          borderRadius: 30,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <FontAwesome name="check" size={26} color="#FFFFFF" />
+      </TouchableOpacity>
+    </Animated.View>
+  );
+
+  const renderRightActions = () => (
+    <Animated.View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "flex-end",
+        marginHorizontal: horizontalMargin,
+        opacity: swipeIconOpacity,
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          height: 60,
+          width: 60,
+          backgroundColor: "#FF5C5C",
+          borderRadius: 30,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <FontAwesome name="close" size={26} color="#FFFFFF" />
+      </TouchableOpacity>
+    </Animated.View>
   );
 
   return (
-    <Pressable
-      onPress={() => setExpand((prev) => !prev)}
-      style={styles.container}
+    <Swipeable
+      renderLeftActions={renderLeftActions}
+      renderRightActions={renderRightActions}
+      onSwipeableWillOpen={handleCardSwipe}
+      rightThreshold={60}
+      leftThreshold={60}
     >
-      <Swipeable renderLeftActions={renderLeftActions}>
+      <Pressable
+        style={{ flex: 1, paddingHorizontal: horizontalMargin }}
+        onPress={() => setExpand((prev) => !prev)}
+      >
         <Animated.View
           style={{
             backgroundColor: "#FFF",
-            shadowColor: "#171717",
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.2,
-            shadowRadius: 12,
+            borderColor: mainColor,
+            borderWidth: 2,
+            // TODO: Add sadhow
+            // shadowColor: "#171717",
+            // shadowOffset: { width: 0, height: 0 },
+            // shadowOpacity: 0.2,
+            // shadowRadius: 12,
             borderRadius: 12,
+            opacity: containerOpacity,
             height: cardHeight,
+            marginTop: negativeMarginHeight,
           }}
         >
           {smallCardView()}
           {bigCardView()}
         </Animated.View>
-      </Swipeable>
-    </Pressable>
+      </Pressable>
+    </Swipeable>
   );
 };
 
@@ -467,7 +561,7 @@ export default Card;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: horizontalMargin,
+    paddingHorizontal: horizontalMargin,
   },
   searchBarContainer: {
     marginTop: marginTop,

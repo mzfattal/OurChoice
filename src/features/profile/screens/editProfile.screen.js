@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -20,25 +20,22 @@ import {
   secTextColor,
 } from "../../../../constants";
 import { TextInput } from "react-native-paper";
+import { FriendsContext } from "../../../services/friends/friends.context";
 
 export const ProfileEditScreen = ({ navigation }) => {
-  const settingsList = [
-    {
-      text: "Profile",
-      icon: "person-outline",
-      onPress: () => console.warn("profile"),
-    },
-    {
-      text: "Settings",
-      icon: "settings-outline",
-      onPress: () => console.warn("settings"),
-    },
-    {
-      text: "Q&A",
-      icon: "book-outline",
-      onPress: () => console.warn("qa"),
-    },
-  ];
+  const { currentProfile } = useContext(FriendsContext);
+
+  const [profile, setProfile] = useState({});
+
+  useEffect(
+    () =>
+      setProfile({
+        name: currentProfile?.name,
+        email: currentProfile?.email,
+        picture: "",
+      }),
+    []
+  );
 
   return (
     <>
@@ -55,6 +52,11 @@ export const ProfileEditScreen = ({ navigation }) => {
             label="Email"
             value={"text"}
             onChangeText={(text) => setText(text)}
+            theme={{ colors: { text: "black" } }}
+            style={{ backgroundColor: "white" }}
+            selectionColor={secColor}
+            activeOutlineColor={secColor}
+            activeUnderlineColor={secColor}
           />
         </View>
       </SafeAreaView>

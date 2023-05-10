@@ -53,7 +53,7 @@ export const AppNavigator = () => {
     >
       <Tab.Screen name="Restaurants" component={PlacesScreen} />
       <Tab.Screen name="Friends" component={FriendScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackScreen} />
     </Tab.Navigator>
   );
 };

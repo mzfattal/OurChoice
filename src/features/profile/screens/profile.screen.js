@@ -27,7 +27,7 @@ import { Ionicons } from "@expo/vector-icons";
 export const ProfileScreen = ({ navigation }) => {
   const settingsList = [
     {
-      text: "Profile",
+      text: "Edit Profile",
       icon: "person-outline",
       onPress: () => navigation.navigate("EditProfile"),
     },
@@ -36,11 +36,11 @@ export const ProfileScreen = ({ navigation }) => {
       icon: "settings-outline",
       onPress: () => console.warn("settings"),
     },
-    {
-      text: "Q&A",
-      icon: "book-outline",
-      onPress: () => console.warn("qa"),
-    },
+    // {
+    //   text: "Q&A",
+    //   icon: "book-outline",
+    //   onPress: () => console.warn("qa"),
+    // },
   ];
 
   return (

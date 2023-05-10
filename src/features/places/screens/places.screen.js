@@ -29,16 +29,14 @@ export const PlacesScreen = ({ navigation }) => {
   const { places, loading, fetchPlaces } = useContext(PlacesContext);
   const { requestLocation, location } = useContext(AuthenticationContext);
 
-  // useEffect(() => {
-  //   fetchPlaces();
-  // }, []);
+  useEffect(() => {
+    fetchPlaces();
+  }, []);
   const sessionStarted = false;
 
   if (loading) return <View />;
 
-  // console.warn("ssssss", places.length);
-
-  if (sessionStarted)
+  if (!sessionStarted)
     return (
       <>
         <SafeAreaView
@@ -50,12 +48,9 @@ export const PlacesScreen = ({ navigation }) => {
         >
           <FlatList
             data={places}
-            renderItem={(place) => {
-              console.warn("here", place);
-              return <Card place={place} />;
-            }}
+            renderItem={(place) => <Card place={place} />}
             keyExtractor={(item) => item.id}
-            ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+            // ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
           />
         </SafeAreaView>
       </>

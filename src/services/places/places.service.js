@@ -10,8 +10,21 @@ export const PlacesContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [confirmedPlace, setConfirmedPlace] = useState([]);
+  const [deniedPlace, setDeniedPlace] = useState([]);
+
   const clearPlaces = () => {
     setPlaces([]);
+  };
+
+  const addConfirmedPlace = (place) => {
+    setPlaces((prev) => prev.filter((curPlace) => curPlace.id !== place.id));
+    setConfirmedPlace((prev) => [...prev, place]);
+  };
+
+  const addDeniedPlace = (place) => {
+    setPlaces((prev) => prev.filter((curPlace) => curPlace.id !== place.id));
+    setDeniedPlace((prev) => [...prev, place]);
   };
 
   const fetchPlaces = async () => {
@@ -37,6 +50,10 @@ export const PlacesContextProvider = ({ children }) => {
         fetchPlaces,
         places,
         clearPlaces,
+        addConfirmedPlace,
+        addDeniedPlace,
+        confirmedPlace,
+        deniedPlace,
       }}
     >
       {children}
