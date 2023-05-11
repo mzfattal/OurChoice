@@ -1,6 +1,8 @@
 {
-  "name": "ourchoice",
+  "name": "Our Choice",
   "version": "1.0.0",
+  "slug": "ourchoice",
+  "owner": "OUR_CHOICE",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
