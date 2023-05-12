@@ -326,9 +326,9 @@ const Card = ({ place }) => {
     >
       <View style={{ marginLeft: 8 }}>
         <Text style={{ fontFamily: fonts[1900], fontSize: 18 }}>
-          {_place.name.length < 20
+          {_place.name.length < 30
             ? _place.name
-            : _place.name.substring(0, 20) + "..."}
+            : _place.name.substring(0, 22) + "..."}
         </Text>
         <Text
           style={{
@@ -343,6 +343,7 @@ const Card = ({ place }) => {
         {renderRating(_place.rating)}
       </View>
       <View style={{ justifyContent: "space-between", alignItems: "flex-end" }}>
+        {renderDistance(_place.distance)}
         <View
           style={{
             flexDirection: "row",
@@ -351,7 +352,6 @@ const Card = ({ place }) => {
           {renderPrice(_place.price)}
           {renderOpenStatus(!_place.is_closed)}
         </View>
-        {renderDistance(_place.distance)}
       </View>
     </Animated.View>
   );

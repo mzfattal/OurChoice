@@ -1,5 +1,6 @@
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import { FriendScreen } from "../features/friends/screens/friends.screen";
 import { PlacesScreen } from "../features/places/screens/places.screen";
@@ -31,6 +32,23 @@ export const AppNavigator = () => {
     );
   };
 
+  const PlacesStackScreen = () => {
+    return (
+      <ProfileStack.Navigator>
+        <ProfileStack.Screen
+          name="Restaurants"
+          options={{ headerShown: false }}
+          component={PlacesScreen}
+        />
+        <ProfileStack.Screen
+          // options={{ title: "Edit Profilee", tabBarStyle: { display: "none" } }}
+          name="Confirmed"
+          component={PlacesScreen}
+        />
+      </ProfileStack.Navigator>
+    );
+  };
+
   return (
     <Tab.Navigator
       initialRouteName="Friends"
@@ -43,6 +61,16 @@ export const AppNavigator = () => {
             iconName = focused ? "people" : "people-outline";
           } else if (route.name === "Profile") {
             iconName = focused ? "person" : "person-outline";
+          } else if (route.name === "Favorites") {
+            return focused ? (
+              <MaterialIcons name="favorite" size={size} color={color} />
+            ) : (
+              <MaterialIcons
+                name="favorite-outline"
+                size={size}
+                color={color}
+              />
+            );
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -51,8 +79,9 @@ export const AppNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Restaurants" component={PlacesScreen} />
+      <Tab.Screen name="Restaurants" component={PlacesStackScreen} />
       <Tab.Screen name="Friends" component={FriendScreen} />
+      <Tab.Screen name="Favorites" component={FriendScreen} />
       <Tab.Screen name="Profile" component={ProfileStackScreen} />
     </Tab.Navigator>
   );

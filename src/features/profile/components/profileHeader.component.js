@@ -1,6 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useContext } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import {
   borderRadius,
   fonts,
@@ -21,9 +28,22 @@ export const ProfileHeader = () => {
   const { clearGroup } = useContext(GroupContext);
 
   const handleLougout = () => {
-    clearFriends();
-    clearGroup();
-    auth.signOut();
+    Alert.alert("Sign Out", "Are you sure you want to sign out?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "Sign Out",
+        style: "destructive",
+        onPress: () => {
+          clearFriends();
+          clearGroup();
+          auth.signOut();
+        },
+      },
+    ]);
   };
 
   return (
@@ -49,7 +69,7 @@ export const ProfileHeader = () => {
         style={styles.editProfileButton}
         onPress={() => handleLougout()}
       >
-        <Ionicons name={"log-out-outline"} size={28} color={"#000"} />
+        <Ionicons name={"log-out-outline"} size={20} color={"#FFFFFF"} />
       </TouchableOpacity>
     </View>
   );
@@ -68,14 +88,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   editProfileButton: {
-    // marginTop: marginTop,
-    // backgroundColor: secColor,
-    // height: 35,
-    // borderRadius: 45 / 2,
-    // justifyContent: "center",
-    // alignItems: "center",
-    // alignSelf: "stretch",
-
+    backgroundColor: secColor,
+    height: 35,
+    width: 35,
+    borderRadius: 35 / 2,
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: marginTop,
   },
   editProfileButtonText: {

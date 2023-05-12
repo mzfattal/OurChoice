@@ -12,7 +12,9 @@ import { Searchbar } from "react-native-paper";
 import {
   fonts,
   horizontalMargin,
+  mainColor,
   marginTop,
+  secColor,
   secTextColor,
 } from "../../../../constants";
 import { TabHeader } from "../../../components/tabHeader";
@@ -22,12 +24,36 @@ import Card from "../components/Card";
 
 import { PlacesContext } from "../../../services/places/places.service";
 import { AuthenticationContext } from "../../../services/profile/authentication.context";
+import Logo from "../../../components/Logo";
 
 const Dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 export const PlacesScreen = ({ navigation }) => {
   const { places, loading, fetchPlaces } = useContext(PlacesContext);
   const { requestLocation, location } = useContext(AuthenticationContext);
+
+  const topBar = () => (
+    <View
+      style={{
+        height: 50,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: horizontalMargin,
+        borderBottomColor: mainColor,
+        borderBottomWidth: 1,
+      }}
+    >
+      <Ionicons name="options-outline" size={30} color="black" />
+      <Logo size={30} color={secColor} />
+      <Ionicons
+        name="checkmark-done"
+        size={30}
+        color="black"
+        onPress={() => navigation.navigate("Confirmed")}
+      />
+    </View>
+  );
 
   useEffect(() => {
     fetchPlaces();
@@ -46,11 +72,11 @@ export const PlacesScreen = ({ navigation }) => {
             backgroundColor: "#FFFFFF",
           }}
         >
+          {topBar()}
           <FlatList
             data={places}
             renderItem={(place) => <Card place={place} />}
             keyExtractor={(item) => item.id}
-            // ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
           />
         </SafeAreaView>
       </>
