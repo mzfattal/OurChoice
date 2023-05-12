@@ -11,9 +11,12 @@ import {
 } from "../../../../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthenticationContext } from "../../../services/profile/authentication.context";
+import { PlacesContext } from "../../../services/places/places.service";
 
 export const NoSession = ({ navigation }) => {
   const { requestLocation, location } = useContext(AuthenticationContext);
+  const { places, loading, fetchPlaces, sessionStarted, setSessionStarted } =
+    useContext(PlacesContext);
 
   return (
     <View style={styles.container}>
@@ -36,7 +39,7 @@ export const NoSession = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.secButton}
-        onPress={() => requestLocation()}
+        onPress={() => setSessionStarted(true)}
       >
         <Text style={styles.secButtonText}>Start Alone</Text>
       </TouchableOpacity>

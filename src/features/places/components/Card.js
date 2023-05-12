@@ -31,7 +31,7 @@ const deviceWidth = Dimensions.get("window").width;
 const smallCardHeight = 86;
 const bigCardHeight = 370;
 
-const Card = ({ place }) => {
+const Card = ({ place, swipeable }) => {
   const _place = place.item;
 
   const { addConfirmedPlace, addDeniedPlace } = useContext(PlacesContext);
@@ -527,6 +527,7 @@ const Card = ({ place }) => {
       onSwipeableWillOpen={handleCardSwipe}
       rightThreshold={60}
       leftThreshold={60}
+      enabled={swipeable}
     >
       <Pressable
         style={{ flex: 1, paddingHorizontal: horizontalMargin }}

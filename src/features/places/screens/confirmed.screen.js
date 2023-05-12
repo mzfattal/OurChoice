@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   FlatList,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
@@ -25,13 +26,16 @@ import Card from "../components/Card";
 import { PlacesContext } from "../../../services/places/places.service";
 import { AuthenticationContext } from "../../../services/profile/authentication.context";
 import Logo from "../../../components/Logo";
+import { StackActions } from "@react-navigation/native";
 
 const Dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
-export const PlacesScreen = ({ navigation }) => {
-  const { places, loading, fetchPlaces, sessionStarted } =
+export const ConfirmedScreen = ({ navigation }) => {
+  const { places, loading, fetchPlaces, confirmedPlace } =
     useContext(PlacesContext);
   const { requestLocation, location } = useContext(AuthenticationContext);
+
+  const popScreen = StackActions.pop(1);
 
   const topBar = () => (
     <View
@@ -45,24 +49,23 @@ export const PlacesScreen = ({ navigation }) => {
         borderBottomWidth: 1,
       }}
     >
-      <Ionicons name="options-outline" size={30} color="black" />
-      <Logo size={30} color={secColor} />
-      <Ionicons
-        name="checkmark-done"
-        size={30}
-        color="black"
-        onPress={() => navigation.navigate("Confirmed")}
-      />
+      <TouchableOpacity onPress={() => navigation.dispatch(popScreen)}>
+        <Ionicons name={"chevron-back-outline"} size={30} />
+      </TouchableOpacity>
+      <View style={{ marginRight: "27%" }}>
+        <TabHeader text={"My Choices".toUpperCase()} />
+      </View>
     </View>
   );
 
   useEffect(() => {
     fetchPlaces();
   }, []);
+  const sessionStarted = false;
 
   if (loading) return <View />;
 
-  if (sessionStarted)
+  if (!sessionStarted)
     return (
       <>
         <SafeAreaView
@@ -74,8 +77,8 @@ export const PlacesScreen = ({ navigation }) => {
         >
           {topBar()}
           <FlatList
-            data={places}
-            renderItem={(place) => <Card place={place} swipeable={true} />}
+            data={confirmedPlace}
+            renderItem={(place) => <Card place={place} swipeable={false} />}
             keyExtractor={(item) => item.id}
           />
         </SafeAreaView>

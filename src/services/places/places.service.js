@@ -10,6 +10,8 @@ export const PlacesContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [sessionStarted, setSessionStarted] = useState(false);
+
   const [confirmedPlace, setConfirmedPlace] = useState([]);
   const [deniedPlace, setDeniedPlace] = useState([]);
 
@@ -54,6 +56,8 @@ export const PlacesContextProvider = ({ children }) => {
         addDeniedPlace,
         confirmedPlace,
         deniedPlace,
+        sessionStarted,
+        setSessionStarted,
       }}
     >
       {children}

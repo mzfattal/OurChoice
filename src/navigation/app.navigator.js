@@ -4,6 +4,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import { FriendScreen } from "../features/friends/screens/friends.screen";
 import { PlacesScreen } from "../features/places/screens/places.screen";
+import { ConfirmedScreen } from "../features/places/screens/confirmed.screen";
 import { ProfileScreen } from "../features/profile/screens/profile.screen";
 import { ProfileEditScreen } from "../features/profile/screens/editProfile.screen";
 import { secColor } from "../../constants";
@@ -41,9 +42,9 @@ export const AppNavigator = () => {
           component={PlacesScreen}
         />
         <ProfileStack.Screen
-          // options={{ title: "Edit Profilee", tabBarStyle: { display: "none" } }}
           name="Confirmed"
-          component={PlacesScreen}
+          options={{ headerShown: false }}
+          component={ConfirmedScreen}
         />
       </ProfileStack.Navigator>
     );
