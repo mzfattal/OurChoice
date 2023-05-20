@@ -6,7 +6,7 @@ import {
   View,
   SafeAreaView,
   FlatList,
-  Button,
+  Image,
   TouchableOpacity,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
@@ -22,27 +22,9 @@ import {
 import { TabHeader } from "../../../components/tabHeader";
 import { auth } from "../../../../firebase";
 import { ProfileHeader } from "../components/profileHeader.component";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-export const ProfileScreen = ({ navigation }) => {
-  const settingsList = [
-    {
-      text: "Edit Profile",
-      icon: "person-outline",
-      onPress: () => navigation.navigate("EditProfile"),
-    },
-    {
-      text: "Settings",
-      icon: "settings-outline",
-      onPress: () => navigation.navigate("SessionOptions"),
-    },
-    // {
-    //   text: "Q&A",
-    //   icon: "book-outline",
-    //   onPress: () => console.warn("qa"),
-    // },
-  ];
-
+export const FavoritesScreen = ({ navigation }) => {
   return (
     <>
       <SafeAreaView
@@ -54,48 +36,19 @@ export const ProfileScreen = ({ navigation }) => {
       >
         <View style={styles.container}>
           <TabHeader
-            text={"Profile".toUpperCase()}
-            subtext={"Connect with friends".toUpperCase()}
+            text={"Favorites".toUpperCase()}
+            subtext={"Save the places".toUpperCase()}
           />
-          <ProfileHeader />
-          {settingsList.map((item) => (
-            <TouchableOpacity
-              onPress={() => item.onPress()}
-              style={styles.settingsListItemContainer}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Ionicons name={item.icon} size={25} color={"#000"} />
-                <Text
-                  style={{ marginLeft: marginTop, fontFamily: fonts[1700] }}
-                >
-                  {item.text}
-                </Text>
-              </View>
-              <Ionicons
-                name={"chevron-forward-outline"}
-                size={28}
-                color={"#000"}
-              />
-            </TouchableOpacity>
-          ))}
-        </View>
-        <TouchableOpacity
-          style={styles.giveFeedbackContainer}
-          onPress={() => console.warn("feedback")}
-        >
-          <View style={{ flex: 0.8 }}>
-            <Text
-              style={{ fontFamily: fonts[1700], color: secColor, fontSize: 15 }}
-            >
-              Give Feedback
-            </Text>
-            <Text style={{ fontFamily: fonts[1500], fontSize: 12 }}>
-              Our Choice is a new and improving app. Any feedback would be
-              greatly appreciated!
+          <View style={styles.innerContainer}>
+            <View style={styles.imageContainer}>
+              <MaterialIcons name="favorite" size={100} color={secColor} />
+            </View>
+            <Text style={styles.header}>No Favorites</Text>
+            <Text style={styles.subHeader}>
+              Heart restaurants to save a list of your favorites
             </Text>
           </View>
-          <Ionicons name={"chatbox-outline"} size={50} color={secColor} />
-        </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </>
   );
@@ -167,5 +120,57 @@ const styles = StyleSheet.create({
     marginBottom: horizontalMargin,
     borderRadius: borderRadius,
     height: 100,
+  },
+
+  innerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  imageContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 100,
+    width: 100,
+  },
+  header: {
+    fontFamily: fonts[900],
+    fontSize: 25,
+  },
+  subHeader: {
+    width: "70%",
+    textAlign: "center",
+    fontFamily: fonts[600],
+    color: secTextColor,
+    fontSize: 17,
+  },
+  button: {
+    marginTop: marginTop,
+    height: 50,
+    backgroundColor: secColor,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50 / 2,
+    paddingHorizontal: 50,
+  },
+  secButton: {
+    marginTop: marginTop,
+    height: 50,
+    borderColor: secColor,
+    borderWidth: 2,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50 / 2,
+    paddingHorizontal: 50,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontFamily: fonts[1600],
+  },
+  secButtonText: {
+    color: secColor,
+    fontSize: 15,
+    fontFamily: fonts[1600],
   },
 });

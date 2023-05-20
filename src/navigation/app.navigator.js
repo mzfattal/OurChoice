@@ -6,7 +6,9 @@ import { FriendScreen } from "../features/friends/screens/friends.screen";
 import { PlacesScreen } from "../features/places/screens/places.screen";
 import { ConfirmedScreen } from "../features/places/screens/confirmed.screen";
 import { ProfileScreen } from "../features/profile/screens/profile.screen";
+import { FavoritesScreen } from "../features/profile/screens/favorites.screen";
 import { ProfileEditScreen } from "../features/profile/screens/editProfile.screen";
+import { sessionOptions } from "../features/profile/screens/sessionOptions.screen";
 import { secColor } from "../../constants";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -14,6 +16,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 const Tab = createBottomTabNavigator();
 const ProfileStack = createStackNavigator();
+const PlacesStack = createStackNavigator();
 
 export const AppNavigator = () => {
   const ProfileStackScreen = () => {
@@ -29,24 +32,29 @@ export const AppNavigator = () => {
           name="EditProfile"
           component={ProfileEditScreen}
         />
+        <ProfileStack.Screen
+          options={{ title: "Options" }}
+          name="SessionOptions"
+          component={sessionOptions}
+        />
       </ProfileStack.Navigator>
     );
   };
 
   const PlacesStackScreen = () => {
     return (
-      <ProfileStack.Navigator>
-        <ProfileStack.Screen
+      <PlacesStack.Navigator>
+        <PlacesStack.Screen
           name="Restaurants"
           options={{ headerShown: false }}
           component={PlacesScreen}
         />
-        <ProfileStack.Screen
+        <PlacesStack.Screen
           name="Confirmed"
           options={{ headerShown: false }}
           component={ConfirmedScreen}
         />
-      </ProfileStack.Navigator>
+      </PlacesStack.Navigator>
     );
   };
 
@@ -82,7 +90,7 @@ export const AppNavigator = () => {
     >
       <Tab.Screen name="Restaurants" component={PlacesStackScreen} />
       <Tab.Screen name="Friends" component={FriendScreen} />
-      <Tab.Screen name="Favorites" component={FriendScreen} />
+      <Tab.Screen name="Favorites" component={FavoritesScreen} />
       <Tab.Screen name="Profile" component={ProfileStackScreen} />
     </Tab.Navigator>
   );

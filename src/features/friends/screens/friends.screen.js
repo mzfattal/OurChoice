@@ -72,8 +72,6 @@ export const FriendScreen = () => {
               </Text>
             </View>
             <Searchbar
-              // onFocus={() => console.warn("opacity 1")}
-              // onEndEditing={() => console.warn("opacity 0.5")}
               style={styles.searchBar}
               placeholder="Search..."
               onChangeText={onChangeSearch}

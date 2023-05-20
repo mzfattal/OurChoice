@@ -26,8 +26,6 @@ import { PlacesContext } from "../../../services/places/places.service";
 import { AuthenticationContext } from "../../../services/profile/authentication.context";
 import Logo from "../../../components/Logo";
 
-const Dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-
 export const PlacesScreen = ({ navigation }) => {
   const { places, loading, fetchPlaces, sessionStarted } =
     useContext(PlacesContext);
@@ -55,6 +53,7 @@ export const PlacesScreen = ({ navigation }) => {
       />
     </View>
   );
+  const renderResturantAlias = () => <View></View>;
 
   useEffect(() => {
     fetchPlaces();
