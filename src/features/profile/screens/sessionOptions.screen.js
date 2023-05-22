@@ -42,7 +42,7 @@ export const SessionOptions = ({ navigation }) => {
   const { currentProfile } = useContext(FriendsContext);
 
   const [profile, setProfile] = useState({});
-  const [radius, setRadius] = useState({});
+  const [radius, setRadius] = useState(20000);
   const [sliding, setSliding] = useState({});
 
   const [openStatus, setOpenStatus] = useState("None");
@@ -69,9 +69,6 @@ export const SessionOptions = ({ navigation }) => {
       >
         <View style={styles.container}>
           <Text style={styles.sectionHeader}>Location</Text>
-          <Text style={{ color: lightTextColor, fontFamily: fonts[1300] }}>
-            City
-          </Text>
           <View
             style={[
               styles.selectableContainerStyle,
@@ -79,15 +76,34 @@ export const SessionOptions = ({ navigation }) => {
             ]}
           >
             <Text style={{ color: lightTextColor, fontFamily: fonts[1300] }}>
-              Search Radius (km)
+              We are using your current location
             </Text>
+          </View>
+          <View
+            style={[
+              styles.selectableContainerStyle,
+              { paddingBottom: horizontalMargin / 2 },
+            ]}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ color: lightTextColor, fontFamily: fonts[1300] }}>
+                {`Search Radius`}
+              </Text>
+              <Text style={{ fontFamily: fonts[1500] }}>
+                {" - "}
+                {(radius * 0.001).toFixed(1)}
+                {" km"}
+              </Text>
+            </View>
             <Slider
               style={{ height: 40, color: secColor }}
-              onSlidingComplete={setRadius}
+              onValueChange={setRadius}
+              value={radius}
               minimumTrackTintColor={secColor}
+              tapToSeek={true}
               // thumbTintColor={secColor} // if wanted thumb tint
-              minimumValue={0}
-              maximumValue={1}
+              minimumValue={5000}
+              maximumValue={40000}
             />
           </View>
           <Text style={styles.sectionHeader}>Preferences</Text>
