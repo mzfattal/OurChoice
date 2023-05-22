@@ -14,6 +14,7 @@ import {
   borderRadius,
   fonts,
   horizontalMargin,
+  lightTextColor,
   mainColor,
   marginTop,
   secColor,
@@ -22,29 +23,30 @@ import {
 import { TextInput } from "react-native-paper";
 import { FriendsContext } from "../../../services/friends/friends.context";
 import { Selectable } from "../../../components/Selectable";
+import Slider from "@react-native-community/slider";
 
 const optionsList = [
   {
     title: "Open Status",
     selected: "Open",
-    options: ["Open", "None"],
+    options: ["None", "Open"],
   },
   {
-    title: "headersss",
-    selected: "thaat",
-    options: ["thiaaas", "thaat"],
-  },
-  {
-    title: "ff",
-    selected: "asdfmas",
-    options: ["asdfmas", "asdf"],
+    title: "Price",
+    selected: "All",
+    options: ["All", "$", "$$", "$$$", "$$$$"],
   },
 ];
 
-export const sessionOptions = ({ navigation }) => {
+export const SessionOptions = ({ navigation }) => {
   const { currentProfile } = useContext(FriendsContext);
 
   const [profile, setProfile] = useState({});
+  const [radius, setRadius] = useState({});
+  const [sliding, setSliding] = useState({});
+
+  const [openStatus, setOpenStatus] = useState("None");
+  const [price, setPrice] = useState("All");
 
   useEffect(
     () =>
@@ -67,20 +69,34 @@ export const sessionOptions = ({ navigation }) => {
       >
         <View style={styles.container}>
           <Text style={styles.sectionHeader}>Location</Text>
-          {optionsList.map((item) => (
-            <Selectable
-              data={item.options}
-              title={item.title}
-              selected={item.selected}
-              contianerStyle={styles.selectableContainerStyle}
+          <Text style={{ color: lightTextColor, fontFamily: fonts[1300] }}>
+            City
+          </Text>
+          <View
+            style={[
+              styles.selectableContainerStyle,
+              { paddingBottom: horizontalMargin / 2 },
+            ]}
+          >
+            <Text style={{ color: lightTextColor, fontFamily: fonts[1300] }}>
+              Search Radius (km)
+            </Text>
+            <Slider
+              style={{ height: 40, color: secColor }}
+              onSlidingComplete={setRadius}
+              minimumTrackTintColor={secColor}
+              // thumbTintColor={secColor} // if wanted thumb tint
+              minimumValue={0}
+              maximumValue={1}
             />
-          ))}
+          </View>
           <Text style={styles.sectionHeader}>Preferences</Text>
           {optionsList.map((item) => (
             <Selectable
               data={item.options}
               title={item.title}
-              selected={item.selected}
+              selected={item.title === "Price" ? price : openStatus}
+              setSelected={item.title === "Price" ? setPrice : setOpenStatus}
               contianerStyle={styles.selectableContainerStyle}
             />
           ))}

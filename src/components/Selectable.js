@@ -10,12 +10,14 @@ import {
   secTextColor,
 } from "../../constants";
 import Logo from "./Logo";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const Selectable = ({
   data,
   none = false,
   title,
   selected,
+  setSelected,
   contianerStyle,
 }) => {
   return (
@@ -25,7 +27,8 @@ export const Selectable = ({
       </Text>
       <View style={{ flexDirection: "row", marginTop: horizontalMargin / 2 }}>
         {data.map((item) => (
-          <View
+          <TouchableOpacity
+            onPress={() => setSelected(item)}
             style={[
               {
                 height: 30,
@@ -52,7 +55,7 @@ export const Selectable = ({
             >
               {item}
             </Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </View>

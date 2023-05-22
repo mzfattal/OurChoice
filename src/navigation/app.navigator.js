@@ -8,7 +8,7 @@ import { ConfirmedScreen } from "../features/places/screens/confirmed.screen";
 import { ProfileScreen } from "../features/profile/screens/profile.screen";
 import { FavoritesScreen } from "../features/profile/screens/favorites.screen";
 import { ProfileEditScreen } from "../features/profile/screens/editProfile.screen";
-import { sessionOptions } from "../features/profile/screens/sessionOptions.screen";
+import { SessionOptions } from "../features/profile/screens/sessionOptions.screen";
 import { secColor } from "../../constants";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -35,7 +35,7 @@ export const AppNavigator = () => {
         <ProfileStack.Screen
           options={{ title: "Options" }}
           name="SessionOptions"
-          component={sessionOptions}
+          component={SessionOptions}
         />
       </ProfileStack.Navigator>
     );
