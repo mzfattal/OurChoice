@@ -57,7 +57,6 @@ export const ProfileScreen = ({ navigation }) => {
   const [price, setPrice] = useState("All");
   const [editedUsername, setEditedUsername] = useState(currentProfile?.name);
 
-  console.warn(currentProfile);
   useEffect(() => {
     if (expandProfile) {
       Animated.parallel([
