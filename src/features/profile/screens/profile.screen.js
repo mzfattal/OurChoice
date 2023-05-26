@@ -30,12 +30,11 @@ import { Selectable } from "../../../components/Selectable";
 import Slider from "@react-native-community/slider";
 import { FriendsContext } from "../../../services/friends/friends.context";
 import { auth } from "../../../../firebase";
+import { TextInput } from "react-native-paper";
 
 export const ProfileScreen = ({ navigation }) => {
-
   const { currentProfile } = useContext(FriendsContext);
 
-  console.warn(currentProfile)
   const settingsNotExpandedHeight = 0;
   const settingsExpandedHeight = 334;
   const settingsHeight = useRef(
@@ -44,7 +43,7 @@ export const ProfileScreen = ({ navigation }) => {
   const settingsOpacity = useRef(new Animated.Value(0)).current;
 
   const profileNotExpandedHeight = 0;
-  const profileExpandedHeight = 300;
+  const profileExpandedHeight = 150;
   const profileHeight = useRef(
     new Animated.Value(profileNotExpandedHeight)
   ).current;
@@ -56,7 +55,9 @@ export const ProfileScreen = ({ navigation }) => {
   const [radius, setRadius] = useState(5000);
   const [openStatus, setOpenStatus] = useState("None");
   const [price, setPrice] = useState("All");
+  const [editedUsername, setEditedUsername] = useState(currentProfile?.name);
 
+  console.warn(currentProfile);
   useEffect(() => {
     if (expandProfile) {
       Animated.parallel([
@@ -125,7 +126,9 @@ export const ProfileScreen = ({ navigation }) => {
   );
 
   const profileBody = () => (
-    <View style={{marginHorizontal: horizontalMargin }}>
+    <View
+      style={{ marginHorizontal: horizontalMargin / 2, alignSelf: "stretch" }}
+    >
       <Text style={styles.sectionHeader}>Email</Text>
       <View
         style={[
@@ -137,6 +140,20 @@ export const ProfileScreen = ({ navigation }) => {
           {auth?.currentUser?.email}
         </Text>
       </View>
+      <TextInput
+        mode="outlined"
+        label="Username"
+        value={editedUsername}
+        onChangeText={(text) => setEditedUsername(text)}
+        theme={{ colors: { text: "black" } }}
+        style={{
+          backgroundColor: "white",
+          marginTop: horizontalMargin / 2,
+        }}
+        selectionColor={secColor}
+        activeOutlineColor={secColor}
+        activeUnderlineColor={secColor}
+      />
     </View>
   );
 
@@ -241,10 +258,9 @@ export const ProfileScreen = ({ navigation }) => {
       >
         <View style={{ flexDirection: "row" }}>
           <Text style={{ color: lightTextColor, fontFamily: fonts[1300] }}>
-            {`Search Radius`}
+            {`Search Radius - `}
           </Text>
           <Text style={{ fontFamily: fonts[1500] }}>
-            {" - "}
             {(radius * 0.001).toFixed(1)}
             {" km"}
           </Text>
