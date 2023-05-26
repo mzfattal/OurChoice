@@ -42,9 +42,10 @@ export const SessionOptions = ({ navigation }) => {
   const { currentProfile } = useContext(FriendsContext);
 
   const [profile, setProfile] = useState({});
-  const [radius, setRadius] = useState(20000);
+
   const [sliding, setSliding] = useState({});
 
+  const [radius, setRadius] = useState(20000);
   const [openStatus, setOpenStatus] = useState("None");
   const [price, setPrice] = useState("All");
 

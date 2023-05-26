@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -8,40 +8,269 @@ import {
   FlatList,
   Button,
   TouchableOpacity,
+  Pressable,
+  Animated,
+  ScrollView,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
   borderRadius,
   fonts,
   horizontalMargin,
+  lightTextColor,
   mainColor,
   marginTop,
   secColor,
   secTextColor,
 } from "../../../../constants";
 import { TabHeader } from "../../../components/tabHeader";
-import { auth } from "../../../../firebase";
 import { ProfileHeader } from "../components/profileHeader.component";
 import { Ionicons } from "@expo/vector-icons";
+import { Selectable } from "../../../components/Selectable";
+import Slider from "@react-native-community/slider";
+import { FriendsContext } from "../../../services/friends/friends.context";
+import { auth } from "../../../../firebase";
 
 export const ProfileScreen = ({ navigation }) => {
-  const settingsList = [
+
+  const { currentProfile } = useContext(FriendsContext);
+
+  console.warn(currentProfile)
+  const settingsNotExpandedHeight = 0;
+  const settingsExpandedHeight = 334;
+  const settingsHeight = useRef(
+    new Animated.Value(settingsNotExpandedHeight)
+  ).current;
+  const settingsOpacity = useRef(new Animated.Value(0)).current;
+
+  const profileNotExpandedHeight = 0;
+  const profileExpandedHeight = 300;
+  const profileHeight = useRef(
+    new Animated.Value(profileNotExpandedHeight)
+  ).current;
+  const profileOpacity = useRef(new Animated.Value(0)).current;
+
+  const [expandProfile, setExpandProfile] = useState(false);
+  const [expandSettings, setExpandSettings] = useState(false);
+
+  const [radius, setRadius] = useState(5000);
+  const [openStatus, setOpenStatus] = useState("None");
+  const [price, setPrice] = useState("All");
+
+  useEffect(() => {
+    if (expandProfile) {
+      Animated.parallel([
+        Animated.timing(profileHeight, {
+          toValue: profileExpandedHeight,
+          duration: 200,
+          useNativeDriver: false,
+        }),
+        Animated.timing(profileOpacity, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: false,
+        }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(profileHeight, {
+          toValue: profileNotExpandedHeight,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(profileOpacity, {
+          delay: 50,
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: false,
+        }),
+      ]).start();
+    }
+  }, [expandProfile]);
+
+  const profileHeader = () => (
+    <View
+      style={[
+        styles.settingsListItemContainer,
+        {
+          flexDirection: "row",
+        },
+      ]}
+    >
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Ionicons name={"person-outline"} size={25} color={"#000"} />
+        <Text style={{ marginLeft: marginTop, fontFamily: fonts[1700] }}>
+          {"Edit Profile"}
+        </Text>
+      </View>
+      {expandProfile ? (
+        <View
+          style={{
+            height: 30,
+            borderRadius: 30 / 2,
+            borderWidth: 2,
+            borderColor: secColor,
+            backgroundColor: secColor,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: horizontalMargin,
+          }}
+        >
+          <Text style={{ fontFamily: fonts[1700], color: "#FFF" }}>Save</Text>
+        </View>
+      ) : (
+        <Ionicons name={"chevron-forward-outline"} size={28} color={"#000"} />
+      )}
+    </View>
+  );
+
+  const profileBody = () => (
+    <View style={{marginHorizontal: horizontalMargin }}>
+      <Text style={styles.sectionHeader}>Email</Text>
+      <View
+        style={[
+          styles.selectableContainerStyle,
+          { paddingBottom: horizontalMargin / 2 },
+        ]}
+      >
+        <Text style={{ color: lightTextColor, fontFamily: fonts[1300] }}>
+          {auth?.currentUser?.email}
+        </Text>
+      </View>
+    </View>
+  );
+
+  useEffect(() => {
+    if (expandSettings) {
+      Animated.parallel([
+        Animated.timing(settingsHeight, {
+          toValue: settingsExpandedHeight,
+          duration: 200,
+          useNativeDriver: false,
+        }),
+        Animated.timing(settingsOpacity, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: false,
+        }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(settingsHeight, {
+          toValue: settingsNotExpandedHeight,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(settingsOpacity, {
+          delay: 50,
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: false,
+        }),
+      ]).start();
+    }
+  }, [expandSettings]);
+
+  const settingsHeader = () => (
+    <View
+      style={[
+        styles.settingsListItemContainer,
+        {
+          flexDirection: "row",
+        },
+      ]}
+    >
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Ionicons name={"settings-outline"} size={25} color={"#000"} />
+        <Text style={{ marginLeft: marginTop, fontFamily: fonts[1700] }}>
+          {"Settings"}
+        </Text>
+      </View>
+      {expandSettings ? (
+        <View
+          style={{
+            height: 30,
+            borderRadius: 30 / 2,
+            borderWidth: 2,
+            borderColor: secColor,
+            backgroundColor: secColor,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: horizontalMargin,
+          }}
+        >
+          <Text style={{ fontFamily: fonts[1700], color: "#FFF" }}>Save</Text>
+        </View>
+      ) : (
+        <Ionicons name={"chevron-forward-outline"} size={28} color={"#000"} />
+      )}
+    </View>
+  );
+
+  const settingsOptionList = [
     {
-      text: "Edit Profile",
-      icon: "person-outline",
-      onPress: () => navigation.navigate("EditProfile"),
+      title: "Open Status",
+      selected: "Open",
+      options: ["None", "Open"],
     },
     {
-      text: "Settings",
-      icon: "settings-outline",
-      onPress: () => navigation.navigate("SessionOptions"),
+      title: "Price",
+      selected: "All",
+      options: ["All", "$", "$$", "$$$", "$$$$"],
     },
-    // {
-    //   text: "Q&A",
-    //   icon: "book-outline",
-    //   onPress: () => console.warn("qa"),
-    // },
   ];
+
+  const settingsBody = () => (
+    <View>
+      <Text style={styles.sectionHeader}>Location</Text>
+      <View
+        style={[
+          styles.selectableContainerStyle,
+          { paddingBottom: horizontalMargin / 2 },
+        ]}
+      >
+        <Text style={{ color: lightTextColor, fontFamily: fonts[1300] }}>
+          We are using your current location
+        </Text>
+      </View>
+      <View
+        style={[
+          styles.selectableContainerStyle,
+          { paddingBottom: horizontalMargin / 2 },
+        ]}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{ color: lightTextColor, fontFamily: fonts[1300] }}>
+            {`Search Radius`}
+          </Text>
+          <Text style={{ fontFamily: fonts[1500] }}>
+            {" - "}
+            {(radius * 0.001).toFixed(1)}
+            {" km"}
+          </Text>
+        </View>
+        <Slider
+          style={{ height: 40, color: secColor }}
+          onValueChange={setRadius}
+          minimumTrackTintColor={secColor}
+          tapToSeek={true}
+          // thumbTintColor={secColor} // if wanted thumb tint
+          minimumValue={5000}
+          maximumValue={40000}
+        />
+      </View>
+      <Text style={styles.sectionHeader}>Preferences</Text>
+      {settingsOptionList.map((item) => (
+        <Selectable
+          data={item.options}
+          title={item.title}
+          selected={item.title === "Price" ? price : openStatus}
+          setSelected={item.title === "Price" ? setPrice : setOpenStatus}
+          contianerStyle={styles.selectableContainerStyle}
+        />
+      ))}
+    </View>
+  );
 
   return (
     <>
@@ -58,27 +287,33 @@ export const ProfileScreen = ({ navigation }) => {
             subtext={"Connect with friends".toUpperCase()}
           />
           <ProfileHeader />
-          {settingsList.map((item) => (
-            <TouchableOpacity
-              onPress={() => item.onPress()}
-              style={styles.settingsListItemContainer}
+          <ScrollView>
+            <Pressable onPress={() => setExpandProfile((prev) => !prev)}>
+              {profileHeader()}
+            </Pressable>
+            <Animated.View
+              style={[
+                styles.settingsListItemContainer,
+                { height: profileHeight, opacity: profileOpacity },
+              ]}
             >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Ionicons name={item.icon} size={25} color={"#000"} />
-                <Text
-                  style={{ marginLeft: marginTop, fontFamily: fonts[1700] }}
-                >
-                  {item.text}
-                </Text>
-              </View>
-              <Ionicons
-                name={"chevron-forward-outline"}
-                size={28}
-                color={"#000"}
-              />
-            </TouchableOpacity>
-          ))}
+              {profileBody()}
+            </Animated.View>
+
+            <Pressable onPress={() => setExpandSettings((prev) => !prev)}>
+              {settingsHeader()}
+            </Pressable>
+            <Animated.View
+              style={[
+                styles.settingsListItemContainer,
+                { height: settingsHeight, opacity: settingsOpacity },
+              ]}
+            >
+              {settingsBody()}
+            </Animated.View>
+          </ScrollView>
         </View>
+
         <TouchableOpacity
           style={styles.giveFeedbackContainer}
           onPress={() => console.warn("feedback")}
@@ -150,7 +385,7 @@ const styles = StyleSheet.create({
   settingsListItemContainer: {
     height: 65,
     alignItems: "center",
-    flexDirection: "row",
+    flexDirection: "column",
     marginHorizontal: marginTop,
     justifyContent: "space-between",
     borderBottomColor: mainColor,
@@ -167,5 +402,17 @@ const styles = StyleSheet.create({
     marginBottom: horizontalMargin,
     borderRadius: borderRadius,
     height: 100,
+  },
+  sectionHeader: {
+    fontFamily: fonts[1700],
+    fontSize: 14,
+    marginTop: horizontalMargin,
+  },
+  selectableContainerStyle: {
+    marginTop: horizontalMargin / 2,
+    borderBottomWidth: 1,
+    borderBottomColor: mainColor,
+    paddingBottom: horizontalMargin,
+    borderRadius: 10,
   },
 });
