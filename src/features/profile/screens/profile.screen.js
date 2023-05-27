@@ -33,7 +33,8 @@ import { auth } from "../../../../firebase";
 import { TextInput } from "react-native-paper";
 
 export const ProfileScreen = ({ navigation }) => {
-  const { currentProfile } = useContext(FriendsContext);
+  const { currentProfile, updatePorfile, submitUpdateProfile } =
+    useContext(FriendsContext);
 
   const settingsNotExpandedHeight = 0;
   const settingsExpandedHeight = 334;
@@ -104,7 +105,8 @@ export const ProfileScreen = ({ navigation }) => {
         </Text>
       </View>
       {expandProfile ? (
-        <View
+        <TouchableOpacity
+          onPress={() => submitUpdateProfile()}
           style={{
             height: 30,
             borderRadius: 30 / 2,
@@ -117,12 +119,14 @@ export const ProfileScreen = ({ navigation }) => {
           }}
         >
           <Text style={{ fontFamily: fonts[1700], color: "#FFF" }}>Save</Text>
-        </View>
+        </TouchableOpacity>
       ) : (
         <Ionicons name={"chevron-forward-outline"} size={28} color={"#000"} />
       )}
     </View>
   );
+
+  useEffect(() => console.warn(currentProfile), [currentProfile]);
 
   const profileBody = () => (
     <View
@@ -143,7 +147,7 @@ export const ProfileScreen = ({ navigation }) => {
         mode="outlined"
         label="Username"
         value={editedUsername}
-        onChangeText={(text) => setEditedUsername(text)}
+        onChangeText={(text) => updatePorfile("name", text)}
         theme={{ colors: { text: "black" } }}
         style={{
           backgroundColor: "white",
@@ -203,7 +207,8 @@ export const ProfileScreen = ({ navigation }) => {
         </Text>
       </View>
       {expandSettings ? (
-        <View
+        <TouchableOpacity
+          onPress={() => submitUpdateProfile()}
           style={{
             height: 30,
             borderRadius: 30 / 2,
@@ -216,7 +221,7 @@ export const ProfileScreen = ({ navigation }) => {
           }}
         >
           <Text style={{ fontFamily: fonts[1700], color: "#FFF" }}>Save</Text>
-        </View>
+        </TouchableOpacity>
       ) : (
         <Ionicons name={"chevron-forward-outline"} size={28} color={"#000"} />
       )}

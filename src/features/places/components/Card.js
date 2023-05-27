@@ -14,6 +14,7 @@ import {
   horizontalMargin,
   mainColor,
   marginTop,
+  secColor,
   secTextColor,
 } from "../../../../constants";
 import {
@@ -22,6 +23,7 @@ import {
   FontAwesome,
   Feather,
   Entypo,
+  MaterialIcons,
 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -44,6 +46,7 @@ const Card = ({ place, swipeable }) => {
   const swipeIconOpacity = useRef(new Animated.Value(1)).current;
 
   const [expand, setExpand] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     if (expand) {
@@ -392,8 +395,17 @@ const Card = ({ place, swipeable }) => {
               justifyContent: "center",
               alignItems: "flex-end",
             }}
+            onPress={() => setLiked((prev) => !prev)}
           >
-            <Ionicons name="navigate-circle" size={32} color="#2C6ACC" />
+            {liked ? (
+              <MaterialIcons name="favorite" size={32} color={secColor} />
+            ) : (
+              <MaterialIcons
+                name="favorite-outline"
+                size={32}
+                color={secColor}
+              />
+            )}
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: "row" }}>

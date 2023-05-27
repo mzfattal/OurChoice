@@ -21,12 +21,29 @@ export const FriendsContextProvider = ({ children }) => {
     setCurrentProfile({});
   };
 
+  const updatePorfile = (updateAttribute, data) => {
+    setCurrentProfile((prev) => ({
+      ...prev,
+      [updateAttribute]: data,
+    }));
+  };
+
+  const submitUpdateProfile = async () => {
+    await axios
+      .post(
+        `http://192.168.2.14:3000/updateProfile/${auth?.currentUser?.email}`,
+        {
+          update: currentProfile,
+        }
+      )
+      .then((res) => console.warn(res?.data))
+      .catch(() => Alert.alert("Oops!", "Couldnt Update Profile"));
+  };
+
   const fetchFriendRequests = async () => {
     setIsLoading(true);
     await axios
-      .get(
-        `http://192.168.2.14:3000/friendRequest/${auth?.currentUser?.email}`
-      )
+      .get(`http://192.168.2.14:3000/friendRequest/${auth?.currentUser?.email}`)
       .then((res) => setFriendRequests(res?.data))
       .catch(() => Alert.alert("Oops!", "Error getting friends."));
     setIsLoading(false);
@@ -137,6 +154,8 @@ export const FriendsContextProvider = ({ children }) => {
         denyUser,
         currentProfile,
         clearFriends,
+        updatePorfile,
+        submitUpdateProfile,
       }}
     >
       {children}
