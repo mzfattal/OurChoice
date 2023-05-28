@@ -311,12 +311,13 @@ export const ProfileScreen = ({ navigation }) => {
             {`Search Radius - `}
           </Text>
           <Text style={{ fontFamily: fonts[1500] }}>
-            {currentProfile?.radius || 5.0}
+            {updatedProfile?.radius || 5.0}
             {" km"}
           </Text>
         </View>
         <Slider
           style={{ height: 40, color: secColor }}
+          value={updatedProfile?.radius}
           onValueChange={(val) =>
             updateProfile("radius", (val * 0.001).toFixed(1))
           }
