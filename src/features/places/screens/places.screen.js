@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   FlatList,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
@@ -43,14 +44,23 @@ export const PlacesScreen = ({ navigation }) => {
         borderBottomWidth: 1,
       }}
     >
-      <Ionicons name="options-outline" size={30} color="black" />
-      <Logo size={30} color={secColor} />
-      <Ionicons
-        name="checkmark-done"
-        size={30}
-        color="black"
-        onPress={() => navigation.navigate("Confirmed")}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Logo size={30} color={secColor} />
+        <Text
+          style={{
+            color: secColor,
+            fontFamily: fonts[1900],
+            fontSize: 16,
+            marginLeft: horizontalMargin / 2,
+          }}
+        >
+          Our Choice
+        </Text>
+      </View>
+
+      <TouchableOpacity onPress={() => navigation.navigate("Confirmed")}>
+        <Ionicons name="checkmark-done" size={30} color="black" />
+      </TouchableOpacity>
     </View>
   );
   const renderResturantAlias = () => <View></View>;

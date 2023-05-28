@@ -152,25 +152,13 @@ export const ProfileScreen = ({ navigation }) => {
           {"Edit Profile"}
         </Text>
       </View>
-      {expandProfile ? (
-        <TouchableOpacity
-          onPress={() => submitUpdateProfile()}
-          style={{
-            height: 30,
-            borderRadius: 30 / 2,
-            borderWidth: 2,
-            borderColor: secColor,
-            backgroundColor: secColor,
-            justifyContent: "center",
-            alignItems: "center",
-            paddingHorizontal: horizontalMargin,
-          }}
-        >
-          <Text style={{ fontFamily: fonts[1700], color: "#FFF" }}>Save</Text>
-        </TouchableOpacity>
-      ) : (
-        <Ionicons name={"chevron-forward-outline"} size={28} color={"#000"} />
-      )}
+
+      <Ionicons
+        name={"chevron-forward-outline"}
+        size={28}
+        color={"#000"}
+        style={[expandProfile && { transform: [{ rotate: "90deg" }] }]}
+      />
     </View>
   );
 
@@ -252,25 +240,12 @@ export const ProfileScreen = ({ navigation }) => {
           {"Settings"}
         </Text>
       </View>
-      {expandSettings ? (
-        <TouchableOpacity
-          onPress={() => submitUpdateProfile()}
-          style={{
-            height: 30,
-            borderRadius: 30 / 2,
-            borderWidth: 2,
-            borderColor: secColor,
-            backgroundColor: secColor,
-            justifyContent: "center",
-            alignItems: "center",
-            paddingHorizontal: horizontalMargin,
-          }}
-        >
-          <Text style={{ fontFamily: fonts[1700], color: "#FFF" }}>Save</Text>
-        </TouchableOpacity>
-      ) : (
-        <Ionicons name={"chevron-forward-outline"} size={28} color={"#000"} />
-      )}
+      <Ionicons
+        name={"chevron-forward-outline"}
+        size={28}
+        color={"#000"}
+        style={[expandSettings && { transform: [{ rotate: "90deg" }] }]}
+      />
     </View>
   );
 
@@ -345,6 +320,21 @@ export const ProfileScreen = ({ navigation }) => {
     </View>
   );
 
+  const saveButton = () => {
+    if (!expandProfile && !expandSettings) return <View />;
+    return (
+      <TouchableOpacity
+        style={[styles.button]}
+        onPress={() => {
+          setExpandProfile(false);
+          setExpandSettings(false);
+          submitUpdateProfile();
+        }}
+      >
+        <Text style={styles.buttonText}>{"Save"}</Text>
+      </TouchableOpacity>
+    );
+  };
   return (
     <>
       <SafeAreaView
@@ -386,6 +376,7 @@ export const ProfileScreen = ({ navigation }) => {
             </Animated.View>
           </ScrollView>
         </View>
+        {saveButton()}
 
         <TouchableOpacity
           style={styles.giveFeedbackContainer}
@@ -413,6 +404,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: horizontalMargin,
+  },
+  button: {
+    marginHorizontal: horizontalMargin * 2,
+    marginBottom: marginTop,
+    height: 50,
+    backgroundColor: secColor,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50 / 2,
+    paddingHorizontal: 50,
   },
   searchBarContainer: {
     marginTop: marginTop,
@@ -454,6 +455,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: fonts[700],
     color: "#FFFFFF",
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontFamily: fonts[1600],
   },
   settingsListItemContainer: {
     height: 65,
