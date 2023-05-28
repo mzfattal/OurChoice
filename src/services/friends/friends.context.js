@@ -14,15 +14,17 @@ export const FriendsContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentProfile, setCurrentProfile] = useState({});
+  const [updatedProfile, setUpdatedProfile] = useState({});
 
   const clearFriends = () => {
     setFriends([]);
     setFriendRequests([]);
     setCurrentProfile({});
+    setUpdatedProfile({});
   };
 
-  const updatePorfile = (updateAttribute, data) => {
-    setCurrentProfile((prev) => ({
+  const updateProfile = (updateAttribute, data) => {
+    setUpdatedProfile((prev) => ({
       ...prev,
       [updateAttribute]: data,
     }));
@@ -33,7 +35,7 @@ export const FriendsContextProvider = ({ children }) => {
       .post(
         `http://192.168.2.14:3000/updateProfile/${auth?.currentUser?.email}`,
         {
-          update: currentProfile,
+          update: updatedProfile,
         }
       )
       .then((res) => console.warn(res?.data))
@@ -55,6 +57,7 @@ export const FriendsContextProvider = ({ children }) => {
       .get(`http://192.168.2.14:3000/user/email/${auth?.currentUser?.email}`)
       .then((res) => {
         setCurrentProfile(res?.data?.[0]);
+        setUpdatedProfile(res?.data?.[0]);
         return res;
       })
       .then((res) => setFriends(res?.data?.[0]?.friends))
@@ -135,6 +138,8 @@ export const FriendsContextProvider = ({ children }) => {
     }
   };
 
+  const resetUpdateProfile = () => setUpdatedProfile(currentProfile);
+
   useEffect(() => {
     fetchFriends();
     fetchFriendRequests();
@@ -154,8 +159,10 @@ export const FriendsContextProvider = ({ children }) => {
         denyUser,
         currentProfile,
         clearFriends,
-        updatePorfile,
+        updateProfile,
         submitUpdateProfile,
+        updatedProfile,
+        resetUpdateProfile,
       }}
     >
       {children}

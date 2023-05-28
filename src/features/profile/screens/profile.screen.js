@@ -11,6 +11,7 @@ import {
   Pressable,
   Animated,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
@@ -33,8 +34,13 @@ import { auth } from "../../../../firebase";
 import { TextInput } from "react-native-paper";
 
 export const ProfileScreen = ({ navigation }) => {
-  const { currentProfile, updatePorfile, submitUpdateProfile } =
-    useContext(FriendsContext);
+  const {
+    currentProfile,
+    updatedProfile,
+    updateProfile,
+    submitUpdateProfile,
+    resetUpdateProfile,
+  } = useContext(FriendsContext);
 
   const settingsNotExpandedHeight = 0;
   const settingsExpandedHeight = 334;
@@ -53,10 +59,52 @@ export const ProfileScreen = ({ navigation }) => {
   const [expandProfile, setExpandProfile] = useState(false);
   const [expandSettings, setExpandSettings] = useState(false);
 
-  const [radius, setRadius] = useState(5000);
-  const [openStatus, setOpenStatus] = useState("None");
-  const [price, setPrice] = useState("All");
-  const [editedUsername, setEditedUsername] = useState(currentProfile?.name);
+  const handleExpand = (sec) => {
+    if (sec === "Profile") {
+      if (!expandProfile) {
+        setExpandProfile(true);
+        return;
+      }
+      if (currentProfile === updatedProfile) {
+        setExpandProfile(false);
+        return;
+      }
+    }
+
+    if (sec === "Settings") {
+      if (!expandSettings) {
+        setExpandSettings(true);
+        return;
+      }
+      if (currentProfile === updatedProfile) {
+        setExpandSettings(false);
+        return;
+      }
+    }
+
+    Alert.alert(
+      "Discard Changes",
+      "You have made changes to your profile, would you like to discard these changes?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+        },
+        {
+          text: "Discard",
+          onPress: () => {
+            if (sec === "Profile") {
+              setExpandProfile(false);
+            } else {
+              setExpandSettings(false);
+            }
+            resetUpdateProfile();
+          },
+          style: "destructive",
+        },
+      ]
+    );
+  };
 
   useEffect(() => {
     if (expandProfile) {
@@ -126,8 +174,6 @@ export const ProfileScreen = ({ navigation }) => {
     </View>
   );
 
-  useEffect(() => console.warn(currentProfile), [currentProfile]);
-
   const profileBody = () => (
     <View
       style={{ marginHorizontal: horizontalMargin / 2, alignSelf: "stretch" }}
@@ -146,8 +192,8 @@ export const ProfileScreen = ({ navigation }) => {
       <TextInput
         mode="outlined"
         label="Username"
-        value={editedUsername}
-        onChangeText={(text) => updatePorfile("name", text)}
+        value={updatedProfile?.name}
+        onChangeText={(text) => updateProfile("name", text)}
         theme={{ colors: { text: "black" } }}
         style={{
           backgroundColor: "white",
@@ -265,13 +311,15 @@ export const ProfileScreen = ({ navigation }) => {
             {`Search Radius - `}
           </Text>
           <Text style={{ fontFamily: fonts[1500] }}>
-            {(radius * 0.001).toFixed(1)}
+            {currentProfile?.radius || 5.0}
             {" km"}
           </Text>
         </View>
         <Slider
           style={{ height: 40, color: secColor }}
-          onValueChange={setRadius}
+          onValueChange={(val) =>
+            updateProfile("radius", (val * 0.001).toFixed(1))
+          }
           minimumTrackTintColor={secColor}
           tapToSeek={true}
           // thumbTintColor={secColor} // if wanted thumb tint
@@ -284,8 +332,12 @@ export const ProfileScreen = ({ navigation }) => {
         <Selectable
           data={item.options}
           title={item.title}
-          selected={item.title === "Price" ? price : openStatus}
-          setSelected={item.title === "Price" ? setPrice : setOpenStatus}
+          selected={
+            item.title === "Price"
+              ? updatedProfile?.price || "All"
+              : updatedProfile?.openStatus || "None"
+          }
+          setSelected={updateProfile}
           contianerStyle={styles.selectableContainerStyle}
         />
       ))}
@@ -308,7 +360,7 @@ export const ProfileScreen = ({ navigation }) => {
           />
           <ProfileHeader />
           <ScrollView>
-            <Pressable onPress={() => setExpandProfile((prev) => !prev)}>
+            <Pressable onPress={() => handleExpand("Profile")}>
               {profileHeader()}
             </Pressable>
             <Animated.View
@@ -320,7 +372,7 @@ export const ProfileScreen = ({ navigation }) => {
               {profileBody()}
             </Animated.View>
 
-            <Pressable onPress={() => setExpandSettings((prev) => !prev)}>
+            <Pressable onPress={() => handleExpand("Settings")}>
               {settingsHeader()}
             </Pressable>
             <Animated.View

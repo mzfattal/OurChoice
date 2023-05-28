@@ -28,7 +28,9 @@ export const Selectable = ({
       <View style={{ flexDirection: "row", marginTop: horizontalMargin / 2 }}>
         {data.map((item) => (
           <TouchableOpacity
-            onPress={() => setSelected(item)}
+            onPress={() =>
+              setSelected(title === "Price" ? "price" : "openStatus", item)
+            }
             style={[
               {
                 height: 30,
