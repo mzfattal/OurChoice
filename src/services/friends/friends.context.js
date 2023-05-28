@@ -31,6 +31,7 @@ export const FriendsContextProvider = ({ children }) => {
   };
 
   const submitUpdateProfile = async () => {
+    setCurrentProfile(updatedProfile);
     await axios
       .post(
         `http://192.168.2.14:3000/updateProfile/${auth?.currentUser?.email}`,
