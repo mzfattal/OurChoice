@@ -15,6 +15,7 @@ export const FriendsContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [currentProfile, setCurrentProfile] = useState({});
   const [updatedProfile, setUpdatedProfile] = useState({});
+  const [favorites, setFavorites] = useState([]);
 
   const clearFriends = () => {
     setFriends([]);
@@ -41,6 +42,22 @@ export const FriendsContextProvider = ({ children }) => {
       )
       .then((res) => console.warn(res?.data))
       .catch(() => Alert.alert("Oops!", "Couldnt Update Profile"));
+  };
+
+  const handleLikePlace = async (liked, place) => {
+    console.warn("place", place);
+    if (liked) {
+      setFavorites((prev) => [...prev, place]);
+    } else {
+      setFavorites((prev) => prev.filter((curPlace) => curPlace !== place));
+    }
+
+    await axios
+      .post(`http://192.168.2.14:3000/favorite/${liked}`, {
+        place: place,
+      })
+      .then((res) => console.warn(res?.data))
+      .catch(() => Alert.alert("Oops!", "Couldnt Update Favorites"));
   };
 
   const fetchFriendRequests = async () => {
@@ -164,6 +181,8 @@ export const FriendsContextProvider = ({ children }) => {
         submitUpdateProfile,
         updatedProfile,
         resetUpdateProfile,
+        handleLikePlace,
+        favorites,
       }}
     >
       {children}

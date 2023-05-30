@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -23,8 +23,14 @@ import { TabHeader } from "../../../components/tabHeader";
 import { auth } from "../../../../firebase";
 import { ProfileHeader } from "../components/profileHeader.component";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { FriendsContext } from "../../../services/friends/friends.context";
+import Card from "../../places/components/Card";
 
 export const FavoritesScreen = ({ navigation }) => {
+  const { favorites } = useContext(FriendsContext);
+
+  const hasFavorites = !!favorites?.length && favorites?.length > 0;
+
   return (
     <>
       <SafeAreaView
@@ -34,20 +40,30 @@ export const FavoritesScreen = ({ navigation }) => {
           backgroundColor: "#FFFFFF",
         }}
       >
-        <View style={styles.container}>
+        <View style={[styles.container]}>
           <TabHeader
             text={"Favorites".toUpperCase()}
             subtext={"Save the places".toUpperCase()}
           />
-          <View style={styles.innerContainer}>
-            <View style={styles.imageContainer}>
-              <MaterialIcons name="favorite" size={100} color={secColor} />
+          {hasFavorites ? (
+            <FlatList
+              data={favorites}
+              renderItem={(place) => (
+                <Card place={place} swipeable={false} favorite={true} />
+              )}
+              keyExtractor={(item) => item.id}
+            />
+          ) : (
+            <View style={styles.innerContainer}>
+              <View style={styles.imageContainer}>
+                <MaterialIcons name="favorite" size={100} color={secColor} />
+              </View>
+              <Text style={styles.header}>No Favorites</Text>
+              <Text style={styles.subHeader}>
+                Heart restaurants to save a list of your favorites
+              </Text>
             </View>
-            <Text style={styles.header}>No Favorites</Text>
-            <Text style={styles.subHeader}>
-              Heart restaurants to save a list of your favorites
-            </Text>
-          </View>
+          )}
         </View>
       </SafeAreaView>
     </>

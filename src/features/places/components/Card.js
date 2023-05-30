@@ -8,6 +8,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import {
   fonts,
@@ -28,15 +29,17 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { PlacesContext } from "../../../services/places/places.service";
+import { FriendsContext } from "../../../services/friends/friends.context";
 
 const deviceWidth = Dimensions.get("window").width;
 const smallCardHeight = 86;
 const bigCardHeight = 370;
 
-const Card = ({ place, swipeable }) => {
+const Card = ({ place, swipeable, favorite }) => {
   const _place = place.item;
 
   const { addConfirmedPlace, addDeniedPlace } = useContext(PlacesContext);
+  const { handleLikePlace } = useContext(FriendsContext);
 
   const cardHeight = useRef(new Animated.Value(smallCardHeight)).current;
   const smallCardOpacity = useRef(new Animated.Value(1)).current;
@@ -395,9 +398,34 @@ const Card = ({ place, swipeable }) => {
               justifyContent: "center",
               alignItems: "flex-end",
             }}
-            onPress={() => setLiked((prev) => !prev)}
+            onPress={() =>
+              setLiked((prev) => {
+                if (!!favorite) {
+                  Alert.alert(
+                    "Remove Favorite",
+                    "You have favorited this place, are you sure you would like to remove it?",
+                    [
+                      {
+                        text: "Cancel",
+                        onPress: () => {},
+                      },
+                      {
+                        text: "Remove",
+                        onPress: () => {
+                          handleLikePlace(false, _place);
+                        },
+                        style: "destructive",
+                      },
+                    ]
+                  );
+                } else {
+                  handleLikePlace(!prev, _place);
+                  return !prev;
+                }
+              })
+            }
           >
-            {liked ? (
+            {liked || !!favorite ? (
               <MaterialIcons name="favorite" size={32} color={secColor} />
             ) : (
               <MaterialIcons
@@ -542,7 +570,10 @@ const Card = ({ place, swipeable }) => {
       enabled={swipeable}
     >
       <Pressable
-        style={{ flex: 1, paddingHorizontal: horizontalMargin }}
+        style={{
+          flex: 1,
+          paddingHorizontal: !!favorite ? 0 : horizontalMargin,
+        }}
         onPress={() => setExpand((prev) => !prev)}
       >
         <Animated.View
