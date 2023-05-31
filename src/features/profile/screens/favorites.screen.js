@@ -27,9 +27,13 @@ import { FriendsContext } from "../../../services/friends/friends.context";
 import Card from "../../places/components/Card";
 
 export const FavoritesScreen = ({ navigation }) => {
-  const { favorites } = useContext(FriendsContext);
+  const { favorites, currentProfile } = useContext(FriendsContext);
 
-  const hasFavorites = !!favorites?.length && favorites?.length > 0;
+  console.warn(currentProfile);
+
+  const hasFavorites =
+    !!currentProfile?.favorites?.length &&
+    currentProfile?.favorites?.length > 0;
 
   return (
     <>
@@ -47,7 +51,7 @@ export const FavoritesScreen = ({ navigation }) => {
           />
           {hasFavorites ? (
             <FlatList
-              data={favorites}
+              data={currentProfile?.favorites}
               renderItem={(place) => (
                 <Card place={place} swipeable={false} favorite={true} />
               )}

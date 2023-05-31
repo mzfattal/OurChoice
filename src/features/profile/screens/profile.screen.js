@@ -286,7 +286,7 @@ export const ProfileScreen = ({ navigation }) => {
             {`Search Radius - `}
           </Text>
           <Text style={{ fontFamily: fonts[1500] }}>
-            {updatedProfile?.radius || 5.0}
+            {updatedProfile?.radius}
             {" km"}
           </Text>
         </View>

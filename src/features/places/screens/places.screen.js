@@ -63,7 +63,58 @@ export const PlacesScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-  const renderResturantAlias = () => <View></View>;
+
+  const renderFloatingChoicesButton = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Confirmed")}
+        style={{
+          position: "absolute",
+          bottom: 20,
+          right: 20,
+          zIndex: 5,
+          height: 80,
+          width: 80,
+          borderRadius: 80 / 2,
+          backgroundColor: secColor,
+          justifyContent: "center",
+          alignItems: "center",
+          opacity: 1,
+        }}
+      >
+        <Ionicons name="checkmark-done" size={30} color="#FFF" />
+      </TouchableOpacity>
+    );
+  };
+
+  const renderResturantAlias = () => {
+    // const thsss = [1,2,3]
+    const data = ["pizza", "pasta", "drink"];
+    return (
+      <View
+        style={{ height: 100, alignSelf: "stretch", backgroundColor: "red" }}
+      >
+        <FlatList
+          data={data}
+          renderItem={(item) => (
+            <View
+              style={{
+                height: 80,
+                width: 80,
+                borderRadius: 80 / 2,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: secColor,
+              }}
+            >
+              <Text>{item}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => item}
+        />
+      </View>
+    );
+  };
 
   useEffect(() => {
     fetchPlaces();
@@ -81,7 +132,8 @@ export const PlacesScreen = ({ navigation }) => {
             backgroundColor: "#FFFFFF",
           }}
         >
-          {topBar()}
+          {renderFloatingChoicesButton()}
+          {renderResturantAlias()}
           <FlatList
             data={places}
             renderItem={(place) => <Card place={place} swipeable={true} />}

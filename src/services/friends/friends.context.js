@@ -45,16 +45,16 @@ export const FriendsContextProvider = ({ children }) => {
   };
 
   const handleLikePlace = async (liked, place) => {
-    console.warn("place", place);
+    console.warn("place", liked);
     if (liked) {
       setFavorites((prev) => [...prev, place]);
     } else {
       setFavorites((prev) => prev.filter((curPlace) => curPlace !== place));
     }
-
     await axios
       .post(`http://192.168.2.14:3000/favorite/${liked}`, {
         place: place,
+        email: currentProfile?.email,
       })
       .then((res) => console.warn(res?.data))
       .catch(() => Alert.alert("Oops!", "Couldnt Update Favorites"));
@@ -74,11 +74,14 @@ export const FriendsContextProvider = ({ children }) => {
     await axios
       .get(`http://192.168.2.14:3000/user/email/${auth?.currentUser?.email}`)
       .then((res) => {
+        console.warn("here", res?.data?.[0]);
         setCurrentProfile(res?.data?.[0]);
         setUpdatedProfile(res?.data?.[0]);
         return res;
       })
-      .then((res) => setFriends(res?.data?.[0]?.friends))
+      .then((res) => {
+        setFriends(res?.data?.[0]?.friends);
+      })
       .catch(() => Alert.alert("Oops!", "Error getting friends."));
     setIsLoading(false);
   };

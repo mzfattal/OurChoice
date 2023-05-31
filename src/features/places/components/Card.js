@@ -39,7 +39,8 @@ const Card = ({ place, swipeable, favorite }) => {
   const _place = place.item;
 
   const { addConfirmedPlace, addDeniedPlace } = useContext(PlacesContext);
-  const { handleLikePlace } = useContext(FriendsContext);
+  const { handleLikePlace, favorites, currentProfile } =
+    useContext(FriendsContext);
 
   const cardHeight = useRef(new Animated.Value(smallCardHeight)).current;
   const smallCardOpacity = useRef(new Animated.Value(1)).current;
@@ -273,51 +274,6 @@ const Card = ({ place, swipeable, favorite }) => {
     );
   };
 
-  const renderBigCardAction = () => {
-    return (
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            width: 150,
-            marginTop: 36,
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              height: 60,
-              width: 60,
-              backgroundColor: "#FF5C5C",
-              borderRadius: 30,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <FontAwesome name="close" size={26} color="#FFFFFF" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              height: 60,
-              width: 60,
-              backgroundColor: "#98FF98",
-              borderRadius: 30,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <FontAwesome name="check" size={26} color="#FFFFFF" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-
   const smallCardView = () => (
     <Animated.View
       style={{
@@ -425,7 +381,8 @@ const Card = ({ place, swipeable, favorite }) => {
               })
             }
           >
-            {liked || !!favorite ? (
+            {favorites.includes(_place) ||
+            currentProfile?.favorites.includes(_place) ? (
               <MaterialIcons name="favorite" size={32} color={secColor} />
             ) : (
               <MaterialIcons
