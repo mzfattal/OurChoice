@@ -60,7 +60,7 @@ export const AuthenticationContextProvider = ({ children }) => {
     createAccountRequest(email, password)
       .then(async (userCredential) => {
         await axios
-          .post("http://192.168.2.14:3000/register", {
+          .post("http://mutazbackend-production.up.railway.app/register", {
             uid: userCredential.uid,
             name: username,
             email: email,

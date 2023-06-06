@@ -60,7 +60,7 @@ export const AppNavigator = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Friends"
+      initialRouteName="Restaurants"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -89,7 +89,7 @@ export const AppNavigator = () => {
       })}
     >
       <Tab.Screen name="Restaurants" component={PlacesStackScreen} />
-      <Tab.Screen name="Friends" component={FriendScreen} />
+      {/* <Tab.Screen name="Friends" component={FriendScreen} /> */}
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
       <Tab.Screen name="Profile" component={ProfileStackScreen} />
     </Tab.Navigator>

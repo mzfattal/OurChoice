@@ -47,7 +47,7 @@ export const FriendScreen = () => {
     if (!friendRequests?.length) setTabIndex(0);
   }, [friendRequests]);
 
-  if (error) return <ErrorScreen />;
+  // if (error) return <ErrorScreen />;
 
   return (
     <>

@@ -133,7 +133,7 @@ export const PlacesScreen = ({ navigation }) => {
           }}
         >
           {renderFloatingChoicesButton()}
-          {renderResturantAlias()}
+          {/* {renderResturantAlias()} */}
           <FlatList
             data={places}
             renderItem={(place) => <Card place={place} swipeable={true} />}

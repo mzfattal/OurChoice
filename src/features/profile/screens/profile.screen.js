@@ -377,8 +377,8 @@ export const ProfileScreen = ({ navigation }) => {
           </ScrollView>
         </View>
         {saveButton()}
-
-        <TouchableOpacity
+          
+        {/* <TouchableOpacity
           style={styles.giveFeedbackContainer}
           onPress={() => console.warn("feedback")}
         >
@@ -394,7 +394,7 @@ export const ProfileScreen = ({ navigation }) => {
             </Text>
           </View>
           <Ionicons name={"chatbox-outline"} size={50} color={secColor} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </SafeAreaView>
     </>
   );

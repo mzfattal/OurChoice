@@ -3,6 +3,7 @@ import { Alert } from "react-native";
 import axios from "axios";
 import { auth } from "../../../firebase";
 import { AuthenticationContext } from "../profile/authentication.context";
+import { createAccountRequest } from "../profile/authentication.service";
 
 export const FriendsContext = createContext();
 
@@ -35,7 +36,7 @@ export const FriendsContextProvider = ({ children }) => {
     setCurrentProfile(updatedProfile);
     await axios
       .post(
-        `http://192.168.2.14:3000/updateProfile/${auth?.currentUser?.email}`,
+        `http://mutazbackend-production.up.railway.app/updateProfile/${auth?.currentUser?.email}`,
         {
           update: updatedProfile,
         }
@@ -52,7 +53,7 @@ export const FriendsContextProvider = ({ children }) => {
       setFavorites((prev) => prev.filter((curPlace) => curPlace !== place));
     }
     await axios
-      .post(`http://192.168.2.14:3000/favorite/${liked}`, {
+      .post(`http://mutazbackend-production.up.railway.app/favorite/${liked}`, {
         place: place,
         email: currentProfile?.email,
       })
@@ -63,7 +64,9 @@ export const FriendsContextProvider = ({ children }) => {
   const fetchFriendRequests = async () => {
     setIsLoading(true);
     await axios
-      .get(`http://192.168.2.14:3000/friendRequest/${auth?.currentUser?.email}`)
+      .get(
+        `http://mutazbackend-production.up.railway.app/friendRequest/${auth?.currentUser?.email}`
+      )
       .then((res) => setFriendRequests(res?.data))
       .catch(() => Alert.alert("Oops!", "Error getting friends."));
     setIsLoading(false);
@@ -72,9 +75,10 @@ export const FriendsContextProvider = ({ children }) => {
   const fetchFriends = async () => {
     setIsLoading(true);
     await axios
-      .get(`http://192.168.2.14:3000/user/email/${auth?.currentUser?.email}`)
+      .get(
+        `http://mutazbackend-production.up.railway.app/user/email/${auth?.currentUser?.email}`
+      )
       .then((res) => {
-        console.warn("here", res?.data?.[0]);
         setCurrentProfile(res?.data?.[0]);
         setUpdatedProfile(res?.data?.[0]);
         return res;
@@ -95,7 +99,7 @@ export const FriendsContextProvider = ({ children }) => {
     );
 
     await axios
-      .post(`http://192.168.2.14:3000/friendRequest/yes`, {
+      .post(`http://mutazbackend-production.up.railway.app/friendRequest/yes`, {
         recipient: auth?.currentUser?.email,
         requester: email,
       })
@@ -117,7 +121,7 @@ export const FriendsContextProvider = ({ children }) => {
     );
 
     await axios
-      .post(`http://192.168.2.14:3000/friendRequest/no`, {
+      .post(`http://mutazbackend-production.up.railway.app/friendRequest/no`, {
         recipient: auth?.currentUser?.email,
         requester: email,
       })
@@ -137,7 +141,7 @@ export const FriendsContextProvider = ({ children }) => {
 
     if (validEmail.test(email)) {
       await axios
-        .post(`http://192.168.2.14:3000/friendRequest`, {
+        .post(`http://mutazbackend-production.up.railway.app/friendRequest`, {
           requester: auth?.currentUser?.email,
           recipient: email,
         })
@@ -160,6 +164,39 @@ export const FriendsContextProvider = ({ children }) => {
   };
 
   const resetUpdateProfile = () => setUpdatedProfile(currentProfile);
+
+  const onCreate = async (email, password, username, picture) => {
+    setIsLoading(true);
+    createAccountRequest(email, password)
+      .then(async (userCredential) => {
+        setCurrentProfile((prev) => ({ ...prev, name: username }));
+        await axios
+          .post("http://mutazbackend-production.up.railway.app/register", {
+            uid: userCredential.uid,
+            name: username,
+            email: email,
+          })
+          .then(() => console.warn(userCredential.user))
+          .catch(() =>
+            Alert.alert(
+              "Oops!",
+              "Profile Created, but had issue settings profile attributes"
+            )
+          );
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        console.warn("eee", e);
+        Alert.alert(
+          "Oops!",
+          "Error occured trying to create your account. Try again later."
+        );
+        setError(e);
+      });
+
+    console.warn(currentProfile);
+  };
 
   useEffect(() => {
     fetchFriends();
@@ -186,6 +223,7 @@ export const FriendsContextProvider = ({ children }) => {
         resetUpdateProfile,
         handleLikePlace,
         favorites,
+        onCreate,
       }}
     >
       {children}

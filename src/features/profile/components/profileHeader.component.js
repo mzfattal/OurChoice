@@ -48,11 +48,11 @@ export const ProfileHeader = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row" }}>
-        <Image
+      {/* <View style={{ flexDirection: "row" }}> */}
+        {/* <Image
           source={{ uri: "https://picsum.photos/200" }}
           style={styles.image}
-        />
+        /> */}
         <View
           style={{
             justifyContent: "space-evenly",
@@ -64,7 +64,7 @@ export const ProfileHeader = () => {
           >{`Welcome, ${currentProfile?.name}`}</Text>
           <Text style={styles.secText}>{currentProfile?.email}</Text>
         </View>
-      </View>
+      {/* </View> */}
       <TouchableOpacity
         style={styles.editProfileButton}
         onPress={() => handleLougout()}
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts[1600],
   },
   secText: {
+    marginTop: horizontalMargin /2,
     fontSize: 16,
     color: secTextColor,
     fontFamily: fonts[1700],

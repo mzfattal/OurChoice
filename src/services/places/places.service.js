@@ -33,7 +33,7 @@ export const PlacesContextProvider = ({ children }) => {
     if (places.length > 0) return;
     setIsLoading(true);
     await axios
-      .get(`http://192.168.2.14:3000/businessSearch`)
+      .get(`http://mutazbackend-production.up.railway.app/businessSearch`)
       .then((res) => setPlaces(res?.data?.businesses))
       .catch(() => Alert.alert("Oops!", "Error getting places."));
     setIsLoading(false);

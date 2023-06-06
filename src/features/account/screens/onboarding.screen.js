@@ -30,12 +30,14 @@ import { Video } from "expo-av";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { AuthenticationContext } from "../../../services/profile/authentication.context";
+import { FriendsContext } from "../../../services/friends/friends.context";
 
 export const OnboardingScreen = ({ navigation, route }) => {
   const onboardingLength = 4;
   const { width, height } = Dimensions.get("window");
-  const { user, isLoading, error, onCreate, requestLocation, location } =
+  const { user, isLoading, error, requestLocation, location } =
     useContext(AuthenticationContext);
+  const { onCreate } = useContext(FriendsContext)
 
   const scrollRef = useRef();
   const [usernameText, setUsernameText] = useState("");
