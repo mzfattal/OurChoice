@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
   borderRadius,
@@ -34,8 +34,14 @@ const settingsOptionList = [
 
 export const NoSession = ({ navigation }) => {
   const { requestLocation, location } = useContext(AuthenticationContext);
-  const { places, loading, fetchPlaces, sessionStarted, setSessionStarted } =
-    useContext(PlacesContext);
+  const {
+    places,
+    loading,
+    fetchPlaces,
+    sessionStarted,
+    setSessionStarted,
+    isLoading,
+  } = useContext(PlacesContext);
   const { currentProfile, updatedProfile, updateProfile } =
     useContext(FriendsContext);
 
@@ -109,6 +115,22 @@ export const NoSession = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
+
+  if (isLoading)
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size={"large"} />
+        <Text
+          style={{
+            marginTop: 24,
+            fontFamily: fonts[1700],
+            color: secTextColor,
+          }}
+        >
+          Getting Things Ready...
+        </Text>
+      </View>
+    );
 
   if (showPrefrences)
     return <View style={styles.container}>{settingsBody()}</View>;
