@@ -24,8 +24,10 @@ export const AuthenticationContextProvider = ({ children }) => {
   });
 
   const requestLocation = async () => {
+    if (Object.keys(location).length > 0) return;
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
+
       if (status !== "granted") {
         Alert.alert("Permission to access location was denied");
         return;

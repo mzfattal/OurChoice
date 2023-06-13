@@ -292,7 +292,7 @@ export const ProfileScreen = ({ navigation }) => {
         </View>
         <Slider
           style={{ height: 40, color: secColor }}
-          value={updatedProfile?.radius}
+          value={updatedProfile?.radius / 0.001}
           onValueChange={(val) =>
             updateProfile("radius", (val * 0.001).toFixed(1))
           }
@@ -377,7 +377,7 @@ export const ProfileScreen = ({ navigation }) => {
           </ScrollView>
         </View>
         {saveButton()}
-          
+
         {/* <TouchableOpacity
           style={styles.giveFeedbackContainer}
           onPress={() => console.warn("feedback")}

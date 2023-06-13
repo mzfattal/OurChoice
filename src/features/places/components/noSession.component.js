@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Searchbar } from "react-native-paper";
@@ -41,6 +41,14 @@ export const NoSession = ({ navigation }) => {
 
   const [showPrefrences, setShowPrefrences] = useState(false);
 
+  const handleFetchReq = () => {
+    if (Object.keys(location).length === 0) {
+      requestLocation();
+      return;
+    }
+    fetchPlaces(updatedProfile, location);
+  };
+
   const settingsBody = () => (
     <View style={{ alignItems: "center" }}>
       <Text style={styles.sectionHeader}>Location</Text>
@@ -69,9 +77,9 @@ export const NoSession = ({ navigation }) => {
             {" km"}
           </Text>
         </View>
-        <Slider
+        {/* <Slider
           style={{ height: 40, color: secColor, width: 300 }}
-          value={updatedProfile?.radius}
+          value={updatedProfile?.radius / 0.001}
           onValueChange={(val) =>
             updateProfile("radius", (val * 0.001).toFixed(1))
           }
@@ -80,7 +88,7 @@ export const NoSession = ({ navigation }) => {
           // thumbTintColor={secColor} // if wanted thumb tint
           minimumValue={5000}
           maximumValue={40000}
-        />
+        /> */}
       </View>
       <Text style={styles.sectionHeader}>Preferences</Text>
       {settingsOptionList.map((item) => (
@@ -96,10 +104,7 @@ export const NoSession = ({ navigation }) => {
           contianerStyle={styles.selectableContainerStyle}
         />
       ))}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => setShowPrefrences(true)}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleFetchReq}>
         <Text style={styles.buttonText}>Start Session</Text>
       </TouchableOpacity>
     </View>

@@ -288,9 +288,9 @@ const Card = ({ place, swipeable, favorite }) => {
     >
       <View style={{ marginLeft: 8 }}>
         <Text style={{ fontFamily: fonts[1900], fontSize: 18 }}>
-          {_place.name.length < 30
+          {_place.name.length < 26
             ? _place.name
-            : _place.name.substring(0, 22) + "..."}
+            : _place.name.substring(0, 18) + "..."}
         </Text>
         <Text
           style={{

@@ -1,7 +1,6 @@
 import React, { useEffect, createContext, useState, useContext } from "react";
 import { Alert } from "react-native";
 import axios from "axios";
-import { auth } from "../../../firebase";
 
 export const PlacesContext = createContext();
 
@@ -29,14 +28,30 @@ export const PlacesContextProvider = ({ children }) => {
     setDeniedPlace((prev) => [...prev, place]);
   };
 
-  const fetchPlaces = async () => {
+  const fetchPlaces = async (curProfile, location) => {
     if (places.length > 0) return;
+
+    const radius = 10000;
+    const openPref = curProfile?.openStatus || "All";
+    const pricePref = curProfile?.price || "None";
+    const longitude = location?.longitude;
+    const latitude = location?.latitude;
+    //businessSearch/5000/""/Open/43.233424/-79.697151
+    const path = `http://mutazbackend-production.up.railway.app/businessSearch/${radius}/${pricePref}/${openPref}/${latitude}/${longitude}`;
+
     setIsLoading(true);
     await axios
-      .get(`http://mutazbackend-production.up.railway.app/businessSearch`)
-      .then((res) => setPlaces(res?.data?.businesses))
-      .catch(() => Alert.alert("Oops!", "Error getting places."));
-    setIsLoading(false);
+      .get(path)
+      .then((res) => {
+        setIsLoading(false);
+        setPlaces(res?.data?.businesses);
+        setSessionStarted(true);
+      })
+      .catch((err) => {
+        console.warn(err);
+        setIsLoading(false);
+        Alert.alert("Oops!", "Error getting places.");
+      });
   };
 
   //   useEffect(() => {

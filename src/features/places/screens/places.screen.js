@@ -32,6 +32,12 @@ export const PlacesScreen = ({ navigation }) => {
     useContext(PlacesContext);
   const { requestLocation, location } = useContext(AuthenticationContext);
 
+  useEffect(() => {
+    if (Object.keys(location).length === 0) {
+      requestLocation();
+    }
+  }, []);
+
   const topBar = () => (
     <View
       style={{
@@ -115,10 +121,6 @@ export const PlacesScreen = ({ navigation }) => {
       </View>
     );
   };
-
-  useEffect(() => {
-    fetchPlaces();
-  }, []);
 
   if (loading) return <View />;
 

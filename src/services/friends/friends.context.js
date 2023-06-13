@@ -187,15 +187,12 @@ export const FriendsContextProvider = ({ children }) => {
       })
       .catch((e) => {
         setIsLoading(false);
-        console.warn("eee", e);
         Alert.alert(
           "Oops!",
           "Error occured trying to create your account. Try again later."
         );
         setError(e);
       });
-
-    console.warn(currentProfile);
   };
 
   useEffect(() => {

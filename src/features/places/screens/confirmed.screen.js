@@ -58,9 +58,6 @@ export const ConfirmedScreen = ({ navigation }) => {
     </View>
   );
 
-  useEffect(() => {
-    fetchPlaces();
-  }, []);
   const sessionStarted = false;
 
   if (loading) return <View />;
