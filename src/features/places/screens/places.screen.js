@@ -104,7 +104,7 @@ export const PlacesScreen = ({ navigation }) => {
             height: 110,
             justifyContent: "center",
             alignItems: "center",
-            marginLeft: horizontalMargin - 6,
+            paddingHorizontal: horizontalMargin - 6,
           }}
           renderItem={(type) => {
             return (
