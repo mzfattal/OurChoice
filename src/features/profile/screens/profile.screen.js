@@ -292,15 +292,13 @@ export const ProfileScreen = ({ navigation }) => {
         </View>
         <Slider
           style={{ height: 40, color: secColor }}
-          value={updatedProfile?.radius / 0.001}
-          onValueChange={(val) =>
-            updateProfile("radius", (val * 0.001).toFixed(1))
-          }
+          value={updatedProfile?.radius}
+          onValueChange={(val) => updateProfile("radius", val.toFixed(1))}
           minimumTrackTintColor={secColor}
           tapToSeek={true}
           // thumbTintColor={secColor} // if wanted thumb tint
-          minimumValue={5000}
-          maximumValue={40000}
+          minimumValue={5}
+          maximumValue={40}
         />
       </View>
       <Text style={styles.sectionHeader}>Preferences</Text>

@@ -28,7 +28,7 @@ import { AuthenticationContext } from "../../../services/profile/authentication.
 import Logo from "../../../components/Logo";
 
 export const PlacesScreen = ({ navigation }) => {
-  const { places, loading, fetchPlaces, sessionStarted } =
+  const { places, fetchPlaces, sessionStarted, filterList, selectTypeFilter } =
     useContext(PlacesContext);
   const { requestLocation, location } = useContext(AuthenticationContext);
 
@@ -94,35 +94,65 @@ export const PlacesScreen = ({ navigation }) => {
   };
 
   const renderResturantAlias = () => {
-    // const thsss = [1,2,3]
-    const data = ["pizza", "pasta", "drink"];
     return (
-      <View
-        style={{ height: 100, alignSelf: "stretch", backgroundColor: "red" }}
-      >
+      <View>
         <FlatList
-          data={data}
-          renderItem={(item) => (
-            <View
-              style={{
-                height: 80,
-                width: 80,
-                borderRadius: 80 / 2,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: secColor,
-              }}
-            >
-              <Text>{item}</Text>
-            </View>
-          )}
-          keyExtractor={(item) => item}
+          data={filterList}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            height: 110,
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: horizontalMargin - 6,
+          }}
+          renderItem={(type) => {
+            return (
+              <TouchableOpacity
+                onPress={() => selectTypeFilter(type?.item?.title)}
+                style={{
+                  marginLeft: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <View
+                  style={[
+                    {
+                      borderWidth: 2,
+                      borderColor: "#fff",
+                      height: 80,
+                      width: 80,
+                      borderRadius: 80 / 2,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#BBB",
+                    },
+                    styles.typeShadow,
+                    type?.item?.selected && { borderColor: secColor },
+                  ]}
+                />
+
+                <Text
+                  style={[
+                    {
+                      marginTop: 6,
+                      color: secTextColor,
+                      fontFamily: fonts[1700],
+                    },
+                    type?.item?.selected && { color: secColor },
+                  ]}
+                >
+                  {type?.item?.title}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={({ title }) => title}
         />
       </View>
     );
   };
-
-  if (loading) return <View />;
 
   if (sessionStarted)
     return (
@@ -135,7 +165,7 @@ export const PlacesScreen = ({ navigation }) => {
           }}
         >
           {renderFloatingChoicesButton()}
-          {/* {renderResturantAlias()} */}
+          {renderResturantAlias()}
           <FlatList
             data={places}
             renderItem={(place) => <Card place={place} swipeable={true} />}
@@ -197,5 +227,13 @@ const styles = StyleSheet.create({
   listColumnStyle: {
     justifyContent: "space-between",
     marginTop: 10,
+  },
+  typeShadow: {
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
 });

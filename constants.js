@@ -21,3 +21,81 @@ export const fonts = {
   1700: "Inter_700Bold",
   1900: "Inter_900Black",
 };
+
+export const filterListConstant = [
+  {
+    title: "BBQ",
+    slugs: ["bbq"],
+    selected: false,
+  },
+  {
+    title: "Mexican",
+    slugs: ["mexican"],
+    selected: false,
+  },
+  {
+    title: "Mediterranean",
+    slugs: ["mediterranean"],
+    selected: false,
+  },
+  {
+    title: "Sea Food",
+    slugs: ["seafood"],
+    selected: false,
+  },
+  {
+    title: "Steak",
+    slugs: ["steak"],
+    selected: false,
+  },
+  {
+    title: "Chinese",
+    slugs: ["chinese"],
+    selected: false,
+  },
+  {
+    title: "Italian",
+    slugs: ["italian"],
+    selected: false,
+  },
+  {
+    title: "Burgers",
+    slugs: ["burgers"],
+    selected: false,
+  },
+  {
+    title: "Ice Cream",
+    slugs: ["icecream"],
+    selected: false,
+  },
+  {
+    title: "Coffee",
+    slugs: ["coffee", "cafes"],
+    selected: false,
+  },
+  {
+    title: "Vegan",
+    slugs: ["vegan"],
+    selected: false,
+  },
+  {
+    title: "Pizza",
+    slugs: ["pizza"],
+    selected: false,
+  },
+  {
+    title: "Greek",
+    slugs: ["greek"],
+    selected: false,
+  },
+  {
+    title: "Vietnamese",
+    slugs: ["vietnamese"],
+    selected: false,
+  },
+  {
+    title: "Thai",
+    slugs: ["thai"],
+    selected: false,
+  },
+];

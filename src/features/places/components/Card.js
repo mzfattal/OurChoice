@@ -419,28 +419,37 @@ const Card = ({ place, swipeable, favorite }) => {
               </Text>
             </View>
           </TouchableOpacity>
-          <View style={{ flex: 0.2, alignItems: "flex-end" }}>
-            <Text
+          {!!_place.price && (
+            <View
               style={{
-                fontFamily: fonts[1300],
-                color: secTextColor,
-                fontSize: 12,
-                marginTop: 6,
+                flex: 0.3,
+                alignItems: "center",
               }}
             >
-              {"Price:"}
-            </Text>
-            <Text
-              style={{
-                fontFamily: fonts[1700],
-                fontSize: 14,
-                marginTop: 2,
-              }}
-            >
-              {renderPrice(_place.price)}
-            </Text>
-          </View>
-          <View style={{ flex: 0.3, alignItems: "flex-end" }}>
+              <Text
+                style={{
+                  fontFamily: fonts[1300],
+                  color: secTextColor,
+                  fontSize: 12,
+                  marginTop: 6,
+                }}
+              >
+                {"Price:"}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: fonts[1700],
+                  fontSize: 14,
+                  marginTop: 2,
+                }}
+              >
+                {renderPrice(_place.price)}
+              </Text>
+            </View>
+          )}
+          <View
+            style={{ flex: !!_place.price ? 0.2 : 0.5, alignItems: "flex-end" }}
+          >
             <Text
               style={{
                 fontFamily: fonts[1300],

@@ -29,8 +29,6 @@ import Card from "../../places/components/Card";
 export const FavoritesScreen = ({ navigation }) => {
   const { favorites, currentProfile } = useContext(FriendsContext);
 
-  console.warn(currentProfile);
-
   const hasFavorites =
     !!currentProfile?.favorites?.length &&
     currentProfile?.favorites?.length > 0;

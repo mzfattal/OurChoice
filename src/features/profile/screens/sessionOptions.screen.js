@@ -92,19 +92,19 @@ export const SessionOptions = ({ navigation }) => {
               </Text>
               <Text style={{ fontFamily: fonts[1500] }}>
                 {" - "}
-                {(radius * 0.001).toFixed(1)}
+                {radius.toFixed(1)}
                 {" km"}
               </Text>
             </View>
             <Slider
               style={{ height: 40, color: secColor }}
-              onValueChange={setRadius}
-              value={radius}
+              value={updatedProfile?.radius}
+              onValueChange={(val) => updateProfile("radius", val.toFixed(1))}
               minimumTrackTintColor={secColor}
               tapToSeek={true}
               // thumbTintColor={secColor} // if wanted thumb tint
-              minimumValue={5000}
-              maximumValue={40000}
+              minimumValue={5}
+              maximumValue={40}
             />
           </View>
           <Text style={styles.sectionHeader}>Preferences</Text>

@@ -46,7 +46,6 @@ export const FriendsContextProvider = ({ children }) => {
   };
 
   const handleLikePlace = async (liked, place) => {
-    console.warn("place", liked);
     if (liked) {
       setFavorites((prev) => [...prev, place]);
     } else {
