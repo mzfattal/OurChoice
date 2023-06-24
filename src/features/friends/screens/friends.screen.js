@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   subHeader: {
-    width: '80%',
+    width: '90%',
     textAlign: "center",
     fontFamily: fonts[600],
     color: secTextColor,
