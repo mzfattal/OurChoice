@@ -7,6 +7,8 @@ import {
   SafeAreaView,
   FlatList,
   ActivityIndicator,
+  Image,
+  TouchableOpacity
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
@@ -47,7 +49,29 @@ export const FriendScreen = () => {
     if (!friendRequests?.length) setTabIndex(0);
   }, [friendRequests]);
 
-  // if (error) return <ErrorScreen />;
+  return (
+    <>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          marginTop: StatusBar.currentHeight,
+          backgroundColor: "#FFFFFF",
+        }}
+      >
+        <View style={styles.container}>
+          <TabHeader
+            text={"Friends".toUpperCase()}
+            subtext={"Create your Circle".toUpperCase()}
+            showLogo
+          />
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text style={styles.header}>Comming Soon...</Text>
+      <Text style={styles.subHeader}>Swipe, Eat, Repeat! Find Restaurants that you are your freinds are craving</Text>
+    </View>
+        </View>
+      </SafeAreaView>
+    </>
+  );
 
   return (
     <>
@@ -151,6 +175,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: horizontalMargin,
+  },
+  header: {
+    color: secColor,
+    fontFamily: fonts[900],
+    fontSize: 25,
+  },
+  subHeader: {
+    width: '80%',
+    textAlign: "center",
+    fontFamily: fonts[600],
+    color: secTextColor,
+    fontSize: 17,
   },
   searchBarContainer: {
     marginTop: marginTop,

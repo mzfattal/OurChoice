@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
+  Linking,
 } from "react-native";
 import {
   fonts,
@@ -327,7 +328,7 @@ const Card = ({ place, swipeable, favorite }) => {
       {renderBigCardImageWithOverlay()}
       <View style={{ marginTop: 8, marginHorizontal: 16 }}>
         <View style={{ flexDirection: "row" }}>
-          <View style={{ flex: 0.9 }}>
+          <TouchableOpacity style={{ flex: 0.9 }}>
             <Text
               style={{
                 fontFamily: fonts[1300],
@@ -347,7 +348,7 @@ const Card = ({ place, swipeable, favorite }) => {
             >
               {_place.location.display_address.join(", ")}
             </Text>
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             style={{
               flex: 0.1,
@@ -394,7 +395,10 @@ const Card = ({ place, swipeable, favorite }) => {
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity style={{ flex: 0.5 }}>
+          <TouchableOpacity
+            onPress={() => Linking.openURL(`tel:${_place.phone}`)}
+            style={{ flex: 0.5 }}
+          >
             <Text
               style={{
                 fontFamily: fonts[1300],
