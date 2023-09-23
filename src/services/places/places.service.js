@@ -20,6 +20,8 @@ export const PlacesContextProvider = ({ children }) => {
   const [confirmedPlace, setConfirmedPlace] = useState([]);
   const [deniedPlace, setDeniedPlace] = useState([]);
 
+  const [pagingIndex, setPagingIndex] = useState(0);
+
   const clearPlaces = () => {
     setPlaces([]);
     setFilteredPlaces([]);
@@ -61,15 +63,13 @@ export const PlacesContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const resultAfterFiltering = filterPlacesBySlugs(places, filterList);
     if (hasSelectedFilter()) {
+      const resultAfterFiltering = filterPlacesBySlugs(places, filterList);
       setFilteredPlaces(resultAfterFiltering);
     } else {
       setFilteredPlaces(places);
     }
   }, [filterList]);
-
-  useEffect(() => console.log(filterList), [filterList]);
 
   const selectTypeFilter = (type) => {
     setFilterList((prev) =>
@@ -82,7 +82,7 @@ export const PlacesContextProvider = ({ children }) => {
   };
 
   const addToTypeList = (restaurantsList) => {
-    const typeList = [...typeList];
+    const typeList = filterList.map((x) => x.slugs);
     restaurantsList.forEach((curRes) => {
       const listOfCat = curRes?.categories;
       listOfCat.forEach((curCat) => {
@@ -94,28 +94,37 @@ export const PlacesContextProvider = ({ children }) => {
     });
 
     const typesThatExist = filterPlace(typeList);
-    setFilterList(typesThatExist);
+    setFilterList((prev) => [...prev, ...typesThatExist]);
   };
 
-  const fetchPlaces = async (curProfile, location) => {
-    if (places.length > 0) return;
+  const fetchPlaces = async (curProfile, location, loadMore = false) => {
+    const limit = 20;
+    const offset = loadMore ? (pagingIndex + 1) * limit : pagingIndex * limit;
+
+    if (loadMore) setPagingIndex((prev) => prev + 1);
 
     const radius = curProfile.radius * 1000 || 10000;
     const openPref = curProfile?.openStatus || "All";
     const pricePref = curProfile?.price || "None";
     const longitude = location?.longitude;
     const latitude = location?.latitude;
-    //businessSearch/5000/""/Open/43.233424/-79.697151
-    const path = `http://mutazbackend-production.up.railway.app/businessSearch/${radius}/${pricePref}/${openPref}/${latitude}/${longitude}`;
+
+    const path = `http://mutazbackend-production.up.railway.app/businessSearch/${radius}/${pricePref}/${openPref}/${latitude}/${longitude}/${offset}/${limit}`;
 
     setIsLoading(true);
     await axios
       .get(path)
       .then((res) => {
-        setPlaces(res?.data?.businesses);
-        setFilteredPlaces(res?.data?.businesses);
-        addToTypeList(res?.data?.businesses);
-        setSessionStarted(true);
+        if (loadMore) {
+          setPlaces((prev) => [...prev, ...res?.data?.businesses]);
+          setFilteredPlaces((prev) => [...prev, ...res?.data?.businesses]);
+          addToTypeList(res?.data?.businesses);
+        } else {
+          setPlaces(res?.data?.businesses);
+          setFilteredPlaces(res?.data?.businesses);
+          addToTypeList(res?.data?.businesses);
+          setSessionStarted(true);
+        }
         setIsLoading(false);
       })
       .catch((err) => {
@@ -123,11 +132,6 @@ export const PlacesContextProvider = ({ children }) => {
         Alert.alert("Oops!", `Error getting places: ${err}`);
       });
   };
-
-  //   useEffect(() => {
-  //     fetchFriends();
-  //     fetchFriendRequests();
-  //   }, [user]);
 
   return (
     <PlacesContext.Provider

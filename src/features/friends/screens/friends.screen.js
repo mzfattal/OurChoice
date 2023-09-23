@@ -8,7 +8,7 @@ import {
   FlatList,
   ActivityIndicator,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
@@ -64,10 +64,15 @@ export const FriendScreen = () => {
             subtext={"Create your Circle".toUpperCase()}
             showLogo
           />
-          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={styles.header}>Comming Soon...</Text>
-      <Text style={styles.subHeader}>Swipe, Eat, Repeat! Find Restaurants that you are your freinds are craving</Text>
-    </View>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text style={styles.header}>Comming Soon...</Text>
+            <Text style={styles.subHeader}>
+              Swipe, Eat, Repeat! Find restaurants that you are your freinds are
+              craving
+            </Text>
+          </View>
         </View>
       </SafeAreaView>
     </>
@@ -182,7 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   subHeader: {
-    width: '90%',
+    width: "90%",
     textAlign: "center",
     fontFamily: fonts[600],
     color: secTextColor,

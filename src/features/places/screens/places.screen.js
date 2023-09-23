@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
@@ -26,10 +27,19 @@ import Card from "../components/Card";
 import { PlacesContext } from "../../../services/places/places.service";
 import { AuthenticationContext } from "../../../services/profile/authentication.context";
 import Logo from "../../../components/Logo";
+import { FriendsContext } from "../../../services/friends/friends.context";
 
 export const PlacesScreen = ({ navigation }) => {
-  const { places, fetchPlaces, sessionStarted, filterList, selectTypeFilter } =
-    useContext(PlacesContext);
+  const {
+    places,
+    fetchPlaces,
+    sessionStarted,
+    filterList,
+    selectTypeFilter,
+    isLoading,
+  } = useContext(PlacesContext);
+  const { currentProfile, updatedProfile, updateProfile } =
+    useContext(FriendsContext);
   const { requestLocation, location } = useContext(AuthenticationContext);
 
   useEffect(() => {
@@ -93,9 +103,13 @@ export const PlacesScreen = ({ navigation }) => {
     );
   };
 
+  const handleLoadMore = () => {
+    if (!isLoading) fetchPlaces(updatedProfile, location, true);
+  };
+
   const renderResturantAlias = () => {
     return (
-      <View>
+      <View style={{ paddingBottom: 10 }}>
         <FlatList
           data={filterList}
           horizontal={true}
@@ -114,6 +128,7 @@ export const PlacesScreen = ({ navigation }) => {
                   marginLeft: 10,
                   justifyContent: "center",
                   alignItems: "center",
+                  paddingTop: 10,
                 }}
               >
                 <View
@@ -164,12 +179,29 @@ export const PlacesScreen = ({ navigation }) => {
             backgroundColor: "#FFFFFF",
           }}
         >
+          <View style={{ marginHorizontal: horizontalMargin }}>
+            <TabHeader
+              text={"Restaurants".toUpperCase()}
+              subtext={"Choose Your Craving".toUpperCase()}
+            />
+          </View>
           {renderFloatingChoicesButton()}
           {renderResturantAlias()}
           <FlatList
             data={places}
             renderItem={(place) => <Card place={place} swipeable={true} />}
             keyExtractor={(item) => item.id}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.1}
+            ListFooterComponentStyle={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              height: 100,
+            }}
+            ListFooterComponent={
+              isLoading && <ActivityIndicator size={"large"} />
+            }
           />
         </SafeAreaView>
       </>
