@@ -109,7 +109,7 @@ export const PlacesContextProvider = ({ children }) => {
     const longitude = location?.longitude;
     const latitude = location?.latitude;
 
-    const path = `http://mutazbackend-production.up.railway.app/businessSearch/${radius}/${pricePref}/${openPref}/${latitude}/${longitude}/${offset}/${limit}`;
+    const path = `http://192.168.2.14:3000/businessSearch/${radius}/${pricePref}/${openPref}/${latitude}/${longitude}/${offset}/${limit}`;
 
     setIsLoading(true);
     await axios

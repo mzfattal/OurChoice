@@ -36,7 +36,7 @@ export const FriendsContextProvider = ({ children }) => {
     setCurrentProfile(updatedProfile);
     await axios
       .post(
-        `http://mutazbackend-production.up.railway.app/updateProfile/${auth?.currentUser?.email}`,
+        `http://192.168.2.14:3000/updateProfile/${auth?.currentUser?.email}`,
         {
           update: updatedProfile,
         }
@@ -52,7 +52,7 @@ export const FriendsContextProvider = ({ children }) => {
       setFavorites((prev) => prev.filter((curPlace) => curPlace !== place));
     }
     await axios
-      .post(`http://mutazbackend-production.up.railway.app/favorite/${liked}`, {
+      .post(`http://192.168.2.14:3000/favorite/${liked}`, {
         place: place,
         email: currentProfile?.email,
       })
@@ -64,7 +64,7 @@ export const FriendsContextProvider = ({ children }) => {
     setIsLoading(true);
     await axios
       .get(
-        `http://mutazbackend-production.up.railway.app/friendRequest/${auth?.currentUser?.email}`
+        `http://192.168.2.14:3000/friendRequest/${auth?.currentUser?.email}`
       )
       .then((res) => setFriendRequests(res?.data))
       .catch(() => Alert.alert("Oops!", "Error getting friends."));
@@ -75,7 +75,7 @@ export const FriendsContextProvider = ({ children }) => {
     setIsLoading(true);
     await axios
       .get(
-        `http://mutazbackend-production.up.railway.app/user/email/${auth?.currentUser?.email}`
+        `http://192.168.2.14:3000/user/email/${auth?.currentUser?.email}`
       )
       .then((res) => {
         setCurrentProfile(res?.data?.[0]);
@@ -98,7 +98,7 @@ export const FriendsContextProvider = ({ children }) => {
     );
 
     await axios
-      .post(`http://mutazbackend-production.up.railway.app/friendRequest/yes`, {
+      .post(`http://192.168.2.14:3000/friendRequest/yes`, {
         recipient: auth?.currentUser?.email,
         requester: email,
       })
@@ -120,7 +120,7 @@ export const FriendsContextProvider = ({ children }) => {
     );
 
     await axios
-      .post(`http://mutazbackend-production.up.railway.app/friendRequest/no`, {
+      .post(`http://192.168.2.14:3000/friendRequest/no`, {
         recipient: auth?.currentUser?.email,
         requester: email,
       })
@@ -140,7 +140,7 @@ export const FriendsContextProvider = ({ children }) => {
 
     if (validEmail.test(email)) {
       await axios
-        .post(`http://mutazbackend-production.up.railway.app/friendRequest`, {
+        .post(`http://192.168.2.14:3000/friendRequest`, {
           requester: auth?.currentUser?.email,
           recipient: email,
         })
@@ -170,7 +170,7 @@ export const FriendsContextProvider = ({ children }) => {
       .then(async (userCredential) => {
         setCurrentProfile((prev) => ({ ...prev, name: username }));
         await axios
-          .post("http://mutazbackend-production.up.railway.app/register", {
+          .post("http://192.168.2.14:3000/register", {
             uid: userCredential.uid,
             name: username,
             email: email,

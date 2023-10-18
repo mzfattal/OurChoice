@@ -347,7 +347,7 @@ export const ProfileScreen = ({ navigation }) => {
             text={"Profile".toUpperCase()}
             subtext={"Connect with friends".toUpperCase()}
           />
-          <ProfileHeader />
+          <ProfileHeader email={auth?.currentUser?.email}/>
           <ScrollView>
             <Pressable onPress={() => handleExpand("Profile")}>
               {profileHeader()}

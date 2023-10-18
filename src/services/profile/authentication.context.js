@@ -52,6 +52,7 @@ export const AuthenticationContextProvider = ({ children }) => {
       })
       .catch((resError) => {
         setIsLoading(false);
+        console.warn('re', resError)
         Alert.alert("Oops!", "Login failed");
         setError(resError);
       });
@@ -62,7 +63,7 @@ export const AuthenticationContextProvider = ({ children }) => {
     createAccountRequest(email, password)
       .then(async (userCredential) => {
         await axios
-          .post("http://mutazbackend-production.up.railway.app/register", {
+          .post("http://192.168.2.14:3000/register", {
             uid: userCredential.uid,
             name: username,
             email: email,

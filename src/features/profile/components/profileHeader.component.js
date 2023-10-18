@@ -23,7 +23,7 @@ import { FriendsContext } from "../../../services/friends/friends.context";
 import { GroupContext } from "../../../services/group/group.context";
 import { AuthenticationContext } from "../../../services/profile/authentication.context";
 
-export const ProfileHeader = () => {
+export const ProfileHeader = ({email}) => {
   const { currentProfile, clearFriends } = useContext(FriendsContext);
   const { clearGroup } = useContext(GroupContext);
 
@@ -62,7 +62,7 @@ export const ProfileHeader = () => {
           <Text
             style={styles.mainText}
           >{`Welcome, ${currentProfile?.name}`}</Text>
-          <Text style={styles.secText}>{currentProfile?.email}</Text>
+          <Text style={styles.secText}>{email}</Text>
         </View>
       {/* </View> */}
       <TouchableOpacity
